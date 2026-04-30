@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { User, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react'
 
 export default async function PerfilCandidatoPage() {
