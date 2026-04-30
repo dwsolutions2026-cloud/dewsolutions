@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { Users, Search, MapPin, FileText, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { DeleteCandidatoButton } from '@/components/admin/DeleteCandidatoButton'
+import Form from 'next/form'
 
 export default async function AdminTalentosPage({
   searchParams,
@@ -27,82 +28,78 @@ export default async function AdminTalentosPage({
   const { data: talentos, error } = await dbQuery
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-primary">Banco de Talentos</h1>
-          <p className="text-muted-foreground">Todos os profissionais cadastrados na plataforma</p>
-        </div>
+    <div className="space-y-8 animate-in fade-in duration-700">
+      <div>
+        <h1 className="text-2xl font-black text-primary tracking-tight">Banco de Talentos</h1>
+        <p className="text-muted-foreground text-sm font-medium opacity-70">Todos os profissionais cadastrados na plataforma.</p>
       </div>
 
       {/* Barra de Busca */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-        <form action="">
+      <div className="relative group">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+        <Form action="">
           <input
             type="text"
             name="q"
             defaultValue={query}
             placeholder="Buscar por nome, e-mail ou cidade..."
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-white focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-sm font-medium"
           />
-        </form>
+        </Form>
       </div>
 
-      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-[2rem] border border-border shadow-sm overflow-hidden">
         {error ? (
-          <div className="p-8 text-center text-red-500">
-            <p className="font-bold">Erro ao carregar banco de talentos:</p>
-            <p className="text-sm opacity-80">{error.message}</p>
+          <div className="p-10 text-center text-red-500 font-bold text-sm">
+            <p>Erro ao carregar banco de talentos:</p>
+            <p className="text-xs opacity-80">{error.message}</p>
           </div>
         ) : talentos && talentos.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-muted/50 border-b border-border">
-                  <th className="px-6 py-4 text-sm font-semibold text-primary">Candidato</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-primary">Localização</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-primary">Currículo</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-primary text-center">Candidaturas</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-primary text-right">Ações</th>
+                <tr className="bg-muted/30 border-b border-border">
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Candidato</th>
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Localização</th>
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Currículo</th>
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground text-center">Candidaturas</th>
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {talentos.map((talento) => (
-                  <tr key={talento.id} className="hover:bg-muted/30 transition-colors">
+                  <tr key={talento.id} className="hover:bg-muted/20 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
-                        <span className="font-medium text-primary">{talento.nome}</span>
-                        <span className="text-xs text-muted-foreground">{talento.email}</span>
+                        <span className="font-bold text-primary text-sm group-hover:text-accent transition-colors">{talento.nome}</span>
+                        <span className="text-[10px] text-muted-foreground font-medium">{talento.email}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="w-3.5 h-3.5 text-accent" />
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-bold">
+                        <MapPin className="w-3 h-3 text-accent" />
                         {talento.cidade ? `${talento.cidade} - ${talento.estado}` : 'Não informado'}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       {talento.curriculo_url ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                          <FileText className="w-3 h-3" />
-                          PDF Anexo
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-blue-50 text-blue-600 border border-blue-100">
+                          <FileText className="w-2.5 h-2.5" /> PDF
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                          <Users className="w-3 h-3" />
-                          Interno (Online)
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-amber-50 text-amber-600 border border-amber-100">
+                          <Users className="w-2.5 h-2.5" /> Online
                         </span>
                       )}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="text-sm font-medium">{talento.candidaturas[0]?.count || 0}</span>
+                      <span className="text-base font-black text-primary">{talento.candidaturas[0]?.count || 0}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/talentos/${talento.id}`}
-                          className="p-1.5 text-muted-foreground hover:text-accent rounded-md hover:bg-accent/5 transition-colors"
+                          className="p-2 text-muted-foreground hover:text-accent rounded-lg hover:bg-accent/10 transition-all"
                           title="Ver Perfil"
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -121,9 +118,10 @@ export default async function AdminTalentosPage({
             </table>
           </div>
         ) : (
-          <div className="p-12 text-center text-muted-foreground">
+          <div className="p-16 text-center text-muted-foreground">
             <Users className="mx-auto h-12 w-12 opacity-20 mb-4" />
-            <p>Nenhum talento encontrado no banco de dados.</p>
+            <p className="text-xl font-bold text-primary">Nenhum talento encontrado.</p>
+            <p className="text-sm font-medium opacity-60">O banco de talentos será populado conforme novos usuários se cadastrarem.</p>
           </div>
         )}
       </div>

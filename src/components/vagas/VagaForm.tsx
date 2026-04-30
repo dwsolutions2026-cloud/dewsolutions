@@ -1,212 +1,189 @@
 'use client'
 
-import { useState } from 'react'
-import { saveVagaAction } from '@/app/actions/empresa'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { VagaSchema } from '@/lib/schemas'
+import { Save, Loader2 } from 'lucide-react'
+import * as z from 'zod'
 
-interface VagaFormProps {
-  empresaId: string
-  vaga?: any // If editing
+type VagaData = z.infer<typeof VagaSchema>
+
+interface Props {
+  initialData?: any
+  empresas: { id: string; nome: string }[]
+  onSubmit: (data: FormData) => Promise<any>
 }
 
-export function VagaForm({ empresaId, vaga }: VagaFormProps) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function VagaForm({ initialData, empresas, onSubmit }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<VagaData>({
+    resolver: zodResolver(VagaSchema),
+    defaultValues: initialData || {
+      quantidade_vagas: 1,
+      exibir_salario: false,
+    },
+  })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    const formData = new FormData(e.currentTarget)
-    formData.append('empresaId', empresaId)
-    if (vaga) {
-      formData.append('id', vaga.id)
-    }
-
-    const result = await saveVagaAction(formData)
-
-    if (result?.error) {
-      setError(result.error)
-      setLoading(false)
-    }
-    // If successful, the server action will redirect to /empresa/vagas
+  const handleFormSubmit = async (data: VagaData) => {
+    const formData = new FormData()
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(key, value.toString())
+      }
+    })
+    await onSubmit(formData)
   }
 
+  const inputClass = "w-full px-3.5 py-2 rounded-xl border border-border bg-muted/10 focus:ring-2 focus:ring-accent outline-none transition-all font-medium text-sm"
+  const labelClass = "text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1 opacity-70"
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="bg-red-50 text-red-500 p-4 rounded-md text-sm font-medium">
-          {error}
-        </div>
-      )}
-
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 animate-in fade-in duration-500">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-primary mb-1">Título da Vaga *</label>
-          <input 
-            name="titulo" 
-            type="text" 
-            defaultValue={vaga?.titulo}
-            required 
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-primary mb-1">Descrição *</label>
-          <textarea 
-            name="descricao" 
-            rows={5}
-            defaultValue={vaga?.descricao}
-            required 
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Requisitos</label>
-          <textarea 
-            name="requisitos" 
-            rows={3}
-            defaultValue={vaga?.requisitos}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Benefícios</label>
-          <textarea 
-            name="beneficios" 
-            rows={3}
-            defaultValue={vaga?.beneficios}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Modalidade *</label>
-          <select 
-            name="modalidade" 
-            required 
-            defaultValue={vaga?.modalidade || 'Presencial'}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none bg-white"
+        {/* Empresa */}
+        <div className="space-y-1.5">
+          <label className={labelClass}>Empresa Parceira</label>
+          <select
+            {...register('empresa_id')}
+            className={inputClass}
+            disabled={!!initialData}
           >
+            <option value="">Selecione uma empresa</option>
+            {empresas.map((emp) => (
+              <option key={emp.id} value={emp.id}>{emp.nome}</option>
+            ))}
+          </select>
+          {errors.empresa_id && <p className="text-[10px] text-red-500 font-bold">{errors.empresa_id.message}</p>}
+        </div>
+
+        {/* Título */}
+        <div className="space-y-1.5">
+          <label className={labelClass}>Título da Vaga</label>
+          <input
+            {...register('titulo')}
+            className={inputClass}
+            placeholder="Ex: Desenvolvedor Full Stack"
+          />
+          {errors.titulo && <p className="text-[10px] text-red-500 font-bold">{errors.titulo.message}</p>}
+        </div>
+
+        {/* Área e Modalidade */}
+        <div className="space-y-1.5">
+          <label className={labelClass}>Área de Atuação</label>
+          <input
+            {...register('area')}
+            className={inputClass}
+            placeholder="Ex: Tecnologia, Administrativo"
+          />
+          {errors.area && <p className="text-[10px] text-red-500 font-bold">{errors.area.message}</p>}
+        </div>
+
+        <div className="space-y-1.5">
+          <label className={labelClass}>Modalidade</label>
+          <select {...register('modalidade')} className={inputClass}>
             <option value="Presencial">Presencial</option>
-            <option value="Híbrido">Híbrido</option>
             <option value="Remoto">Remoto</option>
+            <option value="Híbrido">Híbrido</option>
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Regime *</label>
-          <select 
-            name="regime" 
-            required 
-            defaultValue={vaga?.regime || 'CLT'}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none bg-white"
-          >
-            <option value="CLT">CLT</option>
-            <option value="PJ">PJ</option>
-            <option value="Estágio">Estágio</option>
-            <option value="Temporário">Temporário</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Cidade *</label>
-          <input 
-            name="cidade" 
-            type="text" 
-            required 
-            defaultValue={vaga?.cidade}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Estado (UF) *</label>
-          <input 
-            name="estado" 
-            type="text" 
-            required 
-            maxLength={2}
-            defaultValue={vaga?.estado}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none uppercase" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Salário Mínimo</label>
-          <input 
-            name="salario_min" 
-            type="number" 
-            step="0.01"
-            defaultValue={vaga?.salario_min}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1">Salário Máximo</label>
-          <input 
-            name="salario_max" 
-            type="number" 
-            step="0.01"
-            defaultValue={vaga?.salario_max}
-            className="w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none" 
-          />
-        </div>
-
-        <div className="md:col-span-2 flex items-center gap-2">
-          <input 
-            name="exibir_salario" 
-            id="exibir_salario" 
-            type="checkbox" 
-            defaultChecked={vaga?.exibir_salario}
-            className="w-4 h-4 text-accent border-border rounded focus:ring-accent" 
-          />
-          <label htmlFor="exibir_salario" className="text-sm font-medium text-primary">Exibir faixa salarial no anúncio</label>
-        </div>
-
-        {vaga && (
-          <div className="md:col-span-2 flex items-center gap-2 mt-4 pt-4 border-t border-border">
-            <input 
-              name="status" 
-              id="status_ativa" 
-              type="radio" 
-              value="ativa"
-              defaultChecked={vaga.status === 'ativa'}
-              className="w-4 h-4 text-accent border-border" 
-            />
-            <label htmlFor="status_ativa" className="text-sm font-medium text-primary mr-4">Vaga Ativa</label>
-
-            <input 
-              name="status" 
-              id="status_encerrada" 
-              type="radio" 
-              value="encerrada"
-              defaultChecked={vaga.status === 'encerrada'}
-              className="w-4 h-4 text-red-600 border-border" 
-            />
-            <label htmlFor="status_encerrada" className="text-sm font-medium text-red-600">Vaga Encerrada</label>
+        {/* Localização */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-2 space-y-1.5">
+            <label className={labelClass}>Cidade</label>
+            <input {...register('cidade')} className={inputClass} />
           </div>
-        )}
+          <div className="space-y-1.5">
+            <label className={labelClass}>UF</label>
+            <input {...register('estado')} maxLength={2} className={inputClass + " text-center uppercase"} />
+          </div>
+        </div>
+
+        {/* Quantidade */}
+        <div className="space-y-1.5">
+          <label className={labelClass}>Qtd. de Vagas</label>
+          <input
+            type="number"
+            {...register('quantidade_vagas', { valueAsNumber: true })}
+            className={inputClass}
+          />
+        </div>
+
+        {/* Salário */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <label className={labelClass}>Salário Mín.</label>
+            <input
+              type="number"
+              step="0.01"
+              {...register('salario_min', { valueAsNumber: true })}
+              className={inputClass}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className={labelClass}>Salário Máx.</label>
+            <input
+              type="number"
+              step="0.01"
+              {...register('salario_max', { valueAsNumber: true })}
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 pt-4">
+          <input
+            type="checkbox"
+            id="exibir_salario"
+            {...register('exibir_salario')}
+            className="w-4 h-4 rounded border-border text-accent focus:ring-accent"
+          />
+          <label htmlFor="exibir_salario" className="text-xs font-bold text-primary cursor-pointer">Exibir salário na vaga?</label>
+        </div>
       </div>
 
-      <div className="pt-6 border-t border-border flex justify-end gap-4">
-        <button 
-          type="button" 
-          onClick={() => window.history.back()}
-          className="px-6 py-2 border border-border rounded-md text-primary font-medium hover:bg-muted transition-colors"
+      {/* Descrição e Requisitos */}
+      <div className="space-y-1.5">
+        <label className={labelClass}>Descrição Detalhada</label>
+        <textarea
+          {...register('descricao')}
+          rows={5}
+          className={inputClass + " resize-none"}
+          placeholder="Descreva as responsabilidades..."
+        />
+        {errors.descricao && <p className="text-[10px] text-red-500 font-bold">{errors.descricao.message}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-1.5">
+          <label className={labelClass}>Requisitos</label>
+          <textarea
+            {...register('requisitos')}
+            rows={3}
+            className={inputClass + " resize-none"}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <label className={labelClass}>Benefícios</label>
+          <textarea
+            {...register('beneficios')}
+            rows={3}
+            className={inputClass + " resize-none"}
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end pt-4">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-accent text-accent-foreground px-8 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-accent/20 flex items-center gap-2 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
         >
-          Cancelar
-        </button>
-        <button 
-          type="submit" 
-          disabled={loading}
-          className="px-6 py-2 bg-accent text-white rounded-md font-medium hover:bg-accent/90 transition-colors disabled:opacity-70"
-        >
-          {loading ? 'Salvando...' : (vaga ? 'Salvar Alterações' : 'Publicar Vaga')}
+          {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {initialData ? 'Atualizar Vaga' : 'Publicar Vaga'}
         </button>
       </div>
     </form>

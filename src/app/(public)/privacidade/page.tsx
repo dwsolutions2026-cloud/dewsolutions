@@ -1,72 +1,71 @@
-import Link from 'next/link'
-import { ArrowLeft, Shield } from 'lucide-react'
+import { ShieldCheck, Lock, Eye, FileText, Scale } from 'lucide-react'
 
 export default function PrivacidadePage() {
   return (
-    <div className="bg-muted min-h-[calc(100vh-140px)] py-12 px-4">
-      <div className="container mx-auto max-w-3xl">
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Voltar para Home
-        </Link>
+    <div className="max-w-4xl mx-auto px-6 py-20 space-y-16 animate-in fade-in duration-700">
+      <div className="text-center space-y-4">
+        <h1 className="text-5xl font-black text-primary tracking-tight">Privacidade e Proteção</h1>
+        <p className="text-muted-foreground text-xl font-medium max-w-2xl mx-auto">
+          Sua segurança e a transparência no uso dos seus dados são nossas prioridades absolutas.
+        </p>
+      </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
-          <div className="bg-primary p-8 text-white flex items-center gap-4">
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
+      <div className="bg-card rounded-[3rem] shadow-sm border border-border overflow-hidden">
+        <div className="bg-primary p-12 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent opacity-20 blur-3xl -mr-32 -mt-32" />
+          <div className="flex items-center gap-6 relative">
+            <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20">
+              <ShieldCheck className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Política de Privacidade</h1>
-              <p className="text-white/70 text-sm">D&W Solutions • Última atualização: Abril 2026</p>
+              <h2 className="text-2xl font-bold">Compromisso LGPD</h2>
+              <p className="text-white/60 font-medium mt-1">Estamos em total conformidade com a Lei Geral de Proteção de Dados.</p>
             </div>
           </div>
+        </div>
 
-          <div className="p-8 md:p-12 space-y-8">
-            <section>
-              <h2 className="text-xl font-bold text-primary mb-4">1. Coleta de Informações</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Coletamos informações essenciais para o processo de recrutamento, incluindo nome completo, 
-                e-mail, telefone, histórico profissional e currículos enviados. Esses dados são 
-                fornecidos voluntariamente por você ao criar seu perfil ou se candidatar a uma vaga.
-              </p>
-            </section>
+        <div className="p-12 space-y-12">
+          <section className="space-y-4">
+            <h3 className="text-xl font-bold text-primary flex items-center gap-3">
+              <Eye className="w-5 h-5 text-accent" /> Quais dados coletamos?
+            </h3>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              Coletamos informações essenciais para o seu processo de recrutamento: nome, e-mail, telefone, histórico profissional e acadêmico. Esses dados são fornecidos voluntariamente por você ao criar seu perfil ou enviar seu currículo.
+            </p>
+          </section>
 
-            <section>
-              <h2 className="text-xl font-bold text-primary mb-4">2. Uso dos Dados</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Seus dados são utilizados exclusivamente para conectar você a oportunidades de emprego. 
-                Ao se candidatar a uma vaga, as informações do seu perfil e seu currículo são 
-                compartilhados com a empresa anunciante daquela vaga específica.
-              </p>
-            </section>
+          <section className="space-y-4">
+            <h3 className="text-xl font-bold text-primary flex items-center gap-3">
+              <Lock className="w-5 h-5 text-accent" /> Como protegemos seus dados?
+            </h3>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              Utilizamos tecnologias de criptografia de ponta e servidores seguros (via Supabase) para garantir que suas informações pessoais estejam protegidas contra acessos não autorizados.
+            </p>
+          </section>
 
-            <section>
-              <h2 className="text-xl font-bold text-primary mb-4">3. Segurança</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Implementamos medidas de segurança técnicas e administrativas para proteger seus dados 
-                contra acesso não autorizado, perda ou alteração. Todos os currículos são armazenados 
-                em servidores seguros com acesso restrito.
-              </p>
-            </section>
+          <section className="space-y-4">
+            <h3 className="text-xl font-bold text-primary flex items-center gap-3">
+              <FileText className="w-5 h-5 text-accent" /> Compartilhamento de informações
+            </h3>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              Seus dados profissionais só são compartilhados com os recrutadores e empresas das vagas para as quais você se candidata explicitamente. Nunca vendemos seus dados para terceiros.
+            </p>
+          </section>
 
-            <section>
-              <h2 className="text-xl font-bold text-primary mb-4">4. Seus Direitos</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Em conformidade com a LGPD, você tem o direito de acessar, corrigir ou excluir seus 
-                dados pessoais a qualquer momento através do seu painel de candidato ou entrando 
-                em contato com nosso suporte.
-              </p>
-            </section>
+          <section className="space-y-4">
+            <h3 className="text-xl font-bold text-primary flex items-center gap-3">
+              <Scale className="w-5 h-5 text-accent" /> Seus Direitos
+            </h3>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              Você tem o direito de acessar, corrigir ou excluir seus dados a qualquer momento através do seu painel de candidato. Caso deseje encerrar sua conta definitivamente, todos os seus dados serão removidos de nossos servidores.
+            </p>
+          </section>
+        </div>
 
-            <div className="pt-8 border-t border-border">
-              <p className="text-sm text-muted-foreground italic text-center">
-                Dúvidas sobre nossa política? Entre em contato através do e-mail: suporte@dwsolutions.com.br
-              </p>
-            </div>
-          </div>
+        <div className="p-8 bg-muted/30 border-t border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
+            Última atualização: {new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+          </p>
         </div>
       </div>
     </div>

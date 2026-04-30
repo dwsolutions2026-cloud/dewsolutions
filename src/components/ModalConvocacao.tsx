@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { CalendarClock, X, MapPin, MessageSquare, Loader2 } from 'lucide-react'
+import { X, Calendar, MapPin, Info, Loader2, Send } from 'lucide-react'
 import { convocarEntrevistaAction } from '@/app/actions/candidaturas'
+import { toast } from 'react-hot-toast'
 
 interface Props {
   candidaturaId: string
@@ -14,113 +15,104 @@ interface Props {
 
 export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setLoading(true)
-    setError(null)
 
-    const formData = new FormData(e.currentTarget)
-    formData.set('candidatura_id', candidaturaId)
+    const formData = new FormData(event.currentTarget)
+    formData.append('candidatura_id', candidaturaId)
 
     const result = await convocarEntrevistaAction(formData)
-    setLoading(false)
 
-    if (result?.error) {
-      setError(result.error)
-    } else {
+    if (result.success) {
+      toast.success('Convocação enviada com sucesso!')
       onSuccess()
+    } else {
+      toast.error(result.error || 'Erro ao enviar convocação')
+      setLoading(false)
     }
   }
 
+  const inputClass = "w-full px-4 py-3 rounded-xl border border-border bg-muted/20 focus:ring-2 focus:ring-accent outline-none transition-all font-medium text-sm"
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-lg">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-              <CalendarClock className="w-5 h-5 text-accent" />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      {/* Overlay */}
+      <div 
+        className="absolute inset-0 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-300"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="bg-card w-full max-w-lg rounded-[2rem] border border-border shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="p-8 bg-accent text-accent-foreground">
+          <div className="flex justify-between items-start mb-4">
+            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+              <Calendar className="w-6 h-6" />
             </div>
-            <div>
-              <h2 className="font-serif font-bold text-primary">Convocar para Entrevista</h2>
-              <p className="text-xs text-muted-foreground">{nomeCandidato} · {tituloVaga}</p>
-            </div>
+            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+              <X className="w-6 h-6" />
+            </button>
           </div>
-          <button onClick={onClose} className="p-1.5 text-muted-foreground hover:text-primary rounded-lg transition-colors">
-            <X className="w-5 h-5" />
-          </button>
+          <h2 className="text-2xl font-black mb-1">Convocar para Entrevista</h2>
+          <p className="text-accent-foreground/80 text-sm font-medium">Candidato: {nomeCandidato}</p>
+          <p className="text-accent-foreground/60 text-[10px] uppercase font-black tracking-widest mt-1">Vaga: {tituloVaga}</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {error && (
-            <div className="bg-red-500/10 text-red-500 text-sm p-3 rounded-lg border border-red-500/20">{error}</div>
-          )}
-
-          <div>
-            <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5 mb-1.5">
-              <CalendarClock className="w-3.5 h-3.5" />
-              DATA E HORA DA ENTREVISTA *
+        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+          <div className="space-y-2">
+            <label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+              <Calendar className="w-3.5 h-3.5" /> Data e Hora
             </label>
             <input
-              name="data_entrevista"
               type="datetime-local"
+              name="data_entrevista"
               required
-              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
+              className={inputClass}
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5 mb-1.5">
-              <MapPin className="w-3.5 h-3.5" />
-              LOCAL OU LINK *
+          <div className="space-y-2">
+            <label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+              <MapPin className="w-3.5 h-3.5" /> Local ou Link
             </label>
             <input
-              name="local_entrevista"
               type="text"
+              name="local_entrevista"
               required
-              placeholder="Ex: Rua das Flores, 100 – Sala 5 / ou link do Meet"
-              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
+              placeholder="Ex: Google Meet ou Endereço físico"
+              className={inputClass}
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5 mb-1.5">
-              <MessageSquare className="w-3.5 h-3.5" />
-              OBSERVAÇÕES (OPCIONAL)
+          <div className="space-y-2">
+            <label className="text-xs font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+              <Info className="w-3.5 h-3.5" /> Observações (Opcional)
             </label>
             <textarea
               name="observacao"
               rows={3}
-              placeholder="Ex: Trazer RG e currículo impresso. Vestimenta social."
-              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none resize-none"
+              placeholder="Informações adicionais para o candidato..."
+              className={inputClass + " resize-none"}
             />
           </div>
 
-          <p className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg">
-            📧 Um e-mail de convocação será enviado automaticamente para <strong>{nomeCandidato}</strong> com todos os detalhes.
-          </p>
-
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 bg-accent text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-accent/90 disabled:opacity-60 transition-colors"
-            >
-              {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Enviando...</>
-              ) : (
-                <><CalendarClock className="w-4 h-4" /> Convocar e Enviar E-mail</>
-              )}
-            </button>
+          <div className="pt-4 flex gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-lg text-sm font-medium border border-border hover:bg-muted transition-colors"
+              className="flex-1 px-6 py-4 rounded-2xl font-bold text-muted-foreground hover:bg-muted transition-colors border border-border"
             >
               Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-[2] bg-accent text-accent-foreground px-6 py-4 rounded-2xl font-black shadow-xl shadow-accent/20 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+            >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+              {loading ? 'Enviando...' : 'Confirmar Convocação'}
             </button>
           </div>
         </form>

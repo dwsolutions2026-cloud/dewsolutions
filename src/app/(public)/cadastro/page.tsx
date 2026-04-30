@@ -1,176 +1,139 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState } from 'react'
 import { registerCandidateAction } from '@/app/actions/auth'
+import { User, Mail, Lock, Loader2, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
-import { FileText, UserPlus } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
-const initialState = {
-  error: null as string | null,
+type ActionState = {
+  error: string | null
+  success: boolean
+}
+
+const initialState: ActionState = {
+  error: null,
+  success: false
 }
 
 export default function CadastroPage() {
   const [state, formAction, pending] = useActionState(
-    async (prevState: any, formData: FormData) => {
+    async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
       const result = await registerCandidateAction(formData)
-      return result || { error: null }
+      return (result as ActionState) || { error: null, success: false }
     },
     initialState
   )
-  
-  const [fileName, setFileName] = useState<string | null>(null)
+
+  const inputClass = "w-full pl-12 pr-4 py-4 rounded-2xl border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm font-medium"
+
+  if (state.success) {
+    return (
+      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-6 bg-background animate-in fade-in zoom-in duration-500">
+        <div className="w-full max-w-md text-center space-y-8">
+          <div className="w-24 h-24 bg-green-100 text-green-600 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-xl shadow-green-200">
+            <ShieldCheck className="w-12 h-12" />
+          </div>
+          <div className="space-y-4">
+            <h1 className="text-4xl font-black text-primary tracking-tight">Verifique seu e-mail</h1>
+            <p className="text-muted-foreground text-lg font-medium leading-relaxed">
+              Enviamos um link de confirmação para o seu e-mail. Por favor, valide sua conta para continuar.
+            </p>
+          </div>
+          <Link 
+            href="/login" 
+            className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-10 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-all"
+          >
+            Ir para o Login <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="flex min-h-[calc(100vh-140px)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-muted">
-      <div className="w-full max-w-2xl space-y-8 bg-card p-8 rounded-xl shadow-sm border border-border">
-        <div className="text-center">
-          <UserPlus className="mx-auto h-12 w-12 text-accent" />
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
-            Cadastre seu Currículo
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Crie sua conta gratuitamente e conecte-se com as melhores empresas.
-          </p>
+    <div className="min-h-[calc(100vh-64px)] py-20 flex items-center justify-center p-6 bg-background animate-in fade-in duration-700">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <Logo width={180} height={56} />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-black text-primary tracking-tight">Crie sua conta</h1>
+            <p className="text-muted-foreground font-medium">Junte-se à maior rede de talentos e oportunidades.</p>
+          </div>
         </div>
 
-        <form className="mt-8 space-y-6" action={formAction}>
-          {state.error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm text-center">
-              {state.error}
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <label htmlFor="nome" className="block text-sm font-medium text-primary">
-                Nome Completo
-              </label>
-              <input id="nome" name="nome" type="text" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-primary">
-                E-mail
-              </label>
-              <input id="email" name="email" type="email" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="telefone" className="block text-sm font-medium text-primary">
-                Telefone (WhatsApp)
-              </label>
-              <input id="telefone" name="telefone" type="tel" className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-primary">
-                Senha
-              </label>
-              <input id="password" name="password" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="passwordConfirm" className="block text-sm font-medium text-primary">
-                Confirmação de Senha
-              </label>
-              <input id="passwordConfirm" name="passwordConfirm" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="cidade" className="block text-sm font-medium text-primary">
-                Cidade
-              </label>
-              <input id="cidade" name="cidade" type="text" className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
-            </div>
-
-            <div>
-              <label htmlFor="estado" className="block text-sm font-medium text-primary">
-                Estado (UF)
-              </label>
-              <input id="estado" name="estado" type="text" maxLength={2} className="mt-1 block w-full rounded-md border border-border px-3 py-2 uppercase" />
-            </div>
-
-            <div className="sm:col-span-2">
-              <div className="flex items-start mb-4 bg-accent/5 p-4 rounded-lg border border-accent/20">
-                <div className="flex h-5 items-center">
-                  <input
-                    id="sem_curriculo"
-                    name="sem_curriculo"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
-                    onChange={(e) => {
-                      if (e.target.checked) setFileName(null);
-                    }}
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="sem_curriculo" className="font-medium text-primary cursor-pointer">
-                    Não possuo currículo pronto — quero criar um pelo sistema após o cadastro
-                  </label>
-                  <p className="text-muted-foreground text-xs mt-1">Marque esta opção se você não tem um PDF e deseja preencher seus dados manualmente na próxima tela.</p>
-                </div>
-              </div>
-
-              <label className="block text-sm font-medium text-primary mb-2">
-                Currículo em PDF (Opcional se marcar a opção acima)
-              </label>
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/80 transition-colors">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <FileText className="w-8 h-8 mb-3 text-muted-foreground" />
-                  <p className="mb-2 text-sm text-muted-foreground">
-                    <span className="font-semibold text-accent">Clique para anexar</span> ou arraste e solte
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {fileName || 'Apenas arquivos PDF (Máx 5MB).'}
-                  </p>
-                </div>
-                <input 
-                  id="curriculo" 
-                  name="curriculo" 
-                  type="file" 
-                  accept="application/pdf" 
-                  className="hidden" 
-                  onChange={(e) => {
-                    setFileName(e.target.files?.[0]?.name || null)
-                    const checkbox = document.getElementById('sem_curriculo') as HTMLInputElement;
-                    if (checkbox && e.target.files?.length) checkbox.checked = false;
-                  }}
-                />
-              </label>
-            </div>
-
-            <div className="sm:col-span-2 flex items-start mt-4">
-              <div className="flex h-5 items-center">
+        <div className="bg-card p-10 rounded-[2.5rem] border border-border shadow-xl shadow-primary/5">
+          <form action={formAction} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-black text-muted-foreground uppercase tracking-widest px-2">Nome Completo</label>
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
-                  id="lgpd"
-                  name="lgpd"
-                  type="checkbox"
+                  name="nome"
                   required
-                  className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
+                  className={inputClass}
+                  placeholder="Seu nome"
                 />
               </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="lgpd" className="text-muted-foreground">
-                  Li e concordo com os termos da{' '}
-                  <Link href="/privacidade" className="font-medium text-accent hover:underline">
-                    Política de Privacidade (LGPD)
-                  </Link>
-                  , e autorizo o armazenamento dos meus dados para candidatura em vagas.
-                </label>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-black text-muted-foreground uppercase tracking-widest px-2">E-mail</label>
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  className={inputClass}
+                  placeholder="seu@email.com"
+                />
               </div>
             </div>
-          </div>
 
-          <div>
+            <div className="space-y-2">
+              <label className="text-xs font-black text-muted-foreground uppercase tracking-widest px-2">Sua Senha</label>
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <input
+                  name="password"
+                  type="password"
+                  required
+                  className={inputClass}
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+            </div>
+
+            {state.error && (
+              <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 animate-in shake duration-500">
+                <AlertCircle className="w-5 h-5 shrink-0" />
+                <p className="font-bold text-xs">{state.error}</p>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={pending}
-              className="flex w-full justify-center rounded-md bg-accent px-3 py-4 text-sm font-semibold text-white hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-70 transition-colors"
+              className="w-full py-5 bg-accent text-accent-foreground rounded-2xl font-black text-lg shadow-xl shadow-accent/20 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
             >
-              {pending ? 'Criando sua conta...' : 'Finalizar Cadastro'}
+              {pending ? <Loader2 className="w-6 h-6 animate-spin" /> : <ArrowRight className="w-6 h-6" />}
+              {pending ? 'Criando Conta...' : 'Começar Agora'}
             </button>
+          </form>
+
+          <div className="mt-10 pt-8 border-t border-border text-center space-y-4">
+            <p className="text-sm text-muted-foreground font-medium">Já possui uma conta?</p>
+            <Link 
+              href="/login" 
+              className="text-primary font-black uppercase tracking-widest text-xs hover:underline block"
+            >
+              Fazer login agora
+            </Link>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   )

@@ -21,54 +21,64 @@ async function getCandidatoId() {
 }
 
 export async function updatePerfilAction(formData: FormData) {
-  const candidato_id = await getCandidatoId()
-  if (!candidato_id) return { error: 'Não autenticado' }
+  try {
+    const candidato_id = await getCandidatoId()
+    if (!candidato_id) return { error: 'Não autenticado' }
 
-  const parsed = PerfilSchema.safeParse({
-    nome: formData.get('nome'),
-    telefone: formData.get('telefone') || undefined,
-    cidade: formData.get('cidade') || undefined,
-    estado: formData.get('estado') || undefined,
-  })
+    const parsed = PerfilSchema.safeParse({
+      nome: formData.get('nome'),
+      telefone: formData.get('telefone') || undefined,
+      cidade: formData.get('cidade') || undefined,
+      estado: formData.get('estado') || undefined,
+    })
 
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0].message }
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0].message }
+    }
+
+    const admin = getAdminClient()
+    const { error } = await admin
+      .from('candidatos')
+      .update(parsed.data)
+      .eq('id', candidato_id)
+
+    if (error) return { error: error.message }
+    revalidatePath('/candidato/minha-area')
+    revalidatePath('/candidato/perfil/editar')
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error in updatePerfilAction:', error)
+    return { error: 'Erro interno ao atualizar perfil.' }
   }
-
-  const admin = getAdminClient()
-  const { error } = await admin
-    .from('candidatos')
-    .update(parsed.data)
-    .eq('id', candidato_id)
-
-  if (error) return { error: error.message }
-  revalidatePath('/candidato/minha-area')
-  revalidatePath('/candidato/perfil/editar')
-  return { success: true }
 }
 
 export async function updateCurriculoJsonAction(data: any) {
-  const candidato_id = await getCandidatoId()
-  if (!candidato_id) return { error: 'Não autenticado' }
+  try {
+    const candidato_id = await getCandidatoId()
+    if (!candidato_id) return { error: 'Não autenticado' }
 
-  const parsed = CurriculoJsonSchema.safeParse(data)
-  if (!parsed.success) {
-    return { error: 'Dados do currículo inválidos' }
+    const parsed = CurriculoJsonSchema.safeParse(data)
+    if (!parsed.success) {
+      return { error: 'Dados do currículo inválidos' }
+    }
+
+    const admin = getAdminClient()
+    
+    // Atualiza o JSON e limpa o URL do PDF se ele optou pelo construtor (opcional, mas recomendado)
+    const { error } = await admin
+      .from('candidatos')
+      .update({ 
+        curriculo_json: parsed.data,
+        // curriculo_url: null // Comentado para permitir que coexistam, como pedido
+      })
+      .eq('id', candidato_id)
+
+    if (error) return { error: error.message }
+    revalidatePath('/candidato/minha-area')
+    revalidatePath('/candidato/curriculo/editar')
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error in updateCurriculoJsonAction:', error)
+    return { error: 'Erro interno ao salvar currículo.' }
   }
-
-  const admin = getAdminClient()
-  
-  // Atualiza o JSON e limpa o URL do PDF se ele optou pelo construtor (opcional, mas recomendado)
-  const { error } = await admin
-    .from('candidatos')
-    .update({ 
-      curriculo_json: parsed.data,
-      // curriculo_url: null // Comentado para permitir que coexistam, como pedido
-    })
-    .eq('id', candidato_id)
-
-  if (error) return { error: error.message }
-  revalidatePath('/candidato/minha-area')
-  revalidatePath('/candidato/curriculo/editar')
-  return { success: true }
 }

@@ -1,40 +1,43 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { VagaForm } from '@/components/vagas/VagaForm'
+import { saveVagaAction } from '@/app/actions/empresa'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
-
-export default async function NovaVagaPage() {
+export default async function EmpresaNovaVagaPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) return null
+  if (!user) redirect('/login')
 
-  // Ensure user has empresa
   const { data: empresa } = await supabase
     .from('empresas')
-    .select('id')
+    .select('id, nome')
     .eq('user_id', user.id)
     .single()
 
-  if (!empresa) redirect('/empresa/dashboard')
+  if (!empresa) redirect('/login')
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="/empresa/vagas" className="p-2 bg-white border border-border rounded-lg text-muted-foreground hover:text-primary transition-colors">
-          <ArrowLeft className="w-5 h-5" />
+    <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in duration-700">
+      <div>
+        <Link 
+          href="/empresa/vagas" 
+          className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-bold text-sm mb-4"
+        >
+          <ArrowLeft className="w-4 h-4" /> Voltar
         </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-primary">Publicar Nova Vaga</h1>
-          <p className="text-muted-foreground text-sm mt-1">Preencha os dados abaixo para anunciar uma nova oportunidade.</p>
-        </div>
+        <h1 className="text-4xl font-black text-primary tracking-tight">Publicar Nova Oportunidade</h1>
+        <p className="text-muted-foreground text-lg font-medium">Preencha os detalhes da vaga para atrair os melhores talentos.</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-border shadow-sm p-6 md:p-8">
-        <VagaForm empresaId={empresa.id} />
+      <div className="bg-card rounded-[3rem] border border-border p-8 md:p-12 shadow-sm">
+        <VagaForm 
+          empresas={[empresa]} 
+          onSubmit={saveVagaAction} 
+          initialData={{ empresa_id: empresa.id }}
+        />
       </div>
     </div>
   )

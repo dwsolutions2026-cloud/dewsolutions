@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
+import { slugify } from '@/lib/slugify'
 
 import { createClient as createServerClient } from '@/utils/supabase/server'
 
@@ -18,17 +19,22 @@ const supabaseAdmin = createClient(
 )
 
 export async function checkAdmin() {
-  const supabase = await createServerClient()
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) return false
+  try {
+    const supabase = await createServerClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return false
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
 
-  return profile?.role === 'admin'
+    return profile?.role === 'admin'
+  } catch (error) {
+    console.error('Error in checkAdmin:', error)
+    return false
+  }
 }
 
 export async function deleteCandidatoAction(candidatoId: string, userId: string, curriculoUrl: string | null) {
@@ -116,6 +122,7 @@ export async function createEmpresaAction(formData: FormData) {
       .insert({
         user_id: userId,
         nome,
+        slug: slugify(nome),
         cnpj: cnpj.replace(/\D/g, ''),
         setor,
         cidade,
@@ -135,5 +142,42 @@ export async function createEmpresaAction(formData: FormData) {
   } catch (error: any) {
     console.error('Error in createEmpresaAction:', error)
     return { error: 'Erro interno ao cadastrar empresa.' }
+  }
+}
+
+export async function updateEmpresaAction(id: string, formData: FormData) {
+  const isAdmin = await checkAdmin()
+  if (!isAdmin) {
+    return { error: 'Acesso negado: Ação restrita a administradores.' }
+  }
+
+  const rawData = Object.fromEntries(formData.entries())
+  // Use a partial schema or just pick fields
+  const { nome, cnpj, setor, cidade, estado, site } = rawData as any
+
+  try {
+    const { error } = await supabaseAdmin
+      .from('empresas')
+      .update({
+        nome,
+        cnpj: cnpj.replace(/\D/g, ''),
+        setor,
+        cidade,
+        estado,
+        site
+      })
+      .eq('id', id)
+
+    if (error) {
+      console.error('Error updating empresa:', error)
+      return { error: 'Erro ao atualizar dados: ' + error.message }
+    }
+
+    revalidatePath('/admin/empresas')
+    revalidatePath(`/admin/empresas/${id}`)
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error in updateEmpresaAction:', error)
+    return { error: 'Erro interno ao atualizar empresa.' }
   }
 }

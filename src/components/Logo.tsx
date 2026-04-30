@@ -2,14 +2,14 @@
 
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface LogoProps {
   width?: number
   height?: number
-  className?: string
 }
 
-export function Logo({ width = 160, height = 55, className = "" }: LogoProps) {
+export function Logo({ width = 160, height = 50 }: LogoProps) {
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
@@ -17,24 +17,21 @@ export function Logo({ width = 160, height = 55, className = "" }: LogoProps) {
     setMounted(true)
   }, [])
 
-  // Antes de montar no cliente, exibe placeholder invisível para evitar hidratação
-  if (!mounted) {
-    return <div style={{ width, height }} className={className} />
-  }
+  // Evita mismatch de hidratação
+  if (!mounted) return <div style={{ width, height }} className="bg-transparent" />
 
   const isDark = resolvedTheme === 'dark'
-  // No modo escuro usamos a logo branca, no modo claro usamos a preta
-  const logoSrc = isDark ? '/logo-branco.png' : '/logo-preto.png'
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={logoSrc}
-      alt="D&W Solutions"
-      width={width}
-      height={height}
-      style={{ width, height, objectFit: 'contain' }}
-      className={className}
-    />
+    <div className="relative" style={{ width, height }}>
+      <Image
+        src={isDark ? "/logo-branco.png" : "/logo-preto.png"}
+        alt="DW Solutions Logo"
+        fill
+        priority
+        className="object-contain"
+        sizes="(max-width: 768px) 140px, 160px"
+      />
+    </div>
   )
 }

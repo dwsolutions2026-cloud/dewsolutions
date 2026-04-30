@@ -1,8 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
+import { Briefcase, Search, Plus, MapPin, Users, Edit3 } from 'lucide-react'
 import Link from 'next/link'
-import { Plus, Users, Edit, ExternalLink, Briefcase } from 'lucide-react'
-
-export const dynamic = 'force-dynamic'
 
 export default async function EmpresaVagasPage() {
   const supabase = await createClient()
@@ -10,132 +8,92 @@ export default async function EmpresaVagasPage() {
 
   if (!user) return null
 
-  // Get empresa id
   const { data: empresa } = await supabase
     .from('empresas')
     .select('id')
     .eq('user_id', user.id)
     .single()
 
-  if (!empresa) return <div>Acesso negado.</div>
+  if (!empresa) return null
 
-  // Fetch vagas with candidates count
   const { data: vagas, error } = await supabase
     .from('vagas')
     .select(`
-      id,
-      titulo,
-      cidade,
-      estado,
-      status,
-      created_at,
+      *,
       candidaturas (count)
     `)
     .eq('empresa_id', empresa.id)
     .order('created_at', { ascending: false })
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-12 animate-in fade-in duration-700">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Minhas Vagas</h1>
-          <p className="text-muted-foreground mt-1">Gerencie seus anúncios e acompanhe os candidatos.</p>
+          <h1 className="text-4xl font-black text-primary">Minhas Vagas</h1>
+          <p className="text-muted-foreground text-lg font-medium">Acompanhe e gerencie suas oportunidades publicadas.</p>
         </div>
         <Link 
           href="/empresa/vagas/nova"
-          className="flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg font-medium hover:bg-accent/90 transition-colors"
+          className="bg-accent text-accent-foreground px-8 py-4 rounded-2xl font-black flex items-center gap-2 shadow-xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all w-full md:w-auto justify-center"
         >
-          <Plus className="w-5 h-5" />
-          Nova Vaga
+          <Plus className="w-5 h-5" /> Nova Vaga
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="grid grid-cols-1 gap-6">
         {error ? (
-          <div className="p-8 text-center text-red-500">Erro ao carregar vagas.</div>
-        ) : vagas && vagas.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-muted border-b border-border text-sm text-muted-foreground">
-                  <th className="p-4 font-medium">Cargo</th>
-                  <th className="p-4 font-medium">Localização</th>
-                  <th className="p-4 font-medium">Status</th>
-                  <th className="p-4 font-medium text-center">Candidatos</th>
-                  <th className="p-4 font-medium text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {vagas.map((vaga: any) => {
-                  const candidaturasCount = vaga.candidaturas[0]?.count || 0
-                  
-                  return (
-                    <tr key={vaga.id} className="hover:bg-muted/30 transition-colors">
-                      <td className="p-4">
-                        <div className="font-semibold text-primary">{vaga.titulo}</div>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          Criada em {new Date(vaga.created_at).toLocaleDateString('pt-BR')}
-                        </div>
-                      </td>
-                      <td className="p-4 text-sm text-muted-foreground">
-                        {vaga.cidade} - {vaga.estado}
-                      </td>
-                      <td className="p-4">
-                        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
-                          vaga.status === 'ativa' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                        }`}>
-                          {vaga.status === 'ativa' ? 'Ativa' : 'Encerrada'}
-                        </span>
-                      </td>
-                      <td className="p-4 text-center">
-                        <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
-                          <Users className="w-4 h-4" />
-                          {candidaturasCount}
-                        </div>
-                      </td>
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link 
-                            href={`/vagas/${vaga.id}`}
-                            target="_blank"
-                            title="Ver vaga pública"
-                            className="p-2 text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </Link>
-                          <Link 
-                            href={`/empresa/vagas/${vaga.id}/editar`}
-                            title="Editar vaga"
-                            className="p-2 text-muted-foreground hover:text-accent transition-colors"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Link>
-                          <Link 
-                            href={`/empresa/vagas/${vaga.id}/candidatos`}
-                            className="ml-2 text-sm font-medium bg-primary text-white px-3 py-1.5 rounded hover:bg-primary/90 transition-colors"
-                          >
-                            Ver Candidatos
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+          <div className="p-12 bg-red-50 text-red-500 rounded-3xl text-center border border-red-100 font-bold">
+            Erro ao carregar vagas.
           </div>
+        ) : vagas && vagas.length > 0 ? (
+          vagas.map((vaga) => (
+            <div key={vaga.id} className="bg-card p-8 rounded-[2.5rem] border border-border hover:border-accent/30 shadow-sm transition-all group">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 bg-muted rounded-3xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shadow-inner">
+                    <Briefcase className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-primary mb-1">{vaga.titulo}</h3>
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                      <span className="flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5" /> {vaga.cidade} - {vaga.estado}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded ${
+                        vaga.status === 'ativa' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      }`}>
+                        {vaga.status}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-6 lg:border-l lg:border-border lg:pl-8">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black uppercase text-muted-foreground mb-1">Candidatos</span>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-accent" />
+                      <span className="text-2xl font-black text-primary">{vaga.candidaturas[0]?.count || 0}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Link 
+                      href={`/empresa/vagas/${vaga.id}/candidatos`}
+                      className="px-6 py-3 bg-accent text-accent-foreground rounded-xl font-black text-xs transition-all shadow-lg shadow-accent/20"
+                    >
+                      Ver Candidatos
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
         ) : (
-          <div className="p-12 text-center">
-            <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h3 className="text-lg font-medium text-primary mb-2">Nenhuma vaga publicada</h3>
-            <p className="text-muted-foreground mb-6">Crie sua primeira vaga para começar a receber currículos.</p>
-            <Link 
-              href="/empresa/vagas/nova"
-              className="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors"
-            >
-              <Plus className="w-5 h-5" />
-              Publicar Vaga
-            </Link>
+          <div className="p-20 bg-card border border-border rounded-[3rem] text-center space-y-4 shadow-sm">
+            <Briefcase className="mx-auto h-16 w-16 opacity-20 mb-4 text-muted-foreground" />
+            <p className="text-2xl font-bold text-primary">Nenhuma vaga publicada</p>
+            <p className="text-muted-foreground font-medium">Suas oportunidades aparecerão aqui após serem publicadas.</p>
           </div>
         )}
       </div>

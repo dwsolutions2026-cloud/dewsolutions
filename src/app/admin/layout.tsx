@@ -1,24 +1,33 @@
-import { Sidebar, SidebarItem } from '@/components/layout/Sidebar'
+import { Header } from '@/components/layout/Header'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { SidebarProvider } from '@/components/layout/SidebarProvider'
+import { checkAdmin } from '@/app/actions/admin'
+import { redirect } from 'next/navigation'
 
-const adminNavItems: SidebarItem[] = [
-  { label: 'Dashboard', href: '/admin/dashboard', iconName: 'LayoutDashboard' },
-  { label: 'Empresas', href: '/admin/empresas', iconName: 'Building2' },
-  { label: 'Banco de Talentos', href: '/admin/talentos', iconName: 'Users' },
-  { label: 'Vagas', href: '/admin/vagas', iconName: 'Briefcase' },
-  { label: 'Candidatos', href: '/admin/candidatos', iconName: 'Users' },
-]
-
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const isAdmin = await checkAdmin()
+  
+  if (!isAdmin) {
+    redirect('/login')
+  }
+
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar title="Admin RH" items={adminNavItems} />
-      <main className="flex-1 p-8 overflow-auto">
-        {children}
-      </main>
-    </div>
+    <SidebarProvider>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex w-full">
+          <Sidebar />
+          <main className="flex-1 p-6 lg:p-10 overflow-x-hidden min-h-[calc(100vh-64px)]">
+            <div className="w-full h-full">
+              {children}
+            </div>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   )
 }

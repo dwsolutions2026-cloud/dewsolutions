@@ -1,65 +1,33 @@
 'use client'
 
-import { useActionState, useState, useRef, useEffect } from 'react'
+import { useActionState, useEffect } from 'react'
 import { createEmpresaAction } from '@/app/actions/admin'
+import { 
+  Building2, 
+  Mail, 
+  Lock, 
+  Globe, 
+  MapPin, 
+  ArrowLeft, 
+  Save, 
+  Loader2,
+  FileBadge2,
+  Briefcase,
+  AlertCircle
+} from 'lucide-react'
 import Link from 'next/link'
+import Form from 'next/form'
+import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Building2, Search, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
-import { ESTADOS_BR } from '@/lib/constants'
 
-type ActionState = 
-  | { error: string; success?: never } 
-  | { success: boolean; error?: never } 
-  | { error: null; success: false };
+type ActionState = {
+  error: string | null
+  success: boolean
+}
 
 const initialState: ActionState = {
   error: null,
   success: false
-}
-
-// Formata CNPJ: 00.000.000/0000-00
-function formatCNPJ(value: string) {
-  const digits = value.replace(/\D/g, '').slice(0, 14)
-  return digits
-    .replace(/^(\d{2})(\d)/, '$1.$2')
-    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-    .replace(/\.(\d{3})(\d)/, '.$1/$2')
-    .replace(/(\d{4})(\d)/, '$1-$2')
-}
-
-// Valida CNPJ (algoritmo oficial)
-function isValidCNPJ(cnpj: string) {
-  const digits = cnpj.replace(/\D/g, '')
-  if (digits.length !== 14 || /^(\d)\1+$/.test(digits)) return false
-
-  const calc = (d: string, n: number) => {
-    let sum = 0
-    let pos = n - 7
-    for (let i = n; i >= 1; i--) {
-      sum += parseInt(d[n - i]) * pos--
-      if (pos < 2) pos = 9
-    }
-    const rem = sum % 11
-    return rem < 2 ? 0 : 11 - rem
-  }
-
-  return (
-    calc(digits, 12) === parseInt(digits[12]) &&
-    calc(digits, 13) === parseInt(digits[13])
-  )
-}
-
-interface EmpresaData {
-  nome: string
-  setor: string
-  logradouro: string
-  numero: string
-  complemento: string
-  bairro: string
-  cep: string
-  cidade: string
-  estado: string
-  site: string
 }
 
 export default function NovaEmpresaPage() {
@@ -67,326 +35,141 @@ export default function NovaEmpresaPage() {
   const [state, formAction, pending] = useActionState(
     async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
       const result = await createEmpresaAction(formData)
-      return result || { error: null, success: false }
+      return (result as any as ActionState) || { error: null, success: false }
     },
     initialState
   )
 
   useEffect(() => {
     if (state.success) {
+      toast.success('Empresa cadastrada com sucesso!')
       router.push('/admin/empresas')
       router.refresh()
     }
   }, [state.success, router])
 
-  const [cnpj, setCnpj] = useState('')
-  const [cnpjStatus, setCnpjStatus] = useState<'idle' | 'loading' | 'valid' | 'invalid' | 'error'>('idle')
-  const [empresaData, setEmpresaData] = useState<EmpresaData | null>(null)
-  const cnpjRawRef = useRef('')
-
-  const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatCNPJ(e.target.value)
-    setCnpj(formatted)
-    cnpjRawRef.current = formatted.replace(/\D/g, '')
-    // Reset status ao editar
-    if (cnpjStatus !== 'idle') setCnpjStatus('idle')
-    setEmpresaData(null)
-  }
-
-  const handleConsultarCNPJ = async () => {
-    const raw = cnpjRawRef.current
-    if (!isValidCNPJ(raw)) {
-      setCnpjStatus('invalid')
-      return
-    }
-
-    setCnpjStatus('loading')
-    try {
-      let nome = '', setor = '', logradouro = '', numero = '', complemento = '', bairro = '', cep = '', cidade = '', estado = ''
-
-      // 1ª tentativa: BrasilAPI
-      const res1 = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${raw}`)
-      if (res1.ok) {
-        const data = await res1.json()
-        nome = data.razao_social || data.nome_fantasia || ''
-        setor = data.cnae_fiscal_descricao || ''
-        logradouro = [data.descricao_tipo_de_logradouro, data.logradouro].filter(Boolean).join(' ')
-        numero = data.numero || ''
-        complemento = data.complemento || ''
-        bairro = data.bairro || ''
-        cep = data.cep || ''
-        cidade = data.municipio || ''
-        estado = data.uf || ''
-      } else {
-        // 2ª tentativa: cnpj.ws (cobertura maior)
-        const res2 = await fetch(`https://publica.cnpj.ws/cnpj/${raw}`)
-        if (res2.ok) {
-          const data = await res2.json()
-          nome = data.razao_social || data.nome_fantasia || ''
-          setor = data.cnae_fiscal?.descricao || ''
-          logradouro = data.estabelecimento?.tipo_logradouro
-            ? `${data.estabelecimento.tipo_logradouro} ${data.estabelecimento.logradouro || ''}`
-            : data.estabelecimento?.logradouro || ''
-          numero = data.estabelecimento?.numero || ''
-          complemento = data.estabelecimento?.complemento || ''
-          bairro = data.estabelecimento?.bairro || ''
-          cep = data.estabelecimento?.cep || ''
-          cidade = data.estabelecimento?.cidade?.nome || ''
-          estado = data.estabelecimento?.estado?.sigla || ''
-        } else {
-          setCnpjStatus('error')
-          return
-        }
-      }
-
-      setEmpresaData({ nome, setor, logradouro, numero, complemento, bairro, cep, cidade, estado, site: '' })
-      setCnpjStatus('valid')
-    } catch {
-      setCnpjStatus('error')
-    }
-  }
-
-  const inputClass = "w-full px-3 py-2 rounded-md border border-border focus:ring-1 focus:ring-accent outline-none bg-background text-foreground text-sm"
-  const labelClass = "block text-sm font-medium text-primary mb-1"
+  const inputClass = "w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm font-medium text-sm"
+  const labelClass = "text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] px-2 mb-1.5 block opacity-70"
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
-        <Link href="/admin/empresas" className="p-2 bg-white border border-border rounded-lg text-muted-foreground hover:text-primary transition-colors shadow-sm">
-          <ArrowLeft className="w-5 h-5" />
-        </Link>
+    <div className="max-w-4xl mx-auto space-y-8 pb-10 animate-in fade-in duration-700">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-primary">Cadastrar Nova Empresa</h1>
-          <p className="text-muted-foreground text-sm mt-1">Crie as credenciais de acesso para um novo cliente.</p>
+          <Link 
+            href="/admin/empresas" 
+            className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-bold text-xs mb-3"
+          >
+            <ArrowLeft className="w-3 h-3" /> Voltar para Empresas
+          </Link>
+          <h1 className="text-2xl font-black text-primary tracking-tight">Nova Empresa</h1>
+          <p className="text-muted-foreground text-sm font-medium">Cadastre uma nova empresa parceira no sistema.</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border shadow-sm p-6 md:p-8">
-        <form action={formAction} className="space-y-6">
-          {state.error && (
-            <div className="bg-red-50 text-red-500 p-4 rounded-md text-sm font-medium border border-red-200">
-              {state.error}
-            </div>
-          )}
-
-          {/* BLOCO: CNPJ + Consulta */}
-          <div>
-            <h3 className="text-lg font-bold font-serif text-primary flex items-center gap-2 mb-4 pb-2 border-b border-border">
-              <Building2 className="w-5 h-5 text-accent" />
-              Dados Cadastrais
-            </h3>
-
-            <div className="space-y-1 mb-4">
-              <label className={labelClass}>CNPJ *</label>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
+      <Form action={formAction} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Coluna 1: Dados de Acesso */}
+        <div className="lg:col-span-1">
+          <div className="bg-primary rounded-[2rem] p-6 text-white shadow-xl shadow-primary/20 relative overflow-hidden">
+            <h2 className="text-base font-bold mb-6 flex items-center gap-2">
+              <Lock className="w-4 h-4 text-accent" /> Acesso
+            </h2>
+            
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[9px] font-black uppercase tracking-widest text-white/50 px-1">E-mail Corporativo</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
                   <input
-                    name="cnpj"
-                    type="text"
+                    name="email"
+                    type="email"
                     required
-                    value={cnpj}
-                    onChange={handleCnpjChange}
-                    placeholder="00.000.000/0000-00"
-                    maxLength={18}
-                    className={`${inputClass} pr-10 ${
-                      cnpjStatus === 'invalid' ? 'border-red-400 focus:ring-red-400' :
-                      cnpjStatus === 'valid' ? 'border-green-400 focus:ring-green-400' : ''
-                    }`}
+                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
+                    placeholder="empresa@exemplo.com"
                   />
-                  {cnpjStatus === 'valid' && (
-                    <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
-                  )}
-                  {cnpjStatus === 'invalid' && (
-                    <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400" />
-                  )}
                 </div>
-                <button
-                  type="button"
-                  onClick={handleConsultarCNPJ}
-                  disabled={cnpjStatus === 'loading' || cnpj.replace(/\D/g, '').length < 14}
-                  className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-md text-sm font-medium hover:bg-accent/90 disabled:opacity-50 transition-colors whitespace-nowrap"
-                >
-                  {cnpjStatus === 'loading' ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Search className="w-4 h-4" />
-                  )}
-                  Consultar
-                </button>
               </div>
-              {cnpjStatus === 'invalid' && (
-                <p className="text-xs text-red-500 mt-1">CNPJ inválido. Verifique os dígitos.</p>
-              )}
-              {cnpjStatus === 'error' && (
-                <p className="text-xs text-amber-600 mt-1">Não foi possível consultar. Preencha os dados manualmente.</p>
-              )}
-              {cnpjStatus === 'valid' && (
-                <p className="text-xs text-green-600 mt-1">✓ Dados preenchidos automaticamente pela Receita Federal.</p>
-              )}
+
+              <div className="space-y-1.5">
+                <label className="text-[9px] font-black uppercase tracking-widest text-white/50 px-1">Senha Provisória</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                  <input
+                    name="password"
+                    type="password"
+                    required
+                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <label className={labelClass}>Razão Social / Nome Fantasia *</label>
-                <input
-                  name="nome"
-                  type="text"
-                  required
-                  defaultValue={empresaData?.nome || ''}
-                  key={`nome-${empresaData?.nome}`}
-                  className={inputClass}
-                />
+        {/* Coluna 2 & 3: Dados Cadastrais */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-card rounded-[2.5rem] border border-border p-8 shadow-sm space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className={labelClass}>Razão Social</label>
+                <div className="relative group">
+                  <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input name="nome" required className={inputClass} placeholder="Nome da Empresa" />
+                </div>
               </div>
-
-              <div>
-                <label className={labelClass}>Setor / Segmento</label>
-                <input
-                  name="setor"
-                  type="text"
-                  defaultValue={empresaData?.setor || ''}
-                  key={`setor-${empresaData?.setor}`}
-                  placeholder="Ex: Tecnologia, Saúde..."
-                  className={inputClass}
-                />
+              <div className="space-y-2">
+                <label className={labelClass}>CNPJ</label>
+                <div className="relative group">
+                  <FileBadge2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input name="cnpj" required className={inputClass} placeholder="00.000.000/0000-00" />
+                </div>
               </div>
-
-              <div>
+              <div className="space-y-2">
+                <label className={labelClass}>Setor</label>
+                <div className="relative group">
+                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input name="setor" className={inputClass} placeholder="Ex: Tecnologia" />
+                </div>
+              </div>
+              <div className="space-y-2">
                 <label className={labelClass}>Site</label>
-                <input name="site" type="url" placeholder="https://..." className={inputClass} />
+                <div className="relative group">
+                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input name="site" type="url" className={inputClass} placeholder="https://..." />
+                </div>
               </div>
-
-              {/* Endereço Completo */}
-              <div className="md:col-span-2 mt-2">
-                <h4 className="text-sm font-semibold text-primary mb-3 pb-1 border-b border-border">Endereço</h4>
+              <div className="space-y-2">
+                <label className={labelClass}>Cidade</label>
+                <div className="relative group">
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                  <input name="cidade" required className={inputClass} />
+                </div>
               </div>
-
-              <div className="md:col-span-2">
-                <label className={labelClass}>Logradouro</label>
-                <input
-                  name="logradouro"
-                  type="text"
-                  defaultValue={empresaData?.logradouro || ''}
-                  key={`logradouro-${empresaData?.logradouro}`}
-                  placeholder="Ex: Avenida Paulista"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>Número</label>
-                <input
-                  name="numero"
-                  type="text"
-                  defaultValue={empresaData?.numero || ''}
-                  key={`numero-${empresaData?.numero}`}
-                  placeholder="Ex: 1000"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>Complemento</label>
-                <input
-                  name="complemento"
-                  type="text"
-                  defaultValue={empresaData?.complemento || ''}
-                  key={`complemento-${empresaData?.complemento}`}
-                  placeholder="Ex: Sala 42, Andar 3"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>Bairro</label>
-                <input
-                  name="bairro"
-                  type="text"
-                  defaultValue={empresaData?.bairro || ''}
-                  key={`bairro-${empresaData?.bairro}`}
-                  placeholder="Ex: Centro"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>CEP</label>
-                <input
-                  name="cep"
-                  type="text"
-                  defaultValue={empresaData?.cep || ''}
-                  key={`cep-${empresaData?.cep}`}
-                  placeholder="00000-000"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>Cidade *</label>
-                <input
-                  name="cidade"
-                  type="text"
-                  required
-                  defaultValue={empresaData?.cidade || ''}
-                  key={`cidade-${empresaData?.cidade}`}
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className={labelClass}>Estado *</label>
-                <select
-                  name="estado"
-                  required
-                  defaultValue={empresaData?.estado || ''}
-                  key={`estado-${empresaData?.estado}`}
-                  className={`${inputClass} bg-white`}
-                >
-                  <option value="">Selecione...</option>
-                  {ESTADOS_BR.map(uf => (
-                    <option key={uf} value={uf}>{uf}</option>
-                  ))}
-                </select>
+              <div className="space-y-2">
+                <label className={labelClass}>UF</label>
+                <input name="estado" required maxLength={2} className="w-full px-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none font-bold text-center uppercase shadow-sm text-sm" placeholder="UF" />
               </div>
             </div>
-          </div>
 
-          {/* BLOCO: Credenciais */}
-          <div>
-            <h3 className="text-lg font-bold font-serif text-primary flex items-center gap-2 mb-4 pb-2 border-b border-border">
-              Credenciais de Acesso
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>E-mail Corporativo *</label>
-                <input name="email" type="email" required className={inputClass} />
+            {state.error && (
+              <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 text-xs font-bold">
+                <AlertCircle className="w-4 h-4" />
+                {state.error}
               </div>
+            )}
 
-              <div>
-                <label className={labelClass}>Senha Provisória *</label>
-                <input name="password" type="text" required className={inputClass} />
-                <p className="text-xs text-muted-foreground mt-1">Compartilhe com o cliente. Ele poderá alterar depois.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-border flex justify-end gap-4">
-            <Link
-              href="/admin/empresas"
-              className="px-6 py-2 border border-border rounded-md text-primary font-medium hover:bg-muted transition-colors text-sm"
-            >
-              Cancelar
-            </Link>
             <button
               type="submit"
               disabled={pending}
-              className="px-6 py-2 bg-accent text-white rounded-md font-medium hover:bg-accent/90 transition-colors disabled:opacity-70 text-sm"
+              className="w-full py-3.5 bg-accent text-accent-foreground rounded-xl font-black text-sm shadow-lg shadow-accent/20 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
             >
-              {pending ? 'Criando Conta...' : 'Cadastrar Empresa'}
+              {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+              {pending ? 'Processando...' : 'Cadastrar Empresa'}
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </Form>
     </div>
   )
 }

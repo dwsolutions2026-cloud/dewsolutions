@@ -14,7 +14,7 @@ export const VagaSchema = z.object({
   quantidade_vagas: z.number().int().min(1, "A quantidade deve ser no mínimo 1"),
   salario_min: z.number().nullable().optional(),
   salario_max: z.number().nullable().optional(),
-  exibir_salario: z.boolean().default(false),
+  exibir_salario: z.boolean(),
 })
 
 export const CandidatoRegistrationSchema = z.object({

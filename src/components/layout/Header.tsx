@@ -12,7 +12,7 @@ export function Header() {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
-  const { user, isLoading } = useAuth()
+  const { user } = useAuth()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -21,7 +21,7 @@ export function Header() {
   }
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
+    <header className="bg-card border-b border-border sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -33,16 +33,16 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-8">
           <Link
             href="/vagas"
-            className={`text-sm font-medium transition-colors ${
-              pathname.startsWith('/vagas') ? 'text-accent' : 'text-muted-foreground hover:text-foreground'
+            className={`text-sm font-bold transition-colors ${
+              pathname.startsWith('/vagas') ? 'text-accent' : 'text-muted-foreground hover:text-primary'
             }`}
           >
             Vagas
           </Link>
           <Link
             href="/privacidade"
-            className={`text-sm font-medium transition-colors ${
-              pathname === '/privacidade' ? 'text-accent' : 'text-muted-foreground hover:text-foreground'
+            className={`text-sm font-bold transition-colors ${
+              pathname === '/privacidade' ? 'text-accent' : 'text-muted-foreground hover:text-primary'
             }`}
           >
             Privacidade
@@ -58,31 +58,39 @@ export function Header() {
           {user ? (
             <div className="flex items-center gap-3">
               <Link
-                href="/candidato/candidaturas"
-                className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                href={
+                  user.user_metadata?.role === 'admin' 
+                    ? '/admin/dashboard' 
+                    : user.user_metadata?.role === 'empresa' 
+                      ? '/empresa/dashboard' 
+                      : '/candidato/minha-area'
+                }
+                className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors"
               >
                 <User className="w-4 h-4" />
-                Minha Área
+                <span className="hidden sm:inline">
+                  {user.user_metadata?.role === 'admin' ? 'Painel Admin' : 'Minha Área'}
+                </span>
               </Link>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors ml-2"
+                className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-red-500 transition-colors ml-2"
               >
                 <LogOut className="w-4 h-4" />
-                Sair
+                <span className="hidden sm:inline">Sair</span>
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-3">
               <Link
                 href="/cadastro"
-                className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors hidden sm:block"
+                className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors hidden sm:block"
               >
                 Criar Conta
               </Link>
               <Link
                 href="/login"
-                className="flex items-center gap-2 bg-accent text-accent-foreground text-sm font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-colors"
+                className="flex items-center gap-2 bg-accent text-accent-foreground text-sm font-black px-4 py-2 rounded-lg hover:scale-105 transition-all shadow-lg shadow-accent/20"
               >
                 <User className="w-4 h-4" />
                 Entrar

@@ -1,12 +1,15 @@
 import { createClient } from '@/utils/supabase/server'
 import { CandidatosClient } from './CandidatosClient'
-
-export const dynamic = 'force-dynamic'
+import { checkAdmin } from '@/app/actions/admin'
+import { redirect } from 'next/navigation'
 
 export default async function AdminCandidatosPage() {
+  const isAdmin = await checkAdmin()
+  if (!isAdmin) redirect('/login')
+
   const supabase = await createClient()
 
-  const { data: rawEmpresas, error } = await supabase
+  const { data: empresas, error } = await supabase
     .from('empresas')
     .select(`
       id,
@@ -17,6 +20,7 @@ export default async function AdminCandidatosPage() {
         candidaturas (
           id,
           status,
+          created_at,
           data_entrevista,
           local_entrevista,
           candidato:candidatos (
@@ -29,25 +33,16 @@ export default async function AdminCandidatosPage() {
         )
       )
     `)
-    .order('nome')
 
-  // Formatar os dados para garantir que candidato seja um objeto único, não um array
-  const empresas = rawEmpresas?.map(empresa => ({
-    ...empresa,
-    vagas: empresa.vagas.map(vaga => ({
-      ...vaga,
-      candidaturas: vaga.candidaturas.map(candidatura => ({
-        ...candidatura,
-        candidato: Array.isArray(candidatura.candidato) ? candidatura.candidato[0] : candidatura.candidato
-      }))
-    }))
-  }))
+  const { data: { publicUrl: supabaseUrl } } = supabase.storage.from('curriculos').getPublicUrl('')
 
   return (
-    <CandidatosClient
-      empresas={(empresas as any) || []}
-      error={error?.message}
-      supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!}
-    />
+    <div className="animate-in fade-in duration-700">
+      <CandidatosClient 
+        empresas={empresas || []} 
+        error={error?.message} 
+        supabaseUrl={supabaseUrl}
+      />
+    </div>
   )
 }
