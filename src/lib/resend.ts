@@ -29,10 +29,7 @@ function baseTemplate(content: string) {
               <!-- Header -->
               <tr>
                 <td style="background:#0D0D0D;padding:32px 40px;text-align:center;">
-                  <h1 style="margin:0;font-size:32px;letter-spacing:4px;color:#ffffff;font-family:Georgia,serif;">
-                    D<span style="color:#D4AF37;">&amp;</span>W
-                  </h1>
-                  <p style="margin:4px 0 0;color:#D4AF37;font-size:11px;letter-spacing:6px;text-transform:uppercase;">Solutions</p>
+                  <img src="${APP_URL}/logo-branco.png" alt="D&W Solutions" style="height:60px;width:auto;display:block;margin:0 auto;" />
                 </td>
               </tr>
 

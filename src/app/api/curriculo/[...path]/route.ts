@@ -11,8 +11,9 @@ const getAdmin = () =>
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
+  const { path } = await params;
   // Verificar se usuário está autenticado (admin ou empresa)
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -20,7 +21,7 @@ export async function GET(
     return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   }
 
-  const filePath = params.path.join('/')
+  const filePath = path.join('/')
 
   const admin = getAdmin()
   const { data, error } = await admin.storage

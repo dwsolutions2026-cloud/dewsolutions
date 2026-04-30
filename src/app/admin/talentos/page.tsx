@@ -5,10 +5,11 @@ import Link from 'next/link'
 export default async function AdminTalentosPage({
   searchParams,
 }: {
-  searchParams: { q?: string }
+  searchParams: Promise<{ q?: string }>
 }) {
+  const { q } = await searchParams
   const supabase = await createClient()
-  const query = searchParams.q || ''
+  const query = q || ''
 
   let dbQuery = supabase
     .from('candidatos')
