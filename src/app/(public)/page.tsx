@@ -25,7 +25,7 @@ export default function LandingPage() {
                 Explorar Vagas <ArrowRight className="w-5 h-5" />
               </Link>
               <Link 
-                href="/login" 
+                href="/anunciar-oportunidade" 
                 className="bg-card border border-border text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-muted transition-all flex items-center justify-center"
               >
                 Anunciar Oportunidade
