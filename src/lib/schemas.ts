@@ -63,10 +63,10 @@ export const CurriculoJsonSchema = z.object({
   linkedin: z.string().url("URL do LinkedIn inválida").optional().or(z.literal('')),
   github: z.string().url("URL do GitHub inválida").optional().or(z.literal('')),
   objetivo: z.string().max(300, "Máximo de 300 caracteres").optional(),
-  experiencias: z.array(ExperienciaSchema).optional().default([]),
-  formacoes: z.array(FormacaoSchema).optional().default([]),
+  experiencias: z.array(ExperienciaSchema).default([]),
+  formacoes: z.array(FormacaoSchema).default([]),
   habilidades: z.string().optional(),
-  idiomas: z.array(IdiomaSchema).optional().default([]),
+  idiomas: z.array(IdiomaSchema).default([]),
 })
 
 export const PerfilSchema = z.object({
