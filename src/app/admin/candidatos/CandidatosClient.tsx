@@ -117,7 +117,12 @@ export function CandidatosClient({ empresas, error, supabaseUrl }: Props) {
                               {/* Info do candidato */}
                               <div className="flex flex-col min-w-0">
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  <span className="text-sm font-medium text-primary">{c.candidato.nome}</span>
+                                  <Link 
+                                    href={`/admin/talentos/${c.candidato.id}`}
+                                    className="text-sm font-medium text-primary hover:text-accent transition-colors"
+                                  >
+                                    {c.candidato.nome}
+                                  </Link>
                                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${st.color}`}>
                                     {st.label}
                                   </span>
@@ -137,25 +142,14 @@ export function CandidatosClient({ empresas, error, supabaseUrl }: Props) {
 
                               {/* Ações */}
                               <div className="flex items-center gap-2 shrink-0">
-                                {/* Currículo */}
-                                {c.candidato.curriculo_url ? (
-                                  <Link
-                                    href={`/api/curriculo/${c.candidato.curriculo_url}`}
-                                    target="_blank"
-                                    className="p-1.5 text-muted-foreground hover:text-accent rounded-md hover:bg-accent/5 transition-colors"
-                                    title="Ver PDF"
-                                  >
-                                    <FileText className="w-4 h-4" />
-                                  </Link>
-                                ) : (
-                                  <Link
-                                    href={`/admin/talentos/${c.candidato.id}`}
-                                    className="p-1.5 text-muted-foreground hover:text-accent rounded-md hover:bg-accent/5 transition-colors"
-                                    title="Ver currículo interno"
-                                  >
-                                    <Users className="w-4 h-4" />
-                                  </Link>
-                                )}
+                                {/* Ver Perfil */}
+                                <Link
+                                  href={`/admin/talentos/${c.candidato.id}`}
+                                  className="p-1.5 text-muted-foreground hover:text-accent rounded-md hover:bg-accent/5 transition-colors"
+                                  title="Ver Perfil Completo"
+                                >
+                                  <FileText className="w-4 h-4" />
+                                </Link>
 
                                 {/* Botão de Convocar */}
                                 {c.status !== 'aprovado' && c.status !== 'reprovado' && (

@@ -4,24 +4,15 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { LogOut, User } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
-import { useEffect, useState } from 'react'
-import { User as SupabaseUser } from '@supabase/supabase-js'
 import { Logo } from '@/components/Logo'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { useAuth } from '@/components/AuthProvider'
 
 export function Header() {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
-  const [user, setUser] = useState<SupabaseUser | null>(null)
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null)
-    })
-    return () => subscription.unsubscribe()
-  }, [])
+  const { user, isLoading } = useAuth()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()

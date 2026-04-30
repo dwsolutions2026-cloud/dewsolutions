@@ -3,6 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
+import { PerfilSchema, CurriculoJsonSchema } from '@/lib/schemas'
 
 const getAdminClient = () =>
   createAdminClient(
@@ -19,60 +20,55 @@ async function getCandidatoId() {
   return data?.id || null
 }
 
-export async function addExperienciaAction(formData: FormData) {
+export async function updatePerfilAction(formData: FormData) {
   const candidato_id = await getCandidatoId()
   if (!candidato_id) return { error: 'Não autenticado' }
 
-  const admin = getAdminClient()
-  const { error } = await admin.from('experiencias').insert({
-    candidato_id,
-    empresa: formData.get('empresa') as string,
-    cargo: formData.get('cargo') as string,
-    inicio: formData.get('inicio') as string,
-    fim: formData.get('fim') as string || null,
-    atual: formData.get('atual') === 'on',
-    descricao: formData.get('descricao') as string,
+  const parsed = PerfilSchema.safeParse({
+    nome: formData.get('nome'),
+    telefone: formData.get('telefone') || undefined,
+    cidade: formData.get('cidade') || undefined,
+    estado: formData.get('estado') || undefined,
   })
 
-  if (error) return { error: error.message }
-  revalidatePath('/candidato/perfil')
-  return { success: true }
-}
-
-export async function deleteExperienciaAction(id: string) {
-  const candidato_id = await getCandidatoId()
-  if (!candidato_id) return { error: 'Não autenticado' }
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message }
+  }
 
   const admin = getAdminClient()
-  await admin.from('experiencias').delete().eq('id', id).eq('candidato_id', candidato_id)
-  revalidatePath('/candidato/perfil')
-  return { success: true }
-}
-
-export async function addFormacaoAction(formData: FormData) {
-  const candidato_id = await getCandidatoId()
-  if (!candidato_id) return { error: 'Não autenticado' }
-
-  const admin = getAdminClient()
-  const { error } = await admin.from('formacoes').insert({
-    candidato_id,
-    instituicao: formData.get('instituicao') as string,
-    curso: formData.get('curso') as string,
-    nivel: formData.get('nivel') as string,
-    conclusao: formData.get('conclusao') as string || null,
-  })
+  const { error } = await admin
+    .from('candidatos')
+    .update(parsed.data)
+    .eq('id', candidato_id)
 
   if (error) return { error: error.message }
-  revalidatePath('/candidato/perfil')
+  revalidatePath('/candidato/minha-area')
+  revalidatePath('/candidato/perfil/editar')
   return { success: true }
 }
 
-export async function deleteFormacaoAction(id: string) {
+export async function updateCurriculoJsonAction(data: any) {
   const candidato_id = await getCandidatoId()
   if (!candidato_id) return { error: 'Não autenticado' }
 
+  const parsed = CurriculoJsonSchema.safeParse(data)
+  if (!parsed.success) {
+    return { error: 'Dados do currículo inválidos' }
+  }
+
   const admin = getAdminClient()
-  await admin.from('formacoes').delete().eq('id', id).eq('candidato_id', candidato_id)
-  revalidatePath('/candidato/perfil')
+  
+  // Atualiza o JSON e limpa o URL do PDF se ele optou pelo construtor (opcional, mas recomendado)
+  const { error } = await admin
+    .from('candidatos')
+    .update({ 
+      curriculo_json: parsed.data,
+      // curriculo_url: null // Comentado para permitir que coexistam, como pedido
+    })
+    .eq('id', candidato_id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/candidato/minha-area')
+  revalidatePath('/candidato/curriculo/editar')
   return { success: true }
 }

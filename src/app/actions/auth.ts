@@ -58,17 +58,33 @@ export async function loginAction(formData: FormData) {
 
   const supabase = await createServerClient()
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
 
-  if (error) {
+  if (error || !authData.user) {
     return { error: 'Credenciais inválidas. Verifique seu e-mail e senha.' }
   }
 
-  // The middleware will handle redirecting the user based on their role
-  redirect('/login') // Trigger middleware to redirect correctly
+  const user = authData.user
+  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+  
+  let redirectUrl = '/'
+  if (profile) {
+    if (profile.role === 'admin') redirectUrl = '/admin/dashboard'
+    else if (profile.role === 'empresa') redirectUrl = '/empresa/dashboard'
+    else if (profile.role === 'candidato') {
+      const { data: candidato } = await supabase.from('candidatos').select('curriculo_url, curriculo_json').eq('user_id', user.id).single()
+      if (candidato && (candidato.curriculo_url || candidato.curriculo_json)) {
+        redirectUrl = '/candidato/minha-area'
+      } else {
+        redirectUrl = '/candidato/curriculo/criar'
+      }
+    }
+  }
+
+  redirect(redirectUrl)
 }
 
 import { CandidatoRegistrationSchema } from '@/lib/schemas'
@@ -95,9 +111,14 @@ export async function registerCandidateAction(formData: FormData) {
 
   const curriculo = formData.get('curriculo') as File | null
 
-  // Só valida o tipo se o arquivo for enviado
-  if (curriculo && curriculo.size > 0 && curriculo.type !== 'application/pdf') {
-    return { error: 'O currículo deve ser um arquivo PDF' }
+  // Só valida o tipo e o tamanho se o arquivo for enviado
+  if (curriculo && curriculo.size > 0) {
+    if (curriculo.type !== 'application/pdf') {
+      return { error: 'O currículo deve ser um arquivo PDF' }
+    }
+    if (curriculo.size > 5 * 1024 * 1024) {
+      return { error: 'O currículo não pode exceder 5MB' }
+    }
   }
 
   const supabase = await createServerClient()
@@ -167,6 +188,9 @@ export async function registerCandidateAction(formData: FormData) {
     await sendWelcomeEmail(email, nome)
   }
 
+  const sem_curriculo = formData.get('sem_curriculo') === 'on'
+  const redirectUrl = sem_curriculo ? '/candidato/curriculo/criar' : '/candidato/minha-area'
+
   // Redireciona diretamente para a área do candidato após o cadastro
-  redirect('/candidato/candidaturas')
+  redirect(redirectUrl)
 }

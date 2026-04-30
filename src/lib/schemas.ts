@@ -39,3 +39,39 @@ export const ConvocacaoSchema = z.object({
   local_entrevista: z.string().min(5, "Local obrigatório"),
   observacao: z.string().optional(),
 })
+
+export const ExperienciaSchema = z.object({
+  cargo: z.string().min(2, "Cargo obrigatório"),
+  empresa: z.string().min(2, "Empresa obrigatória"),
+  periodo: z.string().min(2, "Período obrigatório"),
+  descricao: z.string().optional(),
+})
+
+export const FormacaoSchema = z.object({
+  curso: z.string().min(2, "Curso obrigatório"),
+  instituicao: z.string().min(2, "Instituição obrigatória"),
+  periodo: z.string().min(2, "Período obrigatório"),
+  status: z.string().min(2, "Status obrigatório"),
+})
+
+export const IdiomaSchema = z.object({
+  idioma: z.string().min(2, "Idioma obrigatório"),
+  nivel: z.string().min(2, "Nível obrigatório"),
+})
+
+export const CurriculoJsonSchema = z.object({
+  linkedin: z.string().url("URL do LinkedIn inválida").optional().or(z.literal('')),
+  github: z.string().url("URL do GitHub inválida").optional().or(z.literal('')),
+  objetivo: z.string().max(300, "Máximo de 300 caracteres").optional(),
+  experiencias: z.array(ExperienciaSchema).optional().default([]),
+  formacoes: z.array(FormacaoSchema).optional().default([]),
+  habilidades: z.string().optional(),
+  idiomas: z.array(IdiomaSchema).optional().default([]),
+})
+
+export const PerfilSchema = z.object({
+  nome: z.string().min(3, "Nome completo obrigatório"),
+  telefone: z.string().min(10, "Telefone inválido").optional().or(z.literal('')),
+  cidade: z.string().min(2, "Cidade obrigatória").optional().or(z.literal('')),
+  estado: z.string().length(2, "UF deve ter 2 letras").toUpperCase().optional().or(z.literal('')),
+})

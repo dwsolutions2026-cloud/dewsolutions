@@ -1,7 +1,4 @@
--- Habilitar RLS em storage.objects
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
-
--- Remover políticas existentes para evitar conflitos em reexecuções
+-- 1. Remover políticas existentes para evitar conflitos
 DROP POLICY IF EXISTS "Admin pode tudo em curriculos" ON storage.objects;
 DROP POLICY IF EXISTS "Candidato pode gerenciar proprio curriculo" ON storage.objects;
 DROP POLICY IF EXISTS "Empresa pode ler curriculo de candidaturas" ON storage.objects;
@@ -9,31 +6,32 @@ DROP POLICY IF EXISTS "Empresa pode ler curriculo de candidaturas" ON storage.ob
 -- 1. Política do Admin: Acesso total ao bucket
 CREATE POLICY "Admin pode tudo em curriculos" 
 ON storage.objects FOR ALL 
+TO authenticated
 USING (
   bucket_id = 'curriculos' AND 
-  (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'admin'
+  (SELECT (role = 'admin') FROM public.profiles WHERE id = auth.uid())
 );
 
--- 2. Política do Candidato: Acesso exclusivo ao arquivo correspondente ao seu user_id
+-- 2. Política do Candidato: Pode ler, subir e deletar seu próprio arquivo
+-- O arquivo deve ter o nome do user_id + .pdf
 CREATE POLICY "Candidato pode gerenciar proprio curriculo" 
 ON storage.objects FOR ALL 
+TO authenticated
 USING (
   bucket_id = 'curriculos' AND 
-  (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'candidato' AND
   (auth.uid()::text || '.pdf') = name
 )
 WITH CHECK (
   bucket_id = 'curriculos' AND 
-  (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'candidato' AND
   (auth.uid()::text || '.pdf') = name
 );
 
--- 3. Política da Empresa: Acesso restrito a candidatos que se candidataram em suas vagas
+-- 3. Política da Empresa: Pode ler apenas currículos de candidatos vinculados às suas vagas
 CREATE POLICY "Empresa pode ler curriculo de candidaturas"
 ON storage.objects FOR SELECT
+TO authenticated
 USING (
   bucket_id = 'curriculos' AND 
-  (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'empresa' AND
   EXISTS (
     SELECT 1 
     FROM public.candidaturas c

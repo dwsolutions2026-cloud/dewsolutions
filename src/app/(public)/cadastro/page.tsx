@@ -91,8 +91,28 @@ export default function CadastroPage() {
             </div>
 
             <div className="sm:col-span-2">
+              <div className="flex items-start mb-4 bg-accent/5 p-4 rounded-lg border border-accent/20">
+                <div className="flex h-5 items-center">
+                  <input
+                    id="sem_curriculo"
+                    name="sem_curriculo"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
+                    onChange={(e) => {
+                      if (e.target.checked) setFileName(null);
+                    }}
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label htmlFor="sem_curriculo" className="font-medium text-primary cursor-pointer">
+                    Não possuo currículo pronto — quero criar um pelo sistema após o cadastro
+                  </label>
+                  <p className="text-muted-foreground text-xs mt-1">Marque esta opção se você não tem um PDF e deseja preencher seus dados manualmente na próxima tela.</p>
+                </div>
+              </div>
+
               <label className="block text-sm font-medium text-primary mb-2">
-                Currículo em PDF (Opcional)
+                Currículo em PDF (Opcional se marcar a opção acima)
               </label>
               <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/80 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -101,7 +121,7 @@ export default function CadastroPage() {
                     <span className="font-semibold text-accent">Clique para anexar</span> ou arraste e solte
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {fileName || 'Apenas arquivos PDF. Se preferir, você poderá criar seu currículo online após o cadastro.'}
+                    {fileName || 'Apenas arquivos PDF (Máx 5MB).'}
                   </p>
                 </div>
                 <input 
@@ -110,7 +130,11 @@ export default function CadastroPage() {
                   type="file" 
                   accept="application/pdf" 
                   className="hidden" 
-                  onChange={(e) => setFileName(e.target.files?.[0]?.name || null)}
+                  onChange={(e) => {
+                    setFileName(e.target.files?.[0]?.name || null)
+                    const checkbox = document.getElementById('sem_curriculo') as HTMLInputElement;
+                    if (checkbox && e.target.files?.length) checkbox.checked = false;
+                  }}
                 />
               </label>
             </div>

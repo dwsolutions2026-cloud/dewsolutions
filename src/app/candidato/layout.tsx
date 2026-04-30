@@ -13,18 +13,23 @@ export default function CandidatoLayout({
 
   const menuItems = [
     {
+      title: 'Minha Área',
+      href: '/candidato/minha-area',
+      icon: <LayoutDashboard className="w-5 h-5" />,
+    },
+    {
       title: 'Minhas Candidaturas',
       href: '/candidato/candidaturas',
       icon: <Briefcase className="w-5 h-5" />,
     },
     {
       title: 'Meu Currículo',
-      href: '/candidato/curriculo',
+      href: '/candidato/curriculo/editar',
       icon: <FileText className="w-5 h-5" />,
     },
     {
       title: 'Minhas Informações',
-      href: '/candidato/perfil',
+      href: '/candidato/perfil/editar',
       icon: <User className="w-5 h-5" />,
     },
   ]
@@ -32,7 +37,7 @@ export default function CandidatoLayout({
   return (
     <div className="flex min-h-[calc(100vh-64px)] bg-background">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-border bg-white hidden md:block shrink-0">
+      <aside className="w-64 border-r border-border bg-card hidden md:block shrink-0">
         <div className="p-6">
           <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">
             Área do Candidato
