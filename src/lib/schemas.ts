@@ -91,3 +91,22 @@ export const EmpresaSchema = z.object({
   cidade: z.string().min(2, "Cidade obrigatória"),
   estado: z.string().length(2, "UF deve ter 2 letras").toUpperCase(),
 })
+
+export const OportunidadeLeadSchema = z.object({
+  nome_empresa: z.string().min(2, "Nome da empresa é obrigatório"),
+  nome_responsavel: z.string().min(2, "Nome do responsável é obrigatório"),
+  email: z.string().email("E-mail inválido").optional().or(z.literal('')),
+  telefone: z.string().min(10, "Telefone inválido"),
+  cargo_vaga: z.string().min(2, "Cargo da vaga é obrigatório"),
+  cidade: z.string().optional().or(z.literal('')),
+  mensagem: z.string().optional().or(z.literal('')),
+  website: z.string().optional(), // Honeypot
+})
+
+export const ConfigSiteSchema = z.object({
+  whatsapp_numero: z.string().min(10, "Número inválido"),
+  whatsapp_mensagem: z.string().min(10, "Mensagem muito curta"),
+  prazo_retorno_texto: z.string().min(5, "Texto de prazo muito curto"),
+  admin_email_notificacao: z.string().email("E-mail de notificação inválido"),
+})
+

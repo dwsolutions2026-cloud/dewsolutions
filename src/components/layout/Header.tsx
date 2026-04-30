@@ -40,6 +40,14 @@ export function Header() {
             Vagas
           </Link>
           <Link
+            href="/anunciar-oportunidade"
+            className={`text-sm font-bold transition-colors ${
+              pathname === '/anunciar-oportunidade' ? 'text-accent' : 'text-muted-foreground hover:text-primary'
+            }`}
+          >
+            Anunciar Oportunidade
+          </Link>
+          <Link
             href="/privacidade"
             className={`text-sm font-bold transition-colors ${
               pathname === '/privacidade' ? 'text-accent' : 'text-muted-foreground hover:text-primary'
@@ -53,7 +61,7 @@ export function Header() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           
-          <div className="h-6 w-[1px] bg-border mx-1 hidden sm:block" />
+          <div className="h-6 w-px bg-border mx-1 hidden sm:block" />
 
           {user ? (
             <div className="flex items-center gap-3">

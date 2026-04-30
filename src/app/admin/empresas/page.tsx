@@ -62,7 +62,7 @@ export default async function AdminEmpresasPage({
           </div>
         ) : empresas && empresas.length > 0 ? (
           empresas.map((empresa) => (
-            <div key={empresa.id} className="bg-card rounded-[2rem] border border-border p-6 shadow-sm hover:shadow-lg hover:border-accent/30 transition-all group flex flex-col h-full">
+            <div key={empresa.id} className="bg-card rounded-4xl border border-border p-6 shadow-sm hover:shadow-lg hover:border-accent/30 transition-all group flex flex-col h-full">
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-12 h-12 bg-muted rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
                   <Building2 className="w-6 h-6" />
@@ -106,7 +106,7 @@ export default async function AdminEmpresasPage({
             </div>
           ))
         ) : (
-          <div className="col-span-full p-16 bg-card border border-border rounded-[2rem] text-center space-y-4 shadow-sm">
+          <div className="col-span-full p-16 bg-card border border-border rounded-4xl text-center space-y-4 shadow-sm">
             <Building2 className="mx-auto h-12 w-12 opacity-20 mb-2 text-muted-foreground" />
             <p className="text-xl font-bold text-primary">Nenhuma empresa encontrada</p>
             <p className="text-muted-foreground text-sm font-medium">Cadastre novas empresas parceiras para começar a publicar vagas.</p>

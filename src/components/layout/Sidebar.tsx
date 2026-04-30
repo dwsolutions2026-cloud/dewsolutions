@@ -18,10 +18,14 @@ import {
 import { useSidebar } from './SidebarProvider'
 import { useAuth } from '@/components/AuthProvider'
 
+import { createClient } from '@/utils/supabase/client'
+import { useState, useEffect } from 'react'
+
 const ADMIN_MENU = [
   { title: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { title: 'Vagas', href: '/admin/vagas', icon: Briefcase },
   { title: 'Empresas', href: '/admin/empresas', icon: Building2 },
+  { title: 'Empresas Interessadas', href: '/admin/oportunidades', icon: Send, badge: true },
   { title: 'Banco de Talentos', href: '/admin/talentos', icon: UserSquare2 },
   { title: 'Candidaturas', href: '/admin/candidatos', icon: Users },
 ]
@@ -37,8 +41,36 @@ export function Sidebar() {
   const pathname = usePathname()
   const { isCollapsed, toggleSidebar } = useSidebar()
   const { user } = useAuth()
+  const [newLeadsCount, setNewLeadsCount] = useState(0)
+  const supabase = createClient()
 
   const role = user?.user_metadata?.role || 'candidato'
+
+  useEffect(() => {
+    if (role !== 'admin') return
+
+    const fetchCount = async () => {
+      const { count } = await supabase
+        .from('oportunidade_leads')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'novo')
+      setNewLeadsCount(count || 0)
+    }
+
+    fetchCount()
+
+    const channel = supabase
+      .channel('leads-badge')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'oportunidade_leads' }, () => {
+        fetchCount()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [role, supabase])
+
   const menuItems = role === 'admin' ? ADMIN_MENU : CANDIDATO_MENU
   const title = role === 'admin' ? 'Administração' : 'Candidato'
 
@@ -86,10 +118,21 @@ export function Sidebar() {
               {!isCollapsed && (
                 <span className="font-bold text-xs tracking-tight truncate">{item.title}</span>
               )}
-              {isActive && !isCollapsed && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />}
+              
+              {/* Badge for new leads */}
+              {role === 'admin' && (item as any).badge && newLeadsCount > 0 && (
+                <span className={`
+                  ${isCollapsed ? 'absolute top-1 right-1' : 'ml-auto'}
+                  bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg
+                `}>
+                  {newLeadsCount}
+                </span>
+              )}
+
+              {isActive && !isCollapsed && !(item as any).badge && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />}
               
               {isCollapsed && (
-                <div className="absolute left-full ml-4 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100]">
+                <div className="absolute left-full ml-4 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-100">
                   {item.title}
                 </div>
               )}
@@ -109,7 +152,7 @@ export function Sidebar() {
             {!isCollapsed && <span className="font-bold text-xs">Configurações</span>}
             
             {isCollapsed && (
-              <div className="absolute left-full ml-4 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100]">
+              <div className="absolute left-full ml-4 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-100">
                 Configurações
               </div>
             )}
