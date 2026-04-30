@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
@@ -13,6 +13,16 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Plataforma de Vagas | DW Solutions",
   description: "Encontre as melhores oportunidades profissionais.",
+  applicationName: "DW Solutions",
+  keywords: ["Vagas", "Emprego", "Oportunidades", "Recrutamento"],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
 };
 
 import { Toaster } from "react-hot-toast";

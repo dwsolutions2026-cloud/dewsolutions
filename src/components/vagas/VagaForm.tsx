@@ -37,12 +37,12 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
     await onSubmit(formData)
   }
 
-  const inputClass = "w-full px-3.5 py-2 rounded-xl border border-border bg-muted/10 focus:ring-2 focus:ring-accent outline-none transition-all font-medium text-sm"
-  const labelClass = "text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1 opacity-70"
+  const inputClass = "w-full px-3 sm:px-3.5 py-2 sm:py-2 rounded-lg sm:rounded-xl text-sm border border-border bg-muted/10 focus:ring-2 focus:ring-accent outline-none transition-all font-medium"
+  const labelClass = "text-[8px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest px-1 opacity-70"
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 animate-in fade-in duration-500">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 sm:space-y-6 animate-in fade-in duration-500">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
         {/* Empresa */}
         <div className="space-y-1.5">
           <label className={labelClass}>Empresa Parceira</label>
@@ -56,7 +56,7 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
               <option key={emp.id} value={emp.id}>{emp.nome}</option>
             ))}
           </select>
-          {errors.empresa_id && <p className="text-[10px] text-red-500 font-bold">{errors.empresa_id.message}</p>}
+          {errors.empresa_id && <p className="text-[8px] sm:text-[10px] text-red-500 font-bold">{errors.empresa_id.message}</p>}
         </div>
 
         {/* Título */}
@@ -67,7 +67,7 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
             className={inputClass}
             placeholder="Ex: Desenvolvedor Full Stack"
           />
-          {errors.titulo && <p className="text-[10px] text-red-500 font-bold">{errors.titulo.message}</p>}
+          {errors.titulo && <p className="text-[8px] sm:text-[10px] text-red-500 font-bold">{errors.titulo.message}</p>}
         </div>
 
         {/* Área e Modalidade */}
@@ -78,7 +78,7 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
             className={inputClass}
             placeholder="Ex: Tecnologia, Administrativo"
           />
-          {errors.area && <p className="text-[10px] text-red-500 font-bold">{errors.area.message}</p>}
+          {errors.area && <p className="text-[8px] sm:text-[10px] text-red-500 font-bold">{errors.area.message}</p>}
         </div>
 
         <div className="space-y-1.5">
@@ -91,7 +91,7 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
         </div>
 
         {/* Localização */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <div className="col-span-2 space-y-1.5">
             <label className={labelClass}>Cidade</label>
             <input {...register('cidade')} className={inputClass} />
@@ -113,7 +113,7 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
         </div>
 
         {/* Salário */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
           <div className="space-y-1.5">
             <label className={labelClass}>Salário Mín.</label>
             <input
@@ -134,14 +134,14 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 pt-4">
+        <div className="flex items-center gap-2.5 pt-2 sm:pt-4">
           <input
             type="checkbox"
             id="exibir_salario"
             {...register('exibir_salario')}
             className="w-4 h-4 rounded border-border text-accent focus:ring-accent"
           />
-          <label htmlFor="exibir_salario" className="text-xs font-bold text-primary cursor-pointer">Exibir salário na vaga?</label>
+          <label htmlFor="exibir_salario" className="text-xs sm:text-sm font-bold text-primary cursor-pointer">Exibir salário na vaga?</label>
         </div>
       </div>
 
@@ -154,10 +154,10 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
           className={inputClass + " resize-none"}
           placeholder="Descreva as responsabilidades..."
         />
-        {errors.descricao && <p className="text-[10px] text-red-500 font-bold">{errors.descricao.message}</p>}
+        {errors.descricao && <p className="text-[8px] sm:text-[10px] text-red-500 font-bold">{errors.descricao.message}</p>}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
         <div className="space-y-1.5">
           <label className={labelClass}>Requisitos</label>
           <textarea
@@ -176,13 +176,13 @@ export function VagaForm({ initialData, empresas, onSubmit }: Props) {
         </div>
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div className="flex justify-end pt-2 sm:pt-4">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-accent text-accent-foreground px-8 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-accent/20 flex items-center gap-2 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+          className="bg-accent text-accent-foreground px-6 sm:px-8 py-2.5 rounded-lg sm:rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-accent/20 flex items-center gap-2 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
         >
-          {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {isSubmitting ? <Loader2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 animate-spin" /> : <Save className="w-3.5 sm:w-4 h-3.5 sm:h-4" />}
           {initialData ? 'Atualizar Vaga' : 'Publicar Vaga'}
         </button>
       </div>
