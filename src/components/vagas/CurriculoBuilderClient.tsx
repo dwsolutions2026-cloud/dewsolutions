@@ -30,10 +30,14 @@ export function CurriculoBuilderClient({ initialData, userId }: { initialData: a
     formState: { errors, isSubmitting },
   } = useForm<CurriculoData>({
     resolver: zodResolver(CurriculoJsonSchema),
-    defaultValues: initialData || {
-      experiencias: [],
-      formacoes: [],
-      idiomas: [],
+    defaultValues: {
+      objetivo: initialData?.objetivo || '',
+      linkedin: initialData?.linkedin || '',
+      github: initialData?.github || '',
+      habilidades: initialData?.habilidades || '',
+      experiencias: initialData?.experiencias || [],
+      formacoes: initialData?.formacoes || [],
+      idiomas: initialData?.idiomas || [],
     },
   })
 

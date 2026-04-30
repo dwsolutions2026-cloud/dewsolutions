@@ -25,8 +25,8 @@ export const CandidatoRegistrationSchema = z.object({
   passwordConfirm: z.string(),
   cidade: z.string().optional(),
   estado: z.string().max(2).optional(),
-  lgpd: z.literal('on', {
-    errorMap: () => ({ message: "Você deve aceitar os termos de privacidade" })
+  lgpd: z.string().refine(val => val === 'on', {
+    message: "Você deve aceitar os termos de privacidade"
   }),
 }).refine(data => data.password === data.passwordConfirm, {
   message: "As senhas não coincidem",
@@ -63,10 +63,10 @@ export const CurriculoJsonSchema = z.object({
   linkedin: z.string().url("URL do LinkedIn inválida").optional().or(z.literal('')),
   github: z.string().url("URL do GitHub inválida").optional().or(z.literal('')),
   objetivo: z.string().max(300, "Máximo de 300 caracteres").optional(),
-  experiencias: z.array(ExperienciaSchema).default([]),
-  formacoes: z.array(FormacaoSchema).default([]),
+  experiencias: z.array(ExperienciaSchema),
+  formacoes: z.array(FormacaoSchema),
   habilidades: z.string().optional(),
-  idiomas: z.array(IdiomaSchema).default([]),
+  idiomas: z.array(IdiomaSchema),
 })
 
 export const PerfilSchema = z.object({
