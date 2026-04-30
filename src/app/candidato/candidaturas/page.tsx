@@ -81,8 +81,8 @@ export default async function CandidaturasPage() {
       {!error && candidaturas && candidaturas.length > 0 && (
         <div className="grid gap-4">
           {candidaturas.map((cand: any) => {
-            const vaga = cand.vagas
-            const empresa = vaga.empresas
+            const vaga = Array.isArray(cand.vagas) ? cand.vagas[0] : cand.vagas
+            const empresa = Array.isArray(vaga.empresas) ? vaga.empresas[0] : vaga.empresas
             const dataCandidatura = new Date(cand.created_at).toLocaleDateString('pt-BR')
 
             return (

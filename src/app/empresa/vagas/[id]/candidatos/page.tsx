@@ -93,7 +93,7 @@ export default async function CandidatosDaVagaPage({
               </thead>
               <tbody className="divide-y divide-border">
                 {await Promise.all(candidaturas.map(async (cand: any) => {
-                  const c = cand.candidato
+                  const c = Array.isArray(cand.candidato) ? cand.candidato[0] : cand.candidato
                   const signedUrl = await getSignedUrl(c.curriculo_url)
 
                   return (

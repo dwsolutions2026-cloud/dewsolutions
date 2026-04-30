@@ -21,9 +21,14 @@ export default async function AdminVagasPage() {
     supabase.from('empresas').select('id, nome').eq('ativa', true).order('nome'),
   ])
 
+  const formattedVagas = vagas?.map(vaga => ({
+    ...vaga,
+    empresa: Array.isArray(vaga.empresa) ? vaga.empresa[0] : vaga.empresa
+  }))
+
   return (
     <VagasAdminClient
-      vagas={vagas || []}
+      vagas={(formattedVagas as any) || []}
       empresas={empresas || []}
       error={error?.message}
     />

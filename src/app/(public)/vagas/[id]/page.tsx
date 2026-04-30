@@ -27,6 +27,11 @@ export default async function VagaDetailsPage({
     notFound()
   }
 
+  // Garantir que empresa seja um objeto, não um array
+  if (Array.isArray(vaga.empresa)) {
+    vaga.empresa = vaga.empresa[0]
+  }
+
   // Verificar se o usuário está logado e se já se candidatou
   const { data: { user } } = await supabase.auth.getUser()
   let isLogado = !!user

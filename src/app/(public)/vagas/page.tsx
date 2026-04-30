@@ -35,7 +35,12 @@ export default async function VagasPage({
     query = query.eq('regime', regime)
   }
 
-  const { data: vagas, error } = await query
+  const { data: rawVagas, error } = await query
+
+  const vagas = rawVagas?.map(vaga => ({
+    ...vaga,
+    empresa: Array.isArray(vaga.empresa) ? vaga.empresa[0] : vaga.empresa
+  }))
 
   return (
     <div className="bg-muted min-h-[calc(100vh-140px)] py-8 px-4">
