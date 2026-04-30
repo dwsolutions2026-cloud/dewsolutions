@@ -1,13 +1,15 @@
 'use client'
 
-import { useActionState, useState, useRef } from 'react'
+import { useActionState, useState, useRef, useEffect } from 'react'
 import { createEmpresaAction } from '@/app/actions/admin'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, Building2, Search, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
 import { ESTADOS_BR } from '@/lib/constants'
 
 const initialState = {
   error: null as string | null,
+  success: false
 }
 
 // Formata CNPJ: 00.000.000/0000-00
@@ -56,6 +58,7 @@ interface EmpresaData {
 }
 
 export default function NovaEmpresaPage() {
+  const router = useRouter()
   const [state, formAction, pending] = useActionState(
     async (prevState: any, formData: FormData) => {
       const result = await createEmpresaAction(formData)
@@ -63,6 +66,13 @@ export default function NovaEmpresaPage() {
     },
     initialState
   )
+
+  useEffect(() => {
+    if (state.success) {
+      router.push('/admin/empresas')
+      router.refresh()
+    }
+  }, [state.success, router])
 
   const [cnpj, setCnpj] = useState('')
   const [cnpjStatus, setCnpjStatus] = useState<'idle' | 'loading' | 'valid' | 'invalid' | 'error'>('idle')

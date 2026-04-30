@@ -66,3 +66,74 @@ export async function deleteCandidatoAction(candidatoId: string, userId: string,
     return { error: 'Erro interno ao excluir candidato.' }
   }
 }
+
+import { EmpresaSchema } from '@/lib/schemas'
+
+export async function createEmpresaAction(formData: FormData) {
+  const isAdmin = await checkAdmin()
+  if (!isAdmin) {
+    return { error: 'Acesso negado: Ação restrita a administradores.' }
+  }
+
+  const rawData = Object.fromEntries(formData.entries())
+  const result = EmpresaSchema.safeParse(rawData)
+
+  if (!result.success) {
+    return { error: result.error.errors[0].message }
+  }
+
+  const { email, password, nome, cnpj, setor, cidade, estado, site } = result.data
+
+  try {
+    // 1. Criar usuário no Auth
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { role: 'empresa' }
+    })
+
+    if (authError) {
+      return { error: 'Erro ao criar usuário no Auth: ' + authError.message }
+    }
+
+    const userId = authData.user.id
+
+    // 2. Atualizar Role no Profile (O trigger handle_new_user insere como candidato por padrão)
+    const { error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .update({ role: 'empresa' })
+      .eq('id', userId)
+
+    if (profileError) {
+      console.error('Error updating profile role:', profileError)
+      // Não interrompemos aqui, mas o acesso pode falhar se o papel estiver errado
+    }
+
+    // 3. Inserir na tabela de empresas
+    const { error: empresaError } = await supabaseAdmin
+      .from('empresas')
+      .insert({
+        user_id: userId,
+        nome,
+        cnpj: cnpj.replace(/\D/g, ''),
+        setor,
+        cidade,
+        estado,
+        site
+      })
+
+    if (empresaError) {
+      console.error('Error creating empresa record:', empresaError)
+      // Cleanup: Remover usuário se falhar a inserção na tabela
+      await supabaseAdmin.auth.admin.deleteUser(userId)
+      return { error: 'Erro ao salvar dados da empresa: ' + empresaError.message }
+    }
+
+    revalidatePath('/admin/empresas')
+    return { success: true }
+  } catch (error: any) {
+    console.error('Error in createEmpresaAction:', error)
+    return { error: 'Erro interno ao cadastrar empresa.' }
+  }
+}

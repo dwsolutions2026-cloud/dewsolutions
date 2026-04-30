@@ -75,3 +75,19 @@ export const PerfilSchema = z.object({
   cidade: z.string().min(2, "Cidade obrigatória").optional().or(z.literal('')),
   estado: z.string().length(2, "UF deve ter 2 letras").toUpperCase().optional().or(z.literal('')),
 })
+
+export const EmpresaSchema = z.object({
+  nome: z.string().min(3, "Razão Social obrigatória"),
+  email: z.string().email("E-mail inválido"),
+  password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
+  cnpj: z.string().min(14, "CNPJ inválido"),
+  setor: z.string().optional(),
+  site: z.string().url("URL inválida").optional().or(z.literal('')),
+  logradouro: z.string().optional(),
+  numero: z.string().optional(),
+  complemento: z.string().optional(),
+  bairro: z.string().optional(),
+  cep: z.string().optional(),
+  cidade: z.string().min(2, "Cidade obrigatória"),
+  estado: z.string().length(2, "UF deve ter 2 letras").toUpperCase(),
+})
