@@ -98,12 +98,12 @@ export default async function EmpresaDashboard() {
             {candidaturasRecentes.map((cand: any) => (
               <div key={cand.id} className="p-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:bg-muted/50 transition-colors">
                 <div>
-                  <p className="font-semibold text-primary">{cand.candidato.nome}</p>
+                  <p className="font-semibold text-primary">{(Array.isArray(cand.candidato) ? cand.candidato[0] : cand.candidato)?.nome}</p>
                   <p className="text-sm text-muted-foreground">
-                    Candidatou-se a: <span className="font-medium">{cand.vaga.titulo}</span>
+                    Candidatou-se a: <span className="font-medium">{(Array.isArray(cand.vaga) ? cand.vaga[0] : cand.vaga)?.titulo}</span>
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {cand.candidato.cidade} - {cand.candidato.estado} • {new Date(cand.created_at).toLocaleDateString('pt-BR')}
+                    {(Array.isArray(cand.candidato) ? cand.candidato[0] : cand.candidato)?.cidade} - {(Array.isArray(cand.candidato) ? cand.candidato[0] : cand.candidato)?.estado} • {new Date(cand.created_at).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
                 <Link 

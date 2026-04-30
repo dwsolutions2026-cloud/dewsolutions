@@ -81,7 +81,7 @@ export default async function AdminDashboard() {
                 <div>
                   <p className="font-semibold text-primary">{vaga.titulo}</p>
                   <p className="text-sm text-muted-foreground">
-                    {vaga.empresa.nome} • {new Date(vaga.created_at).toLocaleDateString('pt-BR')}
+                    {(Array.isArray(vaga.empresa) ? vaga.empresa[0] : vaga.empresa)?.nome} • {new Date(vaga.created_at).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
                 <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
