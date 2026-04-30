@@ -13,7 +13,8 @@ import {
   ChevronRight,
   UserCircle2,
   FileText,
-  Send
+  Send,
+  PlusCircle
 } from 'lucide-react'
 import { useSidebar } from './SidebarProvider'
 import { useAuth } from '@/components/AuthProvider'
@@ -37,6 +38,12 @@ const CANDIDATO_MENU = [
   { title: 'Candidaturas', href: '/candidato/candidaturas', icon: Send },
 ]
 
+const EMPRESA_MENU = [
+  { title: 'Dashboard', href: '/empresa/dashboard', icon: LayoutDashboard },
+  { title: 'Minhas Vagas', href: '/empresa/vagas', icon: Briefcase },
+  { title: 'Publicar Vaga', href: '/empresa/vagas/nova', icon: PlusCircle },
+]
+
 export function Sidebar() {
   const pathname = usePathname()
   const { isCollapsed, toggleSidebar } = useSidebar()
@@ -45,6 +52,8 @@ export function Sidebar() {
   const supabase = createClient()
 
   const role = user?.user_metadata?.role || 'candidato'
+  const menuItems = role === 'admin' ? ADMIN_MENU : role === 'empresa' ? EMPRESA_MENU : CANDIDATO_MENU
+  const title = role === 'admin' ? 'Administração' : role === 'empresa' ? 'Empresa' : 'Candidato'
 
   useEffect(() => {
     if (role !== 'admin') return
@@ -71,9 +80,6 @@ export function Sidebar() {
     }
   }, [role, supabase])
 
-  const menuItems = role === 'admin' ? ADMIN_MENU : CANDIDATO_MENU
-  const title = role === 'admin' ? 'Administração' : 'Candidato'
-
   return (
     <aside 
       className={`
@@ -98,7 +104,12 @@ export function Sidebar() {
         )}
         
         {menuItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== '/admin/dashboard' && item.href !== '/candidato/minha-area' && pathname.startsWith(item.href))
+          const isActive = pathname === item.href || (
+            item.href !== '/admin/dashboard' && 
+            item.href !== '/candidato/minha-area' && 
+            item.href !== '/empresa/dashboard' && 
+            pathname.startsWith(item.href)
+          )
           const Icon = item.icon
           
           return (
