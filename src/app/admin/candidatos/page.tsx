@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 export default async function AdminCandidatosPage() {
   const supabase = await createClient()
 
-  const { data: empresas, error } = await supabase
+  const { data: rawEmpresas, error } = await supabase
     .from('empresas')
     .select(`
       id,
@@ -30,9 +30,21 @@ export default async function AdminCandidatosPage() {
     `)
     .order('nome')
 
+  // Formatar os dados para garantir que candidato seja um objeto único, não um array
+  const empresas = rawEmpresas?.map(empresa => ({
+    ...empresa,
+    vagas: empresa.vagas.map(vaga => ({
+      ...vaga,
+      candidaturas: vaga.candidaturas.map(candidatura => ({
+        ...candidatura,
+        candidato: Array.isArray(candidatura.candidato) ? candidatura.candidato[0] : candidatura.candidato
+      }))
+    }))
+  }))
+
   return (
     <CandidatosClient
-      empresas={empresas || []}
+      empresas={(empresas as any) || []}
       error={error?.message}
       supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL!}
     />
