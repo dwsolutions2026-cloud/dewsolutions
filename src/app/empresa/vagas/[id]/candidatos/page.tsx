@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
-import { ArrowLeft, Download, FileText, Mail, Phone, MapPin } from 'lucide-react'
+import { ArrowLeft, Download, FileText, Mail, Phone, MapPin, Users } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
