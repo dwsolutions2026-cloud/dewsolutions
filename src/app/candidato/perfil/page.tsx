@@ -74,9 +74,12 @@ export default async function PerfilCandidatoPage() {
               </div>
             </div>
             
-            <button className="w-full py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all opacity-50 cursor-not-allowed">
-              Editar Informações (Em breve)
-            </button>
+            <Link 
+              href="/candidato/perfil/editar"
+              className="w-full py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+            >
+              Editar Informações
+            </Link>
           </div>
         </div>
       </div>

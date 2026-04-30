@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, Building2, Search, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
 import { ESTADOS_BR } from '@/lib/constants'
 
-type ActionState = {
-  error?: string | null;
-  success?: boolean;
-}
+type ActionState = 
+  | { error: string; success?: never } 
+  | { success: boolean; error?: never } 
+  | { error: null; success: false };
 
 const initialState: ActionState = {
   error: null,
