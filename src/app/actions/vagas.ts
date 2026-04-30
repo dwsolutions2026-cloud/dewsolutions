@@ -4,6 +4,8 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 import { checkAdmin } from '@/app/actions/admin'
 
+import { VagaSchema } from '@/lib/schemas'
+
 const getServiceSupabase = () =>
   createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -15,22 +17,31 @@ export async function createVagaAdminAction(formData: FormData) {
   const isAdmin = await checkAdmin()
   if (!isAdmin) return { error: 'Acesso negado' }
 
-  const supabase = getServiceSupabase()
-  const { error } = await supabase.from('vagas').insert({
-    empresa_id: formData.get('empresa_id') as string,
-    titulo: formData.get('titulo') as string,
-    area: formData.get('area') as string,
-    descricao: formData.get('descricao') as string,
-    requisitos: formData.get('requisitos') as string,
-    beneficios: formData.get('beneficios') as string,
-    regime: formData.get('regime') as string,
-    modalidade: formData.get('modalidade') as string,
-    cidade: formData.get('cidade') as string,
-    estado: formData.get('estado') as string,
+  // 1. Zod Validation
+  const parsed = VagaSchema.safeParse({
+    empresa_id: formData.get('empresa_id'),
+    titulo: formData.get('titulo'),
+    area: formData.get('area'),
+    descricao: formData.get('descricao'),
+    requisitos: formData.get('requisitos') || undefined,
+    beneficios: formData.get('beneficios') || undefined,
+    regime: formData.get('regime') || undefined,
+    modalidade: formData.get('modalidade') || undefined,
+    cidade: formData.get('cidade') || undefined,
+    estado: formData.get('estado') || undefined,
     quantidade_vagas: parseInt(formData.get('quantidade_vagas') as string) || 1,
     salario_min: formData.get('salario_min') ? parseFloat(formData.get('salario_min') as string) : null,
     salario_max: formData.get('salario_max') ? parseFloat(formData.get('salario_max') as string) : null,
     exibir_salario: formData.get('exibir_salario') === 'on',
+  })
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message }
+  }
+
+  const supabase = getServiceSupabase()
+  const { error } = await supabase.from('vagas').insert({
+    ...parsed.data,
     status: 'ativa',
   })
 
@@ -65,22 +76,30 @@ export async function updateVagaAdminAction(id: string, formData: FormData) {
   const isAdmin = await checkAdmin()
   if (!isAdmin) return { error: 'Acesso negado' }
 
-  const supabase = getServiceSupabase()
-  const { error } = await supabase.from('vagas').update({
-    titulo: formData.get('titulo') as string,
-    area: formData.get('area') as string,
-    descricao: formData.get('descricao') as string,
-    requisitos: formData.get('requisitos') as string,
-    beneficios: formData.get('beneficios') as string,
-    regime: formData.get('regime') as string,
-    modalidade: formData.get('modalidade') as string,
-    cidade: formData.get('cidade') as string,
-    estado: formData.get('estado') as string,
+  // 1. Zod Validation (reusing the same schema, but ignoring empresa_id if it's not present)
+  // When editing, empresa_id might not be passed because it's disabled or not rendered
+  const parsed = VagaSchema.omit({ empresa_id: true }).safeParse({
+    titulo: formData.get('titulo'),
+    area: formData.get('area'),
+    descricao: formData.get('descricao'),
+    requisitos: formData.get('requisitos') || undefined,
+    beneficios: formData.get('beneficios') || undefined,
+    regime: formData.get('regime') || undefined,
+    modalidade: formData.get('modalidade') || undefined,
+    cidade: formData.get('cidade') || undefined,
+    estado: formData.get('estado') || undefined,
     quantidade_vagas: parseInt(formData.get('quantidade_vagas') as string) || 1,
     salario_min: formData.get('salario_min') ? parseFloat(formData.get('salario_min') as string) : null,
     salario_max: formData.get('salario_max') ? parseFloat(formData.get('salario_max') as string) : null,
     exibir_salario: formData.get('exibir_salario') === 'on',
-  }).eq('id', id)
+  })
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message }
+  }
+
+  const supabase = getServiceSupabase()
+  const { error } = await supabase.from('vagas').update(parsed.data).eq('id', id)
 
   if (error) return { error: error.message }
   revalidatePath('/admin/vagas')

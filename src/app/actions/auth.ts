@@ -71,21 +71,29 @@ export async function loginAction(formData: FormData) {
   redirect('/login') // Trigger middleware to redirect correctly
 }
 
+import { CandidatoRegistrationSchema } from '@/lib/schemas'
+
 export async function registerCandidateAction(formData: FormData) {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const passwordConfirm = formData.get('passwordConfirm') as string
-  const nome = formData.get('nome') as string
+  // 1. Zod Validation
+  const parsed = CandidatoRegistrationSchema.safeParse({
+    nome: formData.get('nome'),
+    email: formData.get('email'),
+    telefone: formData.get('telefone') || undefined,
+    password: formData.get('password'),
+    passwordConfirm: formData.get('passwordConfirm'),
+    cidade: formData.get('cidade') || undefined,
+    estado: formData.get('estado') || undefined,
+    lgpd: formData.get('lgpd'),
+  })
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message }
+  }
+
+  const { email, password, nome, telefone, cidade, estado, lgpd } = parsed.data
+  const lgpd_aceito = lgpd === 'on'
+
   const curriculo = formData.get('curriculo') as File | null
-  const lgpd_aceito = formData.get('lgpd') === 'on'
-
-  if (!email || !password || !nome || !lgpd_aceito) {
-    return { error: 'Preencha os campos obrigatórios e aceite a LGPD' }
-  }
-
-  if (password !== passwordConfirm) {
-    return { error: 'As senhas não coincidem' }
-  }
 
   // Só valida o tipo se o arquivo for enviado
   if (curriculo && curriculo.size > 0 && curriculo.type !== 'application/pdf') {

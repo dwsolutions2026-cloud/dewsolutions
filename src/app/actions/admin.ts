@@ -3,6 +3,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 
+import { createClient as createServerClient } from '@/utils/supabase/server'
+
 // Use service role to have admin privileges (delete users)
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -15,7 +17,26 @@ const supabaseAdmin = createClient(
   }
 )
 
+export async function checkAdmin() {
+  const supabase = await createServerClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return false
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  return profile?.role === 'admin'
+}
+
 export async function deleteCandidatoAction(candidatoId: string, userId: string, curriculoUrl: string | null) {
+  const isAdmin = await checkAdmin()
+  if (!isAdmin) {
+    return { error: 'Acesso negado: Ação restrita a administradores.' }
+  }
+
   try {
     // 1. Delete curriculum from storage if exists
     if (curriculoUrl) {

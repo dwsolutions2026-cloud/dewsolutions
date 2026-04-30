@@ -66,20 +66,31 @@ export async function candidatarAction(vagaId: string) {
   return { success: true }
 }
 
+import { ConvocacaoSchema } from '@/lib/schemas'
+
 export async function convocarEntrevistaAction(formData: FormData) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Não autenticado' }
 
-  const candidaturaId = formData.get('candidatura_id') as string
-  const dataEntrevista = formData.get('data_entrevista') as string
-  const localEntrevista = formData.get('local_entrevista') as string
-  const observacao = formData.get('observacao') as string
-
-  if (!candidaturaId || !dataEntrevista || !localEntrevista) {
-    return { error: 'Preencha todos os campos obrigatórios' }
+  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+  if (!profile || (profile.role !== 'admin' && profile.role !== 'empresa')) {
+    return { error: 'Acesso negado: apenas empresas e administradores podem convocar candidatos' }
   }
 
+  // 1. Zod Validation
+  const parsed = ConvocacaoSchema.safeParse({
+    candidatura_id: formData.get('candidatura_id'),
+    data_entrevista: formData.get('data_entrevista'),
+    local_entrevista: formData.get('local_entrevista'),
+    observacao: formData.get('observacao') || undefined,
+  })
+
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message }
+  }
+
+  const { candidatura_id, data_entrevista, local_entrevista, observacao } = parsed.data
   const admin = getAdmin()
 
   // Buscar candidatura + dados completos
@@ -88,49 +99,59 @@ export async function convocarEntrevistaAction(formData: FormData) {
     .select(`
       id,
       candidato:candidatos (nome, email),
-      vaga:vagas (titulo, empresa:empresas (nome))
+      vaga:vagas (titulo, empresa_id, empresa:empresas (nome))
     `)
-    .eq('id', candidaturaId)
+    .eq('id', candidatura_id)
     .single()
 
   if (fetchError || !candidatura) return { error: 'Candidatura não encontrada' }
+
+  // Se for empresa, garantir que a vaga pertence a ela
+  if (profile.role === 'empresa') {
+    const { data: empresa } = await supabase.from('empresas').select('id').eq('user_id', user.id).single()
+    const vaga = candidatura.vaga as any
+    if (!empresa || vaga.empresa_id !== empresa.id) {
+      return { error: 'Acesso negado: esta vaga não pertence à sua empresa' }
+    }
+  }
 
   // Atualizar status para entrevista
   const { error: updateError } = await admin
     .from('candidaturas')
     .update({
       status: 'entrevista',
-      data_entrevista: dataEntrevista,
-      local_entrevista: localEntrevista,
+      data_entrevista: data_entrevista,
+      local_entrevista: local_entrevista,
       observacao: observacao || null,
     })
-    .eq('id', candidaturaId)
+    .eq('id', candidatura_id)
 
   if (updateError) return { error: updateError.message }
 
   // Formatar data para o e-mail
-  const dataFormatada = new Date(dataEntrevista).toLocaleString('pt-BR', {
+  const dataFormatada = new Date(data_entrevista).toLocaleString('pt-BR', {
     dateStyle: 'full',
     timeStyle: 'short',
     timeZone: 'America/Sao_Paulo',
   })
 
   const cand = candidatura.candidato as any
-  const vaga = candidatura.vaga as any
-  const empresa = vaga?.empresa as any
+  const vagaRef = candidatura.vaga as any
+  const empresaRef = vagaRef?.empresa as any
 
   // Enviar e-mail de convocação
   sendConvocacaoEntrevista(
     cand.email,
     cand.nome,
-    vaga?.titulo || 'Vaga',
-    empresa?.nome || 'Empresa Parceira',
+    vagaRef?.titulo || 'Vaga',
+    empresaRef?.nome || 'Empresa Parceira',
     dataFormatada,
-    localEntrevista,
+    local_entrevista,
     observacao || undefined
   ).catch(console.error)
 
   revalidatePath('/admin/candidatos')
+  revalidatePath('/empresa/candidatos')
   return { success: true }
 }
 
@@ -138,7 +159,28 @@ export async function atualizarStatusCandidaturaAction(
   candidaturaId: string,
   status: 'inscrito' | 'em_analise' | 'entrevista' | 'aprovado' | 'reprovado'
 ) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Não autenticado' }
+
+  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+  if (!profile || (profile.role !== 'admin' && profile.role !== 'empresa')) {
+    return { error: 'Acesso negado: apenas empresas e administradores podem atualizar status' }
+  }
+
   const admin = getAdmin()
+  
+  // Se for empresa, precisa validar a posse da vaga (mesma lógica acima, omitindo por brevidade ou fazer query com RLS normal)
+  // Como usamos o admin client, temos que validar.
+  if (profile.role === 'empresa') {
+    const { data: candidatura } = await admin.from('candidaturas').select('vaga:vagas(empresa_id)').eq('id', candidaturaId).single()
+    const { data: empresa } = await supabase.from('empresas').select('id').eq('user_id', user.id).single()
+    const vaga = candidatura?.vaga as any
+    if (!empresa || !vaga || vaga.empresa_id !== empresa.id) {
+      return { error: 'Acesso negado' }
+    }
+  }
+
   const { error } = await admin
     .from('candidaturas')
     .update({ status })
@@ -146,5 +188,6 @@ export async function atualizarStatusCandidaturaAction(
 
   if (error) return { error: error.message }
   revalidatePath('/admin/candidatos')
+  revalidatePath('/empresa/candidatos')
   return { success: true }
 }
