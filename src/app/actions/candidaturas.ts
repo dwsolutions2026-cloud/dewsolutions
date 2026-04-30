@@ -87,7 +87,7 @@ export async function convocarEntrevistaAction(formData: FormData) {
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message }
+    return { error: parsed.error.issues[0].message }
   }
 
   const { candidatura_id, data_entrevista, local_entrevista, observacao } = parsed.data

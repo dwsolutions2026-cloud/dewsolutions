@@ -103,7 +103,7 @@ export async function registerCandidateAction(formData: FormData) {
   })
 
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message }
+    return { error: parsed.error.issues[0].message }
   }
 
   const { email, password, nome, telefone, cidade, estado, lgpd } = parsed.data

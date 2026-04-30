@@ -79,7 +79,7 @@ export async function createEmpresaAction(formData: FormData) {
   const result = EmpresaSchema.safeParse(rawData)
 
   if (!result.success) {
-    return { error: result.error.errors[0].message }
+    return { error: result.error.issues[0].message }
   }
 
   const { email, password, nome, cnpj, setor, cidade, estado, site } = result.data
