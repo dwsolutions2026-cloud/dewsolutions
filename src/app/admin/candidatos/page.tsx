@@ -23,7 +23,8 @@ export default async function AdminCandidatosPage() {
             id,
             nome,
             email,
-            curriculo_url
+            curriculo_url,
+            user_id
           )
         )
       )

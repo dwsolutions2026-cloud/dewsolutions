@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Users, Building2, Briefcase, FileText, CalendarClock } from 'lucide-react'
 import Link from 'next/link'
 import { ModalConvocacao } from '@/components/ModalConvocacao'
+import { DeleteCandidatoButton } from '@/components/admin/DeleteCandidatoButton'
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   inscrito: { label: 'Inscrito', color: 'bg-blue-100 text-blue-700' },
@@ -24,6 +25,7 @@ interface Candidatura {
     nome: string
     email: string
     curriculo_url: string | null
+    user_id: string
   }
 }
 
@@ -170,6 +172,13 @@ export function CandidatosClient({ empresas, error, supabaseUrl }: Props) {
                                     {c.status === 'entrevista' ? 'Reagendar' : 'Convocar'}
                                   </button>
                                 )}
+
+                                <DeleteCandidatoButton 
+                                  candidatoId={c.candidato.id}
+                                  userId={c.candidato.user_id}
+                                  curriculoUrl={c.candidato.curriculo_url}
+                                  nome={c.candidato.nome}
+                                />
                               </div>
                             </div>
                           )

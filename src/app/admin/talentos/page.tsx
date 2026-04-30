@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { Users, Search, MapPin, FileText, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
+import { DeleteCandidatoButton } from '@/components/admin/DeleteCandidatoButton'
 
 export default async function AdminTalentosPage({
   searchParams,
@@ -98,13 +99,21 @@ export default async function AdminTalentosPage({
                       <span className="text-sm font-medium">{talento.candidaturas[0]?.count || 0}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <Link 
-                        href={`/admin/talentos/${talento.id}`}
-                        className="inline-flex items-center gap-1 text-accent hover:text-accent/80 font-medium text-sm"
-                      >
-                        Ver Perfil
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </Link>
+                      <div className="flex items-center justify-end gap-2">
+                        <Link 
+                          href={`/admin/talentos/${talento.id}`}
+                          className="p-1.5 text-muted-foreground hover:text-accent rounded-md hover:bg-accent/5 transition-colors"
+                          title="Ver Perfil"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Link>
+                        <DeleteCandidatoButton 
+                          candidatoId={talento.id}
+                          userId={talento.user_id}
+                          curriculoUrl={talento.curriculo_url}
+                          nome={talento.nome}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}
