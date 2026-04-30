@@ -37,7 +37,7 @@ export default async function AdminEmpresasPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
         {error ? (
           <div className="p-8 text-center text-red-500">
             <p className="font-bold">Erro ao carregar empresas:</p>

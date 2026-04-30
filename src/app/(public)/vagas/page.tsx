@@ -45,7 +45,7 @@ export default async function VagasPage({
   return (
     <div className="bg-muted min-h-[calc(100vh-140px)] py-8 px-4">
       <div className="container mx-auto max-w-5xl">
-        <div className="mb-8 bg-white p-6 rounded-xl shadow-sm border border-border">
+        <div className="mb-8 bg-card p-6 rounded-xl shadow-sm border border-border">
           <h1 className="text-2xl font-bold text-primary mb-6">Buscar Vagas</h1>
           
           <form className="flex flex-col md:flex-row gap-4" action="/vagas" method="GET">
@@ -100,7 +100,7 @@ export default async function VagasPage({
           )}
 
           {!error && (!vagas || vagas.length === 0) && (
-            <div className="bg-white p-12 rounded-xl border border-border text-center">
+            <div className="bg-card p-12 rounded-xl border border-border text-center">
               <h3 className="text-lg font-medium text-primary mb-2">Nenhuma vaga encontrada</h3>
               <p className="text-muted-foreground">Tente ajustar seus filtros de busca para encontrar mais resultados.</p>
             </div>

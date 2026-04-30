@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-140px)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-sm border border-border">
+      <div className="w-full max-w-md space-y-8 bg-card p-8 rounded-xl shadow-sm border border-border">
         <div className="text-center">
           <Briefcase className="mx-auto h-12 w-12 text-accent" />
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
@@ -49,7 +49,7 @@ export default function LoginPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className="mt-1 block w-full rounded-md border border-border px-3 py-2 placeholder-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground placeholder-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent sm:text-sm"
                 placeholder="seu@email.com"
               />
             </div>
@@ -63,7 +63,7 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="mt-1 block w-full rounded-md border border-border px-3 py-2 placeholder-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground placeholder-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent sm:text-sm"
                 placeholder="••••••••"
               />
             </div>
@@ -85,14 +85,14 @@ export default function LoginPage() {
             <div className="w-full border-t border-border"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-muted-foreground uppercase">Ou entrar com</span>
+            <span className="bg-card px-2 text-muted-foreground uppercase">Ou entrar com</span>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <button
             onClick={() => signInWithGoogle()}
-            className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-white px-3 py-3 text-sm font-semibold text-primary hover:bg-muted transition-colors shadow-sm"
+            className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-card px-3 py-3 text-sm font-semibold text-primary hover:bg-muted transition-colors shadow-sm"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path

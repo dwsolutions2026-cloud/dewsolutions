@@ -22,7 +22,7 @@ export default function CadastroPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-140px)] items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-muted">
-      <div className="w-full max-w-2xl space-y-8 bg-white p-8 rounded-xl shadow-sm border border-border">
+      <div className="w-full max-w-2xl space-y-8 bg-card p-8 rounded-xl shadow-sm border border-border">
         <div className="text-center">
           <UserPlus className="mx-auto h-12 w-12 text-accent" />
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
@@ -45,42 +45,42 @@ export default function CadastroPage() {
               <label htmlFor="nome" className="block text-sm font-medium text-primary">
                 Nome Completo
               </label>
-              <input id="nome" name="nome" type="text" required className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="nome" name="nome" type="text" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-primary">
                 E-mail
               </label>
-              <input id="email" name="email" type="email" required className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="email" name="email" type="email" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>
               <label htmlFor="telefone" className="block text-sm font-medium text-primary">
                 Telefone (WhatsApp)
               </label>
-              <input id="telefone" name="telefone" type="tel" className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="telefone" name="telefone" type="tel" className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-primary">
                 Senha
               </label>
-              <input id="password" name="password" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="password" name="password" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>
               <label htmlFor="passwordConfirm" className="block text-sm font-medium text-primary">
                 Confirmação de Senha
               </label>
-              <input id="passwordConfirm" name="passwordConfirm" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="passwordConfirm" name="passwordConfirm" type="password" required className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>
               <label htmlFor="cidade" className="block text-sm font-medium text-primary">
                 Cidade
               </label>
-              <input id="cidade" name="cidade" type="text" className="mt-1 block w-full rounded-md border border-border px-3 py-2" />
+              <input id="cidade" name="cidade" type="text" className="mt-1 block w-full rounded-md border border-border px-3 py-2 bg-card text-foreground" />
             </div>
 
             <div>

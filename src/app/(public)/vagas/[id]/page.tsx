@@ -68,7 +68,7 @@ export default async function VagaDetailsPage({
   return (
     <div className="bg-muted min-h-[calc(100vh-140px)] py-8 px-4">
       <div className="container mx-auto max-w-4xl">
-        <div className="bg-white rounded-xl shadow-sm border border-border overflow-hidden mb-8">
+        <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden mb-8">
           {/* Cabecalho da Vaga */}
           <div className="p-8 border-b border-border flex flex-col md:flex-row items-start gap-6">
             <div className="w-24 h-24 rounded-lg bg-muted flex items-center justify-center overflow-hidden shrink-0 border border-border">

@@ -36,7 +36,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
+      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-lg">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center gap-3">
@@ -56,7 +56,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>
+            <div className="bg-red-500/10 text-red-500 text-sm p-3 rounded-lg border border-red-500/20">{error}</div>
           )}
 
           <div>
@@ -68,7 +68,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
               name="data_entrevista"
               type="datetime-local"
               required
-              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
+              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
             />
           </div>
 
@@ -82,7 +82,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
               type="text"
               required
               placeholder="Ex: Rua das Flores, 100 – Sala 5 / ou link do Meet"
-              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
+              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none"
             />
           </div>
 
@@ -95,11 +95,11 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
               name="observacao"
               rows={3}
               placeholder="Ex: Trazer RG e currículo impresso. Vestimenta social."
-              className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none resize-none"
+              className="w-full border border-border bg-card text-foreground rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent focus:border-accent outline-none resize-none"
             />
           </div>
 
-          <p className="text-xs text-muted-foreground bg-amber-50 border border-amber-100 p-3 rounded-lg">
+          <p className="text-xs text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg">
             📧 Um e-mail de convocação será enviado automaticamente para <strong>{nomeCandidato}</strong> com todos os detalhes.
           </p>
 

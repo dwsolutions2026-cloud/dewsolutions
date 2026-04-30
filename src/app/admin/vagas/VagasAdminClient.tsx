@@ -70,7 +70,7 @@ function VagaForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-accent/30 shadow-sm p-6 space-y-5">
+    <form onSubmit={handleSubmit} className="bg-card rounded-2xl border border-accent/30 shadow-sm p-6 space-y-5">
       <h3 className="font-serif font-bold text-lg text-primary">
         {vaga ? 'Editar Vaga' : 'Nova Vaga'}
       </h3>
@@ -82,7 +82,7 @@ function VagaForm({
         {!vaga && (
           <div className="md:col-span-2">
             <label className="text-xs font-medium text-muted-foreground">Empresa *</label>
-            <select name="empresa_id" required defaultValue="" className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-accent outline-none">
+            <select name="empresa_id" required defaultValue="" className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none">
               <option value="" disabled>Selecione a empresa...</option>
               {empresas.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
             </select>
@@ -98,7 +98,7 @@ function VagaForm({
         {/* Área */}
         <div>
           <label className="text-xs font-medium text-muted-foreground">Área de Trabalho *</label>
-          <select name="area" required defaultValue={vaga?.area || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-accent outline-none">
+          <select name="area" required defaultValue={vaga?.area || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none">
             <option value="" disabled>Selecione a área...</option>
             {AREAS_TRABALHO.map(a => <option key={a} value={a}>{a}</option>)}
           </select>
@@ -113,7 +113,7 @@ function VagaForm({
         {/* Regime */}
         <div>
           <label className="text-xs font-medium text-muted-foreground">Regime de Contratação</label>
-          <select name="regime" defaultValue={vaga?.regime || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-accent outline-none">
+          <select name="regime" defaultValue={vaga?.regime || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none">
             <option value="">Selecione...</option>
             {REGIMES.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
@@ -122,7 +122,7 @@ function VagaForm({
         {/* Modalidade */}
         <div>
           <label className="text-xs font-medium text-muted-foreground">Modalidade</label>
-          <select name="modalidade" defaultValue={vaga?.modalidade || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-accent outline-none">
+          <select name="modalidade" defaultValue={vaga?.modalidade || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none">
             <option value="">Selecione...</option>
             {MODALIDADES.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
@@ -137,7 +137,7 @@ function VagaForm({
         {/* Estado */}
         <div>
           <label className="text-xs font-medium text-muted-foreground">Estado</label>
-          <select name="estado" defaultValue={vaga?.estado || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-accent outline-none">
+          <select name="estado" defaultValue={vaga?.estado || ''} className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none">
             <option value="">Selecione...</option>
             {ESTADOS_BR.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
@@ -163,19 +163,19 @@ function VagaForm({
         {/* Descrição */}
         <div className="md:col-span-2">
           <label className="text-xs font-medium text-muted-foreground">Descrição da Vaga *</label>
-          <textarea name="descricao" required rows={4} defaultValue={vaga?.descricao} placeholder="Descreva a função, responsabilidades e o dia a dia do cargo..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent outline-none resize-none" />
+          <textarea name="descricao" required rows={4} defaultValue={vaga?.descricao} placeholder="Descreva a função, responsabilidades e o dia a dia do cargo..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none resize-none" />
         </div>
 
         {/* Requisitos */}
         <div className="md:col-span-2">
           <label className="text-xs font-medium text-muted-foreground">Requisitos</label>
-          <textarea name="requisitos" rows={3} defaultValue={vaga?.requisitos || ''} placeholder="Ex: Ensino superior completo, experiência mínima de 2 anos..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent outline-none resize-none" />
+          <textarea name="requisitos" rows={3} defaultValue={vaga?.requisitos || ''} placeholder="Ex: Ensino superior completo, experiência mínima de 2 anos..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none resize-none" />
         </div>
 
         {/* Benefícios */}
         <div className="md:col-span-2">
           <label className="text-xs font-medium text-muted-foreground">Benefícios</label>
-          <textarea name="beneficios" rows={2} defaultValue={vaga?.beneficios || ''} placeholder="Ex: VT, VR, Plano de Saúde, Gympass..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-accent outline-none resize-none" />
+          <textarea name="beneficios" rows={2} defaultValue={vaga?.beneficios || ''} placeholder="Ex: VT, VR, Plano de Saúde, Gympass..." className="mt-1 w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:ring-2 focus:ring-accent outline-none resize-none" />
         </div>
       </div>
 
@@ -238,7 +238,7 @@ export function VagasAdminClient({ vagas, empresas, error }: Props) {
       )}
 
       {/* Tabela */}
-      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
         {error ? (
           <div className="p-8 text-center text-red-500">
             <p className="font-bold">Erro ao carregar vagas:</p>

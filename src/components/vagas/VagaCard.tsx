@@ -30,7 +30,7 @@ export function VagaCard({ vaga }: VagaCardProps) {
 
   return (
     <Link href={`/vagas/${vaga.id}`} className="block">
-      <div className="bg-white p-6 rounded-xl border border-border hover:border-accent hover:shadow-md transition-all duration-200">
+      <div className="bg-card p-6 rounded-xl border border-border hover:border-accent hover:shadow-md transition-all duration-200">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-md bg-muted flex items-center justify-center overflow-hidden shrink-0 border border-border">
             {vaga.empresa.logo_url ? (

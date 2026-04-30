@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
+        <div className="bg-card p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-accent/10 text-accent rounded-lg flex items-center justify-center">
             <Building2 className="w-6 h-6" />
           </div>
@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
+        <div className="bg-card p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
             <Briefcase className="w-6 h-6" />
           </div>
@@ -45,7 +45,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
+        <div className="bg-card p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
             <Users className="w-6 h-6" />
           </div>
@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
+        <div className="bg-card p-6 rounded-xl border border-border shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
             <TrendingUp className="w-6 h-6" />
           </div>
@@ -66,7 +66,7 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
         <div className="p-6 border-b border-border flex justify-between items-center">
           <h2 className="text-xl font-bold font-serif text-primary">Vagas Recentes</h2>
           <Link href="/admin/vagas" className="text-sm font-medium text-accent hover:underline">
