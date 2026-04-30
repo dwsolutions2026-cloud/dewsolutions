@@ -7,8 +7,13 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, Building2, Search, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
 import { ESTADOS_BR } from '@/lib/constants'
 
-const initialState = {
-  error: null as string | null,
+type ActionState = {
+  error?: string | null;
+  success?: boolean;
+}
+
+const initialState: ActionState = {
+  error: null,
   success: false
 }
 
@@ -60,9 +65,9 @@ interface EmpresaData {
 export default function NovaEmpresaPage() {
   const router = useRouter()
   const [state, formAction, pending] = useActionState(
-    async (prevState: any, formData: FormData) => {
+    async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
       const result = await createEmpresaAction(formData)
-      return result || { error: null }
+      return result || { error: null, success: false }
     },
     initialState
   )
