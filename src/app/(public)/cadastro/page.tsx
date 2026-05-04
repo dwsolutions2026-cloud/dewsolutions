@@ -56,7 +56,7 @@ export default function CadastroPage() {
       <div className="w-full max-w-md space-y-6 sm:space-y-8">
         <div className="text-center space-y-4 sm:space-y-6">
           <div className="flex justify-center">
-            <Logo width={140} height={44} />
+            <Logo scale={1} />
           </div>
           <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-black text-primary tracking-tight">Crie sua conta</h1>

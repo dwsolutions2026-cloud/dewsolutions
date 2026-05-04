@@ -1,173 +1,81 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-@custom-variant dark (&:where(.dark, .dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #F5F5F5;
-  --foreground: #0D0D0D;
+  --background: 0 0% 5%;
+  --foreground: 0 0% 98%;
   
-  --card: #FFFFFF;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 98%;
   
-  --primary: #0D0D0D;
-  --primary-foreground: #F5F5F5;
+  --popover: 0 0% 5%;
+  --popover-foreground: 0 0% 98%;
   
-  --accent: #D4AF37;
-  --accent-foreground: #0D0D0D;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
   
-  --muted: #E5E5E5;
-  --muted-foreground: #525252;
-
-  --border: #D4D4D4;
-}
-
-.dark {
-  --background: #0D0D0D;
-  --foreground: #F5F5F5;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 98%;
   
-  --card: #171717;
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 65%;
   
-  --primary: #F5F5F5;
-  --primary-foreground: #0D0D0D;
+  --accent: 40 45% 56%; /* Gold: #c5a059 */
+  --accent-foreground: 0 0% 98%;
   
-  --accent: #D4AF37;
-  --accent-foreground: #0D0D0D;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
   
-  --muted: #1A1A1A;
-  --muted-foreground: #A3A3A3;
-
-  --border: #262626;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 40 45% 56%;
   
-  --font-sans: var(--font-montserrat);
-  --font-serif: var(--font-montserrat);
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-}
-
-html {
-  scroll-behavior: smooth;
+  --radius: 0.75rem;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  background-color: #0c0c0c;
+  color: #f5f5f5;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6, .font-serif {
-  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  font-weight: 700;
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Playfair Display', serif;
 }
 
-/* Mobile-first button styles */
-button, [role="button"] {
-  min-height: 44px;
-  @apply transition-all duration-200 active:scale-95;
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
 }
 
-/* Input and form styles */
-input, textarea, select {
-  min-height: 44px;
-  @apply text-base;
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(18, 18, 18, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Improve iOS keyboard appearance */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-textarea {
-  @apply text-base;
+.gold-gradient {
+  background: linear-gradient(135deg, #c5a059 0%, #ecd093 50%, #c5a059 100%);
 }
 
-/* Ensure images don't exceed viewport on mobile */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.gold-text-gradient {
+  background: linear-gradient(135deg, #c5a059 0%, #ecd093 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--muted);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
-}
-
-/* Animation utilities */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFromBottom {
-  from {
-    transform: translateY(16px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFromTop {
-  from {
-    transform: translateY(-16px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Utility classes for animations */
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Safe area support for notched devices */
-@supports (max-width: max(100vw, 100%)) {
-  body {
-    padding-left: max(0px, env(safe-area-inset-left));
-    padding-right: max(0px, env(safe-area-inset-right));
-    padding-top: max(0px, env(safe-area-inset-top));
-    padding-bottom: max(0px, env(safe-area-inset-bottom));
-  }
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
