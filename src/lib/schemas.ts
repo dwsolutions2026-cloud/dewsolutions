@@ -1,4 +1,9 @@
 import { z } from 'zod'
+import { getSafeHttpUrl } from '@/lib/security'
+
+const safeHttpUrl = z.string().refine((value) => !!getSafeHttpUrl(value), {
+  message: "URL inválida",
+})
 
 export const VagaSchema = z.object({
   empresa_id: z.string().uuid("ID da empresa inválido"),
@@ -25,10 +30,10 @@ export const CandidatoRegistrationSchema = z.object({
   passwordConfirm: z.string(),
   cidade: z.string().optional(),
   estado: z.string().max(2).optional(),
-  lgpd: z.string().refine(val => val === 'on', {
+  lgpd: z.string().refine((val) => val === 'on', {
     message: "Você deve aceitar os termos de privacidade"
   }),
-}).refine(data => data.password === data.passwordConfirm, {
+}).refine((data) => data.password === data.passwordConfirm, {
   message: "As senhas não coincidem",
   path: ["passwordConfirm"],
 })
@@ -60,8 +65,8 @@ export const IdiomaSchema = z.object({
 })
 
 export const CurriculoJsonSchema = z.object({
-  linkedin: z.string().url("URL do LinkedIn inválida").optional().or(z.literal('')),
-  github: z.string().url("URL do GitHub inválida").optional().or(z.literal('')),
+  linkedin: safeHttpUrl.optional().or(z.literal('')),
+  github: safeHttpUrl.optional().or(z.literal('')),
   objetivo: z.string().max(300, "Máximo de 300 caracteres").optional(),
   experiencias: z.array(ExperienciaSchema),
   formacoes: z.array(FormacaoSchema),
@@ -82,7 +87,7 @@ export const EmpresaSchema = z.object({
   password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
   cnpj: z.string().min(14, "CNPJ inválido"),
   setor: z.string().optional(),
-  site: z.string().url("URL inválida").optional().or(z.literal('')),
+  site: safeHttpUrl.optional().or(z.literal('')),
   logradouro: z.string().optional(),
   numero: z.string().optional(),
   complemento: z.string().optional(),
@@ -100,7 +105,7 @@ export const OportunidadeLeadSchema = z.object({
   cargo_vaga: z.string().min(2, "Cargo da vaga é obrigatório"),
   cidade: z.string().optional().or(z.literal('')),
   mensagem: z.string().optional().or(z.literal('')),
-  website: z.string().optional(), // Honeypot
+  website: z.string().optional(),
 })
 
 export const ConfigSiteSchema = z.object({
@@ -109,4 +114,3 @@ export const ConfigSiteSchema = z.object({
   prazo_retorno_texto: z.string().min(5, "Texto de prazo muito curto"),
   admin_email_notificacao: z.string().email("E-mail de notificação inválido"),
 })
-

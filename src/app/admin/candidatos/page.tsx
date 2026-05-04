@@ -34,14 +34,11 @@ export default async function AdminCandidatosPage() {
       )
     `)
 
-  const { data: { publicUrl: supabaseUrl } } = supabase.storage.from('curriculos').getPublicUrl('')
-
   return (
     <div className="animate-in fade-in duration-700">
       <CandidatosClient 
         empresas={empresas || []} 
-        error={error?.message} 
-        supabaseUrl={supabaseUrl}
+        error={error?.message}
       />
     </div>
   )

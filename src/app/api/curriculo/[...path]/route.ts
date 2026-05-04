@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createServerClient } from '@/utils/supabase/server'
+import { isUuidPdfPath } from '@/lib/security'
 
 const getAdmin = () =>
   createClient(
@@ -22,6 +23,37 @@ export async function GET(
   }
 
   const filePath = path.join('/')
+  if (!isUuidPdfPath(filePath)) {
+    return NextResponse.json({ error: 'Arquivo inválido' }, { status: 400 })
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  const role = profile?.role
+  const fileUserId = filePath.replace(/\.pdf$/i, '')
+  let isAuthorized = role === 'admin'
+
+  if (!isAuthorized && role === 'candidato') {
+    isAuthorized = fileUserId === user.id
+  }
+
+  if (!isAuthorized && role === 'empresa') {
+    const { data: candidato } = await supabase
+      .from('candidatos')
+      .select('id')
+      .eq('user_id', fileUserId)
+      .maybeSingle()
+
+    isAuthorized = !!candidato
+  }
+
+  if (!isAuthorized) {
+    return NextResponse.json({ error: 'Acesso negado' }, { status: 403 })
+  }
 
   const admin = getAdmin()
   const { data, error } = await admin.storage

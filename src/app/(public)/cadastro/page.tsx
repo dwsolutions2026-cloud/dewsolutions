@@ -107,6 +107,37 @@ export default function CadastroPage() {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label className="text-[9px] sm:text-xs font-black text-muted-foreground uppercase tracking-widest px-2">Confirmar Senha</label>
+              <div className="relative group">
+                <Lock className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                <input
+                  name="passwordConfirm"
+                  type="password"
+                  required
+                  className={inputClass}
+                  placeholder="Repita sua senha"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 rounded-xl border border-border/50 bg-muted/30 p-4">
+              <input
+                id="lgpd"
+                name="lgpd"
+                type="checkbox"
+                required
+                className="mt-1 h-4 w-4 rounded border-border text-accent focus:ring-accent"
+              />
+              <label htmlFor="lgpd" className="text-xs font-medium leading-relaxed text-muted-foreground">
+                Estou de acordo com a{' '}
+                <Link href="/privacidade" className="text-accent underline">
+                  Política de Privacidade
+                </Link>
+                {' '}e autorizo o tratamento dos meus dados para fins de recrutamento e contato.
+              </label>
+            </div>
+
             {state.error && (
               <div className="p-3 sm:p-4 bg-red-50 dark:bg-red-950/10 border border-red-200 dark:border-red-900/20 rounded-lg sm:rounded-xl flex items-center gap-3 text-red-600 dark:text-red-500 animate-in shake duration-500">
                 <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 shrink-0" />

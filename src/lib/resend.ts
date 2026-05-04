@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import { escapeHtml } from '@/lib/security'
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -25,31 +26,24 @@ function baseTemplate(content: string) {
         <tr>
           <td align="center">
             <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-              
-              <!-- Header -->
               <tr>
                 <td style="background:#0D0D0D;padding:32px 40px;text-align:center;">
                   <img src="${APP_URL}/logo-branco.png" alt="D&W Solutions" style="height:60px;width:auto;display:block;margin:0 auto;" />
                 </td>
               </tr>
-
-              <!-- Content -->
               <tr>
                 <td style="padding:40px;">
                   ${content}
                 </td>
               </tr>
-
-              <!-- Footer -->
               <tr>
                 <td style="background:#f9f9f9;padding:24px 40px;text-align:center;border-top:1px solid #eee;">
                   <p style="margin:0;color:#999;font-size:12px;">
-                    © ${new Date().getFullYear()} D&amp;W Solutions — Soluções em Recrutamento e Seleção
+                    © ${new Date().getFullYear()} D&amp;W Solutions
                   </p>
                   <p style="margin:6px 0 0;color:#bbb;font-size:11px;">Este e-mail foi enviado automaticamente. Não responda.</p>
                 </td>
               </tr>
-
             </table>
           </td>
         </tr>
@@ -66,35 +60,31 @@ export async function sendCompanyCredentials(
 ) {
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Bem-vindo à D&amp;W Solutions!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${nomeEmpresa}</strong>! Sua conta de empresa parceira foi criada com sucesso.</p>
-
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeEmpresa)}</strong>! Sua conta de empresa parceira foi criada com sucesso.</p>
     <p style="margin:0 0 12px;color:#444;font-size:14px;">Utilize as credenciais abaixo para acessar o portal e publicar suas vagas:</p>
-
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:1px solid #e8e0d0;border-radius:8px;margin:0 0 28px;">
       <tr>
         <td style="padding:20px 24px;">
           <p style="margin:0 0 12px;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">E-MAIL DE ACESSO</span>
-            <strong style="color:#0D0D0D;">${email}</strong>
+            <strong style="color:#0D0D0D;">${escapeHtml(email)}</strong>
           </p>
           <p style="margin:0;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">SENHA PROVISÓRIA</span>
-            <strong style="color:#0D0D0D;font-size:18px;letter-spacing:2px;">${temporaryPassword}</strong>
+            <strong style="color:#0D0D0D;font-size:18px;letter-spacing:2px;">${escapeHtml(temporaryPassword)}</strong>
           </p>
         </td>
       </tr>
     </table>
-
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
           <a href="${APP_URL}/login" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;">
-            Acessar o Portal →
+            Acessar o Portal
           </a>
         </td>
       </tr>
     </table>
-
     <p style="margin:28px 0 0;color:#999;font-size:12px;text-align:center;">
       Recomendamos alterar sua senha após o primeiro acesso.
     </p>
@@ -104,7 +94,7 @@ export async function sendCompanyCredentials(
     await transporter.sendMail({
       from: FROM,
       to: email,
-      subject: '🎯 Suas credenciais de acesso — D&W Solutions',
+      subject: 'Suas credenciais de acesso - D&W Solutions',
       html: baseTemplate(content),
     })
     return { success: true }
@@ -117,8 +107,7 @@ export async function sendCompanyCredentials(
 export async function sendWelcomeEmail(email: string, nome: string) {
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Seu cadastro foi realizado!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${nome}</strong>! Sua conta foi criada com sucesso na plataforma D&amp;W Solutions.</p>
-
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nome)}</strong>! Sua conta foi criada com sucesso na plataforma D&amp;W Solutions.</p>
     <p style="margin:0 0 20px;color:#444;font-size:14px;">Agora você pode:</p>
     <ul style="margin:0 0 28px;padding:0 0 0 20px;color:#444;font-size:14px;line-height:2;">
       <li>Explorar as vagas disponíveis</li>
@@ -126,12 +115,11 @@ export async function sendWelcomeEmail(email: string, nome: string) {
       <li>Acompanhar suas candidaturas</li>
       <li>Completar seu currículo online</li>
     </ul>
-
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
           <a href="${APP_URL}/vagas" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;">
-            Ver Vagas Disponíveis →
+            Ver Vagas Disponíveis
           </a>
         </td>
       </tr>
@@ -142,7 +130,7 @@ export async function sendWelcomeEmail(email: string, nome: string) {
     await transporter.sendMail({
       from: FROM,
       to: email,
-      subject: '✅ Bem-vindo à D&W Solutions!',
+      subject: 'Bem-vindo à D&W Solutions!',
       html: baseTemplate(content),
     })
     return { success: true }
@@ -160,32 +148,29 @@ export async function sendCandidaturaConfirmacao(
 ) {
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Candidatura enviada com sucesso!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${nomeCandidato}</strong>! Sua candidatura foi registrada e está em análise.</p>
-
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeCandidato)}</strong>! Sua candidatura foi registrada e está em análise.</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:1px solid #e8e0d0;border-radius:8px;margin:0 0 28px;">
       <tr>
         <td style="padding:20px 24px;">
           <p style="margin:0 0 12px;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">VAGA</span>
-            <strong style="color:#0D0D0D;font-size:16px;">${tituloVaga}</strong>
+            <strong style="color:#0D0D0D;font-size:16px;">${escapeHtml(tituloVaga)}</strong>
           </p>
           <p style="margin:0;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">EMPRESA</span>
-            <strong style="color:#0D0D0D;">${nomeEmpresa}</strong>
+            <strong style="color:#0D0D0D;">${escapeHtml(nomeEmpresa)}</strong>
           </p>
         </td>
       </tr>
     </table>
-
     <p style="margin:0 0 24px;color:#666;font-size:14px;">
       Nossa equipe irá analisar seu perfil e entraremos em contato caso seu currículo seja selecionado para as próximas etapas.
     </p>
-
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
           <a href="${APP_URL}/candidato/candidaturas" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;">
-            Minhas Candidaturas →
+            Minhas Candidaturas
           </a>
         </td>
       </tr>
@@ -196,7 +181,7 @@ export async function sendCandidaturaConfirmacao(
     await transporter.sendMail({
       from: FROM,
       to: email,
-      subject: `📋 Candidatura registrada: ${tituloVaga}`,
+      subject: `Candidatura registrada: ${escapeHtml(tituloVaga)}`,
       html: baseTemplate(content),
     })
     return { success: true }
@@ -215,47 +200,46 @@ export async function sendConvocacaoEntrevista(
   localEntrevista: string,
   observacao?: string
 ) {
+  const safeObservation = observacao ? escapeHtml(observacao) : ''
+
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Parabéns! Você foi selecionado!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${nomeCandidato}</strong>! Seu perfil se destacou e você está convocado para uma entrevista.</p>
-
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeCandidato)}</strong>! Seu perfil se destacou e você está convocado para uma entrevista.</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:2px solid #D4AF37;border-radius:8px;margin:0 0 28px;">
       <tr>
         <td style="padding:24px;">
           <p style="margin:0 0 16px;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">VAGA</span>
-            <strong style="color:#0D0D0D;font-size:16px;">${tituloVaga}</strong>
+            <strong style="color:#0D0D0D;font-size:16px;">${escapeHtml(tituloVaga)}</strong>
           </p>
           <p style="margin:0 0 16px;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">EMPRESA</span>
-            <strong style="color:#0D0D0D;">${nomeEmpresa}</strong>
+            <strong style="color:#0D0D0D;">${escapeHtml(nomeEmpresa)}</strong>
           </p>
           <p style="margin:0 0 16px;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">DATA E HORA</span>
-            <strong style="color:#0D0D0D;">${dataEntrevista}</strong>
+            <strong style="color:#0D0D0D;">${escapeHtml(dataEntrevista)}</strong>
           </p>
           <p style="margin:0;font-size:14px;color:#444;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">LOCAL / LINK</span>
-            <strong style="color:#0D0D0D;">${localEntrevista}</strong>
+            <strong style="color:#0D0D0D;">${escapeHtml(localEntrevista)}</strong>
           </p>
-          ${observacao ? `
+          ${safeObservation ? `
           <p style="margin:16px 0 0;font-size:14px;color:#444;padding-top:16px;border-top:1px solid #e8e0d0;">
             <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">OBSERVAÇÕES</span>
-            ${observacao}
+            ${safeObservation}
           </p>` : ''}
         </td>
       </tr>
     </table>
-
     <p style="margin:0 0 24px;color:#666;font-size:14px;text-align:center;">
-      Compareça com antecedência e boa sorte! Estamos torcendo por você. 🍀
+      Compareça com antecedência e boa sorte!
     </p>
-
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
           <a href="${APP_URL}/candidato/candidaturas" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;">
-            Ver Minhas Candidaturas →
+            Ver Minhas Candidaturas
           </a>
         </td>
       </tr>
@@ -266,7 +250,7 @@ export async function sendConvocacaoEntrevista(
     await transporter.sendMail({
       from: FROM,
       to: email,
-      subject: `🎯 Convocação para Entrevista: ${tituloVaga} — ${nomeEmpresa}`,
+      subject: `Convocação para Entrevista: ${escapeHtml(tituloVaga)} - ${escapeHtml(nomeEmpresa)}`,
       html: baseTemplate(content),
     })
     return { success: true }

@@ -2,9 +2,19 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import crypto from 'crypto'
 
+const allowedEvents = new Set([
+  'pagina_visualizada',
+  'formulario_submetido',
+  'whatsapp_aberto',
+])
+
 export async function POST(req: Request) {
   try {
     const { evento } = await req.json()
+    if (!allowedEvents.has(evento)) {
+      return NextResponse.json({ error: 'Evento inválido' }, { status: 400 })
+    }
+
     const ip = req.headers.get('x-forwarded-for') || 'unknown'
     const ipHash = crypto.createHash('sha256').update(ip).digest('hex')
 

@@ -65,6 +65,7 @@ export function Header() {
           <Link
             href="https://wa.me/5541999999999"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 border border-accent/40 text-accent text-[10px] font-black tracking-widest px-6 py-2.5 rounded-lg hover:bg-accent hover:text-black transition-all group"
           >
             <MessageCircle className="w-4 h-4" />
@@ -100,6 +101,7 @@ export function Header() {
             <Link
               href="https://wa.me/5541999999999"
               target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 border border-accent text-accent font-black text-xs py-4 rounded-xl"
             >
               <MessageCircle className="w-4 h-4" /> FALE CONOSCO

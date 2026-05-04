@@ -12,6 +12,7 @@ import {
   UserCircle2
 } from 'lucide-react'
 import Link from 'next/link'
+import { getCurriculoDownloadUrl, getSafeHttpUrl } from '@/lib/security'
 
 export default async function CurriculoPage() {
   const supabase = await createClient()
@@ -45,8 +46,9 @@ export default async function CurriculoPage() {
         <div className="flex gap-3">
           {candidato.curriculo_url && (
             <a 
-              href={supabase.storage.from('curriculos').getPublicUrl(candidato.curriculo_url).data.publicUrl}
+              href={getCurriculoDownloadUrl(candidato.curriculo_url)}
               target="_blank"
+              rel="noopener noreferrer"
               className="bg-card border border-border text-primary px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 hover:bg-muted transition-all"
             >
               <Download className="w-4 h-4" /> Baixar PDF
@@ -77,13 +79,13 @@ export default async function CurriculoPage() {
               </p>
               
               <div className="flex gap-4">
-                {curriculo.linkedin && (
-                  <a href={curriculo.linkedin} target="_blank" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
+                {getSafeHttpUrl(curriculo.linkedin) && (
+                  <a href={getSafeHttpUrl(curriculo.linkedin)!} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
                     <Globe className="w-3.5 h-3.5" /> LinkedIn
                   </a>
                 )}
-                {curriculo.github && (
-                  <a href={curriculo.github} target="_blank" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
+                {getSafeHttpUrl(curriculo.github) && (
+                  <a href={getSafeHttpUrl(curriculo.github)!} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
                     <LinkIcon className="w-3.5 h-3.5" /> GitHub
                   </a>
                 )}

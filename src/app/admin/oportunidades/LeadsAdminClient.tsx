@@ -124,6 +124,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                     <a 
                       href={`https://wa.me/55${lead.telefone}`} 
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-xs font-bold text-accent hover:underline flex items-center gap-1.5"
                     >
                       <MessageSquare className="w-3.5 h-3.5" /> {lead.telefone}
@@ -225,6 +226,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                   <a 
                     href={`https://wa.me/55${selectedLead.telefone}`} 
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm font-bold text-accent hover:underline flex items-center gap-2"
                   >
                     <Phone className="w-4 h-4" /> {selectedLead.telefone}
@@ -279,6 +281,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
               <a 
                 href={`https://wa.me/55${selectedLead.telefone}`} 
                 target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
               >
                 <MessageSquare className="w-4 h-4" /> Atender no WhatsApp

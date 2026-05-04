@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { notFound } from 'next/navigation'
 import { Building2, Mail, MapPin, Globe, Briefcase, Edit3, ArrowLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { getSafeHttpUrl } from '@/lib/security'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -77,14 +78,14 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                   <p className="text-xs font-bold text-primary">{empresa.cidade} - {empresa.estado}</p>
                 </div>
               </div>
-              {empresa.site && (
+              {getSafeHttpUrl(empresa.site) && (
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0">
                     <Globe className="w-3.5 h-3.5 text-accent" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-[9px] font-black text-muted-foreground uppercase tracking-wider mb-0.5 opacity-60">Site Oficial</p>
-                    <a href={empresa.site} target="_blank" className="text-xs font-bold text-accent hover:underline truncate block">{empresa.site}</a>
+                    <a href={getSafeHttpUrl(empresa.site)!} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-accent hover:underline truncate block">{empresa.site}</a>
                   </div>
                 </div>
               )}

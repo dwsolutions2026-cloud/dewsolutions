@@ -138,11 +138,12 @@ export default function PlanosPage() {
             <p className="text-muted-foreground font-medium">Desenvolvemos soluções personalizadas para grandes volumes.</p>
           </div>
         </div>
-        <Link 
-          href="https://wa.me/5541999999999" 
-          target="_blank"
-          className="bg-primary text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
-        >
+          <Link
+            href="https://wa.me/5541999999999"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
+          >
           Falar com Consultor
         </Link>
       </div>

@@ -44,7 +44,6 @@ interface Empresa {
 interface Props {
   empresas: Empresa[]
   error?: string
-  supabaseUrl: string
 }
 
 interface ModalState {

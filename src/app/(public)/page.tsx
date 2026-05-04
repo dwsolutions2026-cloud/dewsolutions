@@ -126,11 +126,12 @@ export default function LandingPage() {
       </section>
 
       {/* Floating WhatsApp Button */}
-      <Link 
-        href="https://wa.me/5541999999999" 
-        target="_blank"
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-all animate-bounce"
-      >
+        <Link
+          href="https://wa.me/5541999999999"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-all animate-bounce"
+        >
         <MessageCircle className="w-8 h-8" />
       </Link>
 

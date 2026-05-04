@@ -8,6 +8,7 @@ import {
   ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
+import { getCurriculoDownloadUrl } from '@/lib/security'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -69,8 +70,9 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
         
         {candidato.curriculo_url && (
           <a 
-            href={supabase.storage.from('curriculos').getPublicUrl(candidato.curriculo_url).data.publicUrl}
+            href={getCurriculoDownloadUrl(candidato.curriculo_url)}
             target="_blank"
+            rel="noopener noreferrer"
             className="bg-primary text-white px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/10"
           >
             <FileText className="w-4 h-4" /> PDF Original

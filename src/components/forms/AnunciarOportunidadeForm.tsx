@@ -8,6 +8,7 @@ import { getConfiguracoes } from '@/app/actions/oportunidades'
 import { toast } from 'react-hot-toast'
 import { Building2, User, Mail, Phone, Briefcase, MapPin, Send, Loader2, CheckCircle2, Clock } from 'lucide-react'
 import Link from 'next/link'
+import { hasTrackingConsent } from '@/components/ConsentBanner'
 
 export function AnunciarOportunidadeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,12 +17,13 @@ export function AnunciarOportunidadeForm() {
 
   useEffect(() => {
     getConfiguracoes().then(setConfigs)
-    // Track page view
-    fetch('/api/eventos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ evento: 'pagina_visualizada' })
-    })
+    if (hasTrackingConsent()) {
+      fetch('/api/eventos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ evento: 'pagina_visualizada' })
+      })
+    }
   }, [])
   
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -37,11 +39,13 @@ export function AnunciarOportunidadeForm() {
     setIsSubmitting(true)
     
     // Track submission attempt
-    fetch('/api/eventos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ evento: 'formulario_submetido' })
-    })
+    if (hasTrackingConsent()) {
+      fetch('/api/eventos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ evento: 'formulario_submetido' })
+      })
+    }
 
     try {
       const response = await fetch('/api/oportunidade-leads', {
@@ -61,14 +65,16 @@ export function AnunciarOportunidadeForm() {
       toast.success(result.message)
       
       // Track WhatsApp redirect
-      fetch('/api/eventos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ evento: 'whatsapp_aberto' })
-      })
+      if (hasTrackingConsent()) {
+        fetch('/api/eventos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ evento: 'whatsapp_aberto' })
+        })
+      }
 
       setTimeout(() => {
-        window.open(result.whatsapp_url, '_blank')
+        window.open(result.whatsapp_url, '_blank', 'noopener,noreferrer')
         setIsSubmitting(false)
       }, 1500)
 

@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { Building2, Search, Globe, MapPin, Plus, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Form from 'next/form'
+import { getSafeHttpUrl } from '@/lib/security'
 
 export default async function AdminEmpresasPage({
   searchParams,
@@ -80,10 +81,11 @@ export default async function AdminEmpresasPage({
                 <div className="flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
                   <MapPin className="w-3.5 h-3.5 text-accent" /> {empresa.cidade} - {empresa.estado}
                 </div>
-                {empresa.site && (
+                {getSafeHttpUrl(empresa.site) && (
                   <a 
-                    href={empresa.site} 
+                    href={getSafeHttpUrl(empresa.site)!} 
                     target="_blank" 
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2.5 text-xs text-accent font-bold hover:underline"
                   >
                     <Globe className="w-3.5 h-3.5" /> Visitar Site
