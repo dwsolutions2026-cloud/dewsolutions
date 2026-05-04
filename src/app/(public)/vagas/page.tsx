@@ -118,31 +118,3 @@ export default async function VagasPublicPage({
     </div>
   )
 }
-                        {vaga.salario_min.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        {vaga.salario_max && ` - ${vaga.salario_max.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="shrink-0 flex items-center justify-end">
-                  <div className="px-5 py-2.5 bg-primary/5 text-primary rounded-xl font-black text-[10px] uppercase tracking-[0.15em] flex items-center gap-2 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                    Ver Detalhes <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="p-16 bg-card border border-border rounded-[2.5rem] text-center space-y-4 shadow-sm opacity-60">
-            <div className="w-12 h-12 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-2">
-              <Search className="w-6 h-6 text-muted-foreground opacity-20" />
-            </div>
-            <p className="text-lg font-bold text-primary">Nenhuma vaga encontrada</p>
-            <p className="text-sm text-muted-foreground font-medium opacity-70">Tente ajustar seus filtros ou buscar por outro termo.</p>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
