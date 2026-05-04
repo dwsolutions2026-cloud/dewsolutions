@@ -1,5 +1,11 @@
 import Link from 'next/link'
-import { Search, Briefcase, Building2, Users, ArrowRight } from 'lucide-react'
+import { Search, Briefcase, Building2, Users, ArrowRight, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'DW Solutions | Recrutamento e Seleção de Alta Performance',
+  description: 'Conectamos talentos às melhores empresas com processos ágeis, humanizados e focados em resultados.',
+}
 
 export default function LandingPage() {
   return (
@@ -14,7 +20,7 @@ export default function LandingPage() {
               Conectando <span className="text-accent italic">talentos</span> às melhores empresas.
             </h1>
             <p className="text-base sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-12 leading-relaxed max-w-2xl animate-in fade-in slide-in-from-bottom-12 duration-1000">
-              A plataforma definitiva para recrutamento e seleção de alta performance. Encontre sua próxima oportunidade ou o candidato ideal hoje.
+              A <span className="text-primary font-bold">DW Solutions</span> é a plataforma definitiva para recrutamento de alta performance. Encontre oportunidades reais ou o candidato ideal com curadoria especializada.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-in fade-in slide-in-from-bottom-16 duration-1000">
@@ -28,7 +34,7 @@ export default function LandingPage() {
                 href="/anunciar-oportunidade" 
                 className="bg-card border border-border text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-muted transition-all flex items-center justify-center"
               >
-                Anunciar Oportunidade
+                Para Empresas
               </Link>
             </div>
           </div>
@@ -39,9 +45,9 @@ export default function LandingPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {[
-            { icon: Briefcase, title: 'Milhares de Vagas', desc: 'Oportunidades em diversas áreas e níveis de experiência.' },
-            { icon: Building2, title: 'Empresas Premium', desc: 'Trabalhe nas empresas mais inovadoras do mercado.' },
-            { icon: Users, title: 'Processo Ágil', desc: 'Candidaturas simplificadas e feedback direto no dashboard.' },
+            { icon: Sparkles, title: 'Vagas Selecionadas', desc: 'Oportunidades reais com curadoria para garantir o melhor match.' },
+            { icon: ShieldCheck, title: 'Processo Humanizado', desc: 'Foco no candidato e transparência em todas as etapas do processo.' },
+            { icon: TrendingUp, title: 'Crescimento Real', desc: 'Conectamos você a empresas que valorizam o seu desenvolvimento.' },
           ].map((item, i) => (
             <div key={i} className="bg-card p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-border hover:border-accent/40 transition-all group">
               <div className="w-12 sm:w-14 h-12 sm:h-14 bg-accent/10 rounded-lg sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
@@ -51,6 +57,20 @@ export default function LandingPage() {
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Prova Social / Depoimento (Placeholder Audipreve) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="bg-card p-8 sm:p-12 rounded-[2rem] sm:rounded-[3rem] border border-border flex flex-col items-center text-center space-y-6">
+          <div className="w-16 h-1 bg-accent rounded-full" />
+          <p className="text-xl sm:text-2xl font-medium text-primary italic max-w-3xl leading-relaxed">
+            "A DW Solutions transformou nossa forma de contratar. A agilidade e a qualidade dos candidatos superaram todas as expectativas."
+          </p>
+          <div className="space-y-1">
+            <p className="font-black text-primary uppercase tracking-widest text-sm">Audipreve</p>
+            <p className="text-xs text-muted-foreground font-bold">Cliente Parceiro</p>
+          </div>
         </div>
       </section>
 
@@ -66,7 +86,7 @@ export default function LandingPage() {
             Pronto para dar o próximo passo?
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-white/70 mb-8 sm:mb-12 max-w-2xl mx-auto relative leading-relaxed">
-            Junte-se a milhares de profissionais e empresas que já estão transformando o mercado de trabalho através da nossa plataforma.
+            Junte-se a profissionais e empresas que já estão transformando o mercado de trabalho através da <span className="text-white font-bold underline decoration-accent">DW Solutions</span>.
           </p>
           <Link 
             href="/cadastro" 

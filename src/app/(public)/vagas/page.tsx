@@ -1,13 +1,19 @@
 import { createClient } from '@/utils/supabase/server'
 import { Search, MapPin, Briefcase, DollarSign, Filter, Building2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Vagas de Emprego | DW Solutions',
+  description: 'Encontre as melhores oportunidades de trabalho. Filtre por cargo, área ou cidade.',
+}
 
 export default async function VagasPublicPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; area?: string }>
+  searchParams: Promise<{ q?: string; area?: string; cidade?: string }>
 }) {
-  const { q, area } = await searchParams
+  const { q, area, cidade } = await searchParams
   const supabase = await createClient()
 
   let query = supabase
@@ -20,40 +26,56 @@ export default async function VagasPublicPage({
     .order('created_at', { ascending: false })
 
   if (q) {
-    query = query.ilike('titulo', `%${q}%`)
+    // Busca avançada em múltiplos campos
+    query = query.or(`titulo.ilike.%${q}%,descricao.ilike.%${q}%,cidade.ilike.%${q}%`)
   }
+  
   if (area) {
     query = query.eq('area', area)
+  }
+
+  if (cidade) {
+    query = query.ilike('cidade', `%${cidade}%`)
   }
 
   const { data: vagas, error } = await query
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
-      <div className="space-y-1 sm:space-y-2">
+      <div className="space-y-1 sm:space-y-2 text-center sm:text-left">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary tracking-tight">Oportunidades Abertas</h1>
-        <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">Explore as vagas disponíveis e encontre o seu próximo desafio.</p>
+        <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">Explore as vagas selecionadas pela <span className="text-primary font-bold">DW Solutions</span>.</p>
       </div>
 
       {/* Filtros e Busca */}
-      <form className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 p-4 sm:p-4 bg-card rounded-xl sm:rounded-2xl border border-border shadow-sm">
-        <div className="sm:col-span-6 relative group">
+      <form className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 p-3 sm:p-4 bg-card rounded-xl sm:rounded-2xl border border-border shadow-sm">
+        <div className="sm:col-span-5 relative group">
           <Search className="absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 w-3.5 sm:w-4 h-3.5 sm:h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
           <input
             type="text"
             name="q"
             defaultValue={q}
-            placeholder="Buscar por cargo..."
+            placeholder="Cargo ou palavra-chave..."
             className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl text-sm border border-border focus:ring-2 focus:ring-accent outline-none bg-card transition-all font-medium"
           />
         </div>
-        <div className="sm:col-span-4">
+        <div className="sm:col-span-3 relative group">
+          <MapPin className="absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 w-3.5 sm:w-4 h-3.5 sm:h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
+          <input
+            type="text"
+            name="cidade"
+            defaultValue={cidade}
+            placeholder="Cidade..."
+            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl text-sm border border-border focus:ring-2 focus:ring-accent outline-none bg-card transition-all font-medium"
+          />
+        </div>
+        <div className="sm:col-span-2">
           <select
             name="area"
             defaultValue={area}
             className="w-full px-3 sm:px-4 py-2.5 rounded-lg sm:rounded-xl text-sm border border-border focus:ring-2 focus:ring-accent outline-none bg-card transition-all font-medium appearance-none cursor-pointer"
           >
-            <option value="">Todas as áreas</option>
+            <option value="">Áreas</option>
             <option value="Administrativo">Administrativo</option>
             <option value="Tecnologia">Tecnologia</option>
             <option value="Vendas">Vendas</option>
@@ -62,7 +84,7 @@ export default async function VagasPublicPage({
           </select>
         </div>
         <button className="sm:col-span-2 bg-primary text-white px-4 py-2.5 rounded-lg sm:rounded-xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/10">
-          <Filter className="w-3 h-3 sm:w-3.5 h-3.5" /> <span className="hidden sm:inline">Filtrar</span>
+          <Filter className="w-3 h-3 sm:w-3.5 h-3.5" /> <span>Filtrar</span>
         </button>
       </form>
 

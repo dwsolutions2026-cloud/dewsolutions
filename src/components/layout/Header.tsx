@@ -28,8 +28,9 @@ export function Header() {
 
   const navLinks = [
     { href: '/vagas', label: 'Vagas', external: false },
+    { href: '/planos', label: 'Planos', external: false },
+    { href: '/sobre', label: 'Sobre Nós', external: false },
     { href: '/anunciar-oportunidade', label: 'Anunciar Oportunidade', external: false },
-    { href: '/privacidade', label: 'Privacidade', external: false },
   ]
 
   return (

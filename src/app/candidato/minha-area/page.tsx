@@ -101,7 +101,7 @@ export default async function MinhaAreaPage() {
         <div className="max-w-xl relative">
           <h2 className="text-2xl md:text-3xl font-black mb-4 tracking-tight leading-tight">Encontre sua próxima grande oportunidade.</h2>
           <p className="text-white/70 text-sm mb-8 leading-relaxed">
-            Temos centenas de vagas abertas esperando por um talento como o seu. Comece sua busca agora mesmo!
+            Confira as vagas selecionadas pela <span className="text-white font-bold underline decoration-accent">DW Solutions</span> que combinam com seu perfil.
           </p>
           <Link 
             href="/vagas" 

@@ -7,8 +7,28 @@ import {
 import Link from 'next/link'
 import { BotaoCandidatar } from '@/components/vagas/BotaoCandidatar'
 
+import { Metadata } from 'next'
+
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const supabase = await createClient()
+  
+  const { data: vaga } = await supabase
+    .from('vagas')
+    .select('titulo, empresa:empresas(nome)')
+    .or(`slug.eq.${slug},id.eq.${slug}`)
+    .single()
+
+  if (!vaga) return { title: 'Vaga não encontrada | DW Solutions' }
+
+  return {
+    title: `${vaga.titulo} na ${(vaga.empresa as any)?.nome} | DW Solutions`,
+    description: `Candidate-se para a vaga de ${vaga.titulo}. Encontre as melhores oportunidades na DW Solutions.`,
+  }
 }
 
 export default async function VagaDetalhesPage({ params }: Props) {
@@ -16,13 +36,14 @@ export default async function VagaDetalhesPage({ params }: Props) {
   const supabase = await createClient()
 
   // Buscar por slug OU por id (para manter compatibilidade)
+  // Removido as aspas duplas que podiam quebrar a query em alguns casos
   const { data: vaga, error } = await supabase
     .from('vagas')
     .select(`
       *,
       empresa:empresas (*)
     `)
-    .or(`slug.eq."${slug}",id.eq."${slug}"`)
+    .or(`slug.eq.${slug},id.eq.${slug}`)
     .single()
 
   if (error || !vaga) notFound()
