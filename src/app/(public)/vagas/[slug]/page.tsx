@@ -113,7 +113,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="h-[1px] bg-border/50" />
+          <div className="h-px bg-border/50" />
 
           {/* Conteúdo */}
           <div className="space-y-8 sm:space-y-10">
@@ -152,7 +152,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
         {/* Coluna Lateral: CTA e Empresa */}
         <div className="space-y-4 sm:space-y-6">
           {/* Card Candidatura */}
-          <div className="bg-card p-4 sm:p-6 rounded-xl sm:rounded-[2rem] border border-border shadow-xl shadow-primary/5 lg:sticky lg:top-24 space-y-4 sm:space-y-6">
+          <div className="bg-card p-4 sm:p-6 rounded-xl sm:rounded-4xl border border-border shadow-xl shadow-primary/5 lg:sticky lg:top-24 space-y-4 sm:space-y-6">
             {vaga.exibir_salario && vaga.salario_min && (
               <div className="space-y-1">
                 <p className="text-[8px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">Remuneração</p>
@@ -171,7 +171,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
           </div>
 
           {/* Card Empresa Info */}
-          <div className="bg-muted/30 p-4 sm:p-6 rounded-xl sm:rounded-[2rem] border border-border space-y-4">
+          <div className="bg-muted/30 p-4 sm:p-6 rounded-xl sm:rounded-4xl border border-border space-y-4">
             <h3 className="font-black text-xs sm:text-sm text-primary uppercase tracking-widest opacity-70">
               Empresa
             </h3>

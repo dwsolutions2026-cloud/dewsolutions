@@ -56,7 +56,7 @@ export default async function MinhaAreaPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Quick Stats */}
-        <div className="bg-card p-6 rounded-[2rem] border border-border shadow-sm flex flex-col items-center text-center group">
+        <div className="bg-card p-6 rounded-4xl border border-border shadow-sm flex flex-col items-center text-center group">
           <div className="w-12 h-12 bg-muted rounded-2xl flex items-center justify-center mb-4 text-accent group-hover:scale-110 transition-transform">
             <Send className="w-6 h-6" />
           </div>
@@ -67,7 +67,7 @@ export default async function MinhaAreaPage() {
         {/* Link Perfil */}
         <Link 
           href="/candidato/perfil"
-          className="bg-card p-6 rounded-[2rem] border border-border shadow-sm hover:shadow-lg hover:border-accent/40 transition-all group flex flex-col h-full"
+          className="bg-card p-6 rounded-4xl border border-border shadow-sm hover:shadow-lg hover:border-accent/40 transition-all group flex flex-col h-full"
         >
           <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center mb-4 text-accent group-hover:bg-accent group-hover:text-white transition-all">
             <UserCircle2 className="w-5 h-5" />
@@ -82,7 +82,7 @@ export default async function MinhaAreaPage() {
         {/* Link Currículo */}
         <Link 
           href="/candidato/curriculo"
-          className="bg-card p-6 rounded-[2rem] border border-border shadow-sm hover:shadow-lg hover:border-accent/40 transition-all group flex flex-col h-full"
+          className="bg-card p-6 rounded-4xl border border-border shadow-sm hover:shadow-lg hover:border-accent/40 transition-all group flex flex-col h-full"
         >
           <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center mb-4 text-accent group-hover:bg-accent group-hover:text-white transition-all">
             <FileText className="w-5 h-5" />
@@ -96,7 +96,7 @@ export default async function MinhaAreaPage() {
       </div>
 
       {/* CTA Vagas */}
-      <div className="bg-primary rounded-[2rem] p-8 md:p-12 text-white relative overflow-hidden shadow-xl shadow-primary/20">
+      <div className="bg-primary rounded-4xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl shadow-primary/20">
         <div className="absolute top-0 right-0 w-48 h-48 bg-accent opacity-20 blur-3xl -mr-24 -mt-24" />
         <div className="max-w-xl relative">
           <h2 className="text-2xl md:text-3xl font-black mb-4 tracking-tight leading-tight">Encontre sua próxima grande oportunidade.</h2>

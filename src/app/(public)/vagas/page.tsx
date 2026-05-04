@@ -84,7 +84,7 @@ export default async function VagasPublicPage({
           </select>
         </div>
         <button className="sm:col-span-2 bg-primary text-white px-4 py-2.5 rounded-lg sm:rounded-xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/10">
-          <Filter className="w-3 h-3 sm:w-3.5 h-3.5" /> <span>Filtrar</span>
+          <Filter className="w-4 h-4" /> <span>Filtrar</span>
         </button>
       </form>
 

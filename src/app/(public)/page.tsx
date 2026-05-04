@@ -16,8 +16,8 @@ export default function LandingPage() {
       <section className="relative min-h-[90vh] flex items-center pt-20">
         {/* Background Image Container */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c] via-[#0c0c0c]/80 to-transparent z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#0c0c0c] via-[#0c0c0c]/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#0c0c0c] via-transparent to-transparent z-10" />
           <Image
             src="/images/hero-team.png"
             alt="D&W Solutions Team"
