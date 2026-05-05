@@ -17,8 +17,8 @@ export default function PublicLayout({
     <div className="flex min-h-screen flex-col transition-colors duration-300">
       <Header />
       <main className="grow">{children}</main>
-      <footer className="mt-20 border-t border-border/70 bg-card/70 pb-10 pt-20">
-        <div className="mx-auto mb-16 grid max-w-7xl grid-cols-1 gap-12 px-6 md:grid-cols-4">
+      <footer className="mt-16 border-t border-border/70 bg-card/70 pb-8 pt-14 sm:mt-20 sm:pb-10 sm:pt-20">
+        <div className="mx-auto mb-12 grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 md:mb-16 md:grid-cols-4 md:gap-12">
           <div className="space-y-6 md:col-span-2">
             <div className="flex justify-start">
               <Logo width={180} height={50} variant="auto" />
@@ -36,17 +36,26 @@ export default function PublicLayout({
             </h4>
             <ul className="space-y-4">
               <li>
-                <Link href="/#sobre" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/#sobre"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Sobre nós
                 </Link>
               </li>
               <li>
-                <Link href="/#servicos" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/#servicos"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Nossos serviços
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/#faq"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Dúvidas frequentes
                 </Link>
               </li>
@@ -59,17 +68,26 @@ export default function PublicLayout({
             </h4>
             <ul className="space-y-4">
               <li>
-                <Link href="/login" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Área do candidato
                 </Link>
               </li>
               <li>
-                <Link href="/#contato" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/#contato"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Fale conosco
                 </Link>
               </li>
               <li>
-                <Link href="/privacidade" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+                <Link
+                  href="/privacidade"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
                   Política de Privacidade
                 </Link>
               </li>
@@ -77,12 +95,12 @@ export default function PublicLayout({
           </div>
         </div>
 
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-border px-6 pt-8 md:flex-row">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t border-border px-4 pt-6 text-center sm:px-6 sm:pt-8 md:flex-row md:text-left">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
             &copy; {new Date().getFullYear()} D&amp;W Solutions. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-6">
-            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40">
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground opacity-40">
               Feito com foco em resultados
             </span>
           </div>

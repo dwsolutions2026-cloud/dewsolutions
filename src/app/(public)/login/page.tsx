@@ -29,11 +29,11 @@ export default function LoginPage() {
     'w-full rounded-lg border border-black/10 bg-white pl-11 pr-4 py-3 text-sm font-medium text-black placeholder:text-neutral-400 shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-background px-4 pb-6 pt-32 animate-in fade-in duration-700 sm:px-6 sm:pb-10 sm:pt-36">
+    <div className="animate-in fade-in duration-700 flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 sm:px-6 sm:pb-10 sm:pt-36">
       <div className="w-full max-w-md space-y-6 sm:space-y-8">
         <div className="space-y-4 text-center sm:space-y-6">
           <div className="flex justify-center">
-            <Logo scale={1} />
+            <Logo width={180} height={54} />
           </div>
           <div className="space-y-2">
             <h1 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">

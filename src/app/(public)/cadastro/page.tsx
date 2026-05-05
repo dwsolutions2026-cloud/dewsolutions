@@ -38,7 +38,7 @@ export default function CadastroPage() {
 
   if (state.success) {
     return (
-      <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-background px-4 pb-6 pt-32 animate-in fade-in zoom-in duration-500 sm:px-6 sm:pb-10 sm:pt-36">
+      <div className="animate-in fade-in zoom-in flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 duration-500 sm:px-6 sm:pb-10 sm:pt-36">
         <div className="w-full max-w-md space-y-6 text-center sm:space-y-8">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-green-100 text-green-600 shadow-xl shadow-green-200 sm:h-24 sm:w-24 sm:rounded-[2.5rem]">
             <ShieldCheck className="h-10 w-10 sm:h-12 sm:w-12" />
@@ -48,7 +48,8 @@ export default function CadastroPage() {
               Verifique seu e-mail
             </h1>
             <p className="text-xs font-medium leading-relaxed text-muted-foreground sm:text-sm md:text-base">
-              Enviamos um link de confirmação para o seu e-mail. Por favor, valide sua conta para continuar.
+              Enviamos um link de confirmação para o seu e-mail. Por favor, valide sua conta para
+              continuar.
             </p>
           </div>
           <Link
@@ -63,11 +64,11 @@ export default function CadastroPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-background px-4 pb-8 pt-32 animate-in fade-in duration-700 sm:px-6 sm:pb-12 sm:pt-36">
+    <div className="animate-in fade-in flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-8 pt-32 duration-700 sm:px-6 sm:pb-12 sm:pt-36">
       <div className="w-full max-w-md space-y-6 sm:space-y-8">
         <div className="space-y-4 text-center sm:space-y-6">
           <div className="flex justify-center">
-            <Logo scale={1} />
+            <Logo width={180} height={54} />
           </div>
           <div className="space-y-2">
             <h1 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">
@@ -87,12 +88,7 @@ export default function CadastroPage() {
               </label>
               <div className="group relative">
                 <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
-                <input
-                  name="nome"
-                  required
-                  className={inputClass}
-                  placeholder="Seu nome"
-                />
+                <input name="nome" required className={inputClass} placeholder="Seu nome" />
               </div>
             </div>
 
@@ -183,9 +179,7 @@ export default function CadastroPage() {
           </form>
 
           <div className="mt-8 space-y-4 border-t border-black/10 pt-6 text-center sm:mt-10 sm:pt-8">
-            <p className="text-xs font-medium text-neutral-600 sm:text-sm">
-              Já possui uma conta?
-            </p>
+            <p className="text-xs font-medium text-neutral-600 sm:text-sm">Já possui uma conta?</p>
             <Link
               href="/login"
               className="block text-[9px] font-black uppercase tracking-widest text-primary hover:underline sm:text-xs"

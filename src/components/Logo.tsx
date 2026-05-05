@@ -36,6 +36,7 @@ export function Logo({
         src={logoVariant === 'white' ? '/logo-branco.png' : '/logo-preto.png'}
         alt="D&W Solutions Logo"
         fill
+        sizes={`${width}px`}
         className="object-contain object-left"
         priority
       />

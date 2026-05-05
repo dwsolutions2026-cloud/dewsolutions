@@ -103,7 +103,7 @@ export default function LandingPage() {
     <div className="flex min-h-screen flex-col overflow-hidden bg-background text-foreground transition-colors duration-300">
       <section
         id="home"
-        className="relative flex min-h-screen items-center pb-20 pt-24 md:pb-24 lg:pb-28"
+        className="relative flex min-h-[100svh] items-center pb-14 pt-24 sm:pb-16 sm:pt-28 md:pb-24 lg:pb-28"
       >
         <div className="pointer-events-none absolute inset-y-0 -right-[8%] z-0 flex items-end justify-end overflow-hidden md:-right-[10%] lg:-right-[12%]">
           <Image
@@ -113,60 +113,60 @@ export default function LandingPage() {
             height={2491}
             priority
             unoptimized
-            sizes="(max-width: 768px) 88vw, (max-width: 1280px) 78vw, 72vw"
-            className="h-[82vh] w-auto max-w-none object-contain object-right-bottom md:h-[88vh] lg:h-[96vh]"
+            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 82vw, 72vw"
+            className="h-[56vh] w-auto max-w-none object-contain object-right-bottom sm:h-[62vh] md:h-[74vh] lg:h-[96vh]"
           />
         </div>
 
-        <div className="container relative z-20 mx-auto px-6">
-          <div className="max-w-4xl space-y-10">
-            <div className="relative h-[64px] w-[210px] md:h-[88px] md:w-[290px]">
+        <div className="container relative z-20 mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl space-y-8 sm:space-y-10">
+            <div className="relative h-[52px] w-[172px] sm:h-[64px] sm:w-[210px] md:h-[88px] md:w-[290px]">
               <Logo width={290} height={88} variant="auto" />
             </div>
 
-            <div className="max-w-3xl space-y-5">
-              <h1 className="text-3xl font-extrabold leading-[1.04] tracking-[-0.045em] text-primary md:text-5xl lg:text-6xl">
+            <div className="max-w-[18rem] space-y-4 sm:max-w-[28rem] sm:space-y-5 lg:max-w-3xl">
+              <h1 className="text-[2.2rem] font-extrabold leading-[1.02] tracking-[-0.05em] text-primary sm:text-5xl lg:text-6xl">
                 Soluções inteligentes em
                 <span className="mt-2 block gold-text-gradient">recrutamento e seleção.</span>
               </h1>
-              <p className="max-w-xl text-base font-medium leading-relaxed text-muted-foreground md:text-xl">
+              <p className="max-w-xs text-sm font-medium leading-relaxed text-muted-foreground sm:max-w-xl sm:text-base md:text-xl">
                 Conectamos talentos às oportunidades certas com estratégia, precisão e visão de
                 longo prazo.
               </p>
-              <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-accent md:text-sm">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-accent sm:text-xs md:text-sm">
                 Inteligência. Estratégia. Resultados.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Link
                 href="/anunciar-oportunidade"
-                className="gold-gradient inline-flex items-center justify-center gap-3 rounded-xl px-6 py-3 text-xs font-black uppercase tracking-[0.16em] text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] md:px-8 md:py-4"
+                className="gold-gradient inline-flex w-full items-center justify-center gap-3 rounded-xl px-5 py-3 text-[11px] font-black uppercase tracking-[0.14em] text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] sm:w-auto sm:px-6 sm:text-xs md:px-8 md:py-4"
               >
                 Solicitar orçamento
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Link>
               <Link
                 href="/vagas"
-                className="inline-flex items-center justify-center gap-3 rounded-xl border-2 border-accent px-6 py-3 text-xs font-black uppercase tracking-[0.16em] text-accent transition-all hover:bg-accent/8 md:px-8 md:py-4"
+                className="inline-flex w-full items-center justify-center gap-3 rounded-xl border-2 border-accent px-5 py-3 text-[11px] font-black uppercase tracking-[0.14em] text-accent transition-all hover:bg-accent/8 sm:w-auto sm:px-6 sm:text-xs md:px-8 md:py-4"
               >
                 Ver vagas
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Link>
             </div>
 
-            <div className="grid gap-4 pt-4 md:grid-cols-3">
+            <div className="grid gap-3 pt-2 sm:gap-4 sm:pt-4 md:grid-cols-3">
               {differentiators.map((item) => {
                 const Icon = item.icon
                 return (
                   <div
                     key={item.title}
-                    className="rounded-2xl border border-border/70 bg-card/80 p-5 backdrop-blur-md"
+                    className="rounded-2xl border border-border/70 bg-card/85 p-4 backdrop-blur-md sm:p-5"
                   >
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-accent/35 text-accent">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h2 className="text-xl font-extrabold text-primary">{item.title}</h2>
+                    <h2 className="text-lg font-extrabold text-primary sm:text-xl">{item.title}</h2>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                       {item.description}
                     </p>
@@ -178,10 +178,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="sobre" className="border-t border-border/70 bg-secondary/45 py-20">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+      <section id="sobre" className="border-t border-border/70 bg-secondary/45 py-16 sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="space-y-5">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">Sobre nós</p>
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-accent">Sobre nós</p>
             <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
               Recrutamento com método, clareza e leitura de negócio.
             </h2>
@@ -214,10 +214,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="servicos" className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="servicos" className="bg-background py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-12 max-w-3xl space-y-4">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">Serviços</p>
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-accent">Serviços</p>
             <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
               Soluções completas para fortalecer sua estratégia de pessoas.
             </h2>
@@ -227,18 +227,18 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
             {services.map((service) => {
               const Icon = service.icon
               return (
                 <div
                   key={service.title}
-                  className="rounded-3xl border border-border/70 bg-card p-7 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.2)]"
+                  className="rounded-3xl border border-border/70 bg-card p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:p-7"
                 >
                   <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10 text-accent">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-2xl font-extrabold text-primary">{service.title}</h3>
+                  <h3 className="text-xl font-extrabold text-primary sm:text-2xl">{service.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-muted-foreground">{service.description}</p>
                 </div>
               )
@@ -247,8 +247,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="vagas" className="border-y border-border/70 bg-secondary/45 py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <section id="vagas" className="border-y border-border/70 bg-secondary/45 py-16 sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="space-y-5">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">
               Vagas e empresas
@@ -262,7 +262,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-accent/20 bg-card p-8 shadow-[0_24px_80px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
+          <div className="rounded-3xl border border-accent/20 bg-card p-6 shadow-[0_24px_80px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.28)] sm:p-8">
             <div className="space-y-4 text-sm leading-7 text-muted-foreground">
               <div className="flex gap-3">
                 <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
@@ -298,8 +298,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="faq" className="bg-background py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="faq" className="bg-background py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-12 max-w-3xl space-y-4">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">FAQ</p>
             <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
@@ -318,8 +318,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="contato" className="border-t border-border/70 bg-secondary/45 py-20">
-        <div className="mx-auto max-w-5xl px-6 text-center">
+      <section id="contato" className="border-t border-border/70 bg-secondary/45 py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">Contato</p>
           <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
             Vamos conversar sobre a próxima contratação?
@@ -355,7 +355,7 @@ export default function LandingPage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Falar no WhatsApp"
-        className="group fixed bottom-8 right-8 z-50 block h-16 w-16 transition-transform hover:scale-[1.04] active:scale-[0.98]"
+        className="group fixed bottom-4 right-4 z-50 block h-14 w-14 transition-transform hover:scale-[1.04] active:scale-[0.98] sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
       >
         <span
           aria-hidden="true"
@@ -365,8 +365,8 @@ export default function LandingPage() {
           aria-hidden="true"
           className="animate-whatsapp-ring absolute inset-[-6px] rounded-full border border-[#25D366]/35"
         />
-        <span className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_28px_rgba(37,211,102,0.35)]">
-          <WhatsAppIcon variant="mono" className="h-8 w-8" />
+        <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_28px_rgba(37,211,102,0.35)] sm:h-16 sm:w-16">
+          <WhatsAppIcon variant="mono" className="h-7 w-7 sm:h-8 sm:w-8" />
         </span>
       </Link>
     </div>
