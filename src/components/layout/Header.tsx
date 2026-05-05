@@ -2,9 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, MessageCircle } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Logo } from '@/components/Logo'
-import { useState, useEffect } from 'react'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { WhatsAppIcon } from '@/components/WhatsAppIcon'
+import { DWSOLUTIONS_WHATSAPP_URL } from '@/lib/whatsapp'
 
 export function Header() {
   const pathname = usePathname()
@@ -13,8 +16,10 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+      setScrolled(window.scrollY > 8)
     }
+
+    handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -23,36 +28,48 @@ export function Header() {
     setIsMenuOpen(false)
   }, [pathname])
 
+  const isHome = pathname === '/'
+  const showLogo = !isHome || scrolled
+
   const navLinks = [
-    { href: '/', label: 'HOME' },
-    { href: '/sobre', label: 'SOBRE NÓS' },
-    { href: '/planos', label: 'SERVIÇOS' },
-    { href: '/vagas', label: 'VAGAS' },
-    { href: '/blog', label: 'BLOG' },
-    { href: '/contato', label: 'CONTATO' },
+    { href: '/#home', label: 'HOME' },
+    { href: '/#sobre', label: 'SOBRE NÓS' },
+    { href: '/#servicos', label: 'SERVIÇOS' },
+    { href: '/#vagas', label: 'VAGAS' },
+    { href: '/#faq', label: 'FAQ' },
+    { href: '/#contato', label: 'CONTATO' },
   ]
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-[#0c0c0c]/90 backdrop-blur-md py-3 border-b border-white/10' : 'bg-transparent py-6'
+    <header
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'border-b border-border/70 bg-background/92 py-3 backdrop-blur-md'
+          : 'bg-transparent py-6'
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between gap-4 px-6">
+        <div className="w-[128px] shrink-0">
+          <Link
+            href="/"
+            aria-hidden={!showLogo}
+            className={`block transition-all duration-300 ${
+              showLogo ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+            }`}
+          >
+            <Logo width={128} height={40} variant="auto" />
+          </Link>
+        </div>
 
-        {/* Logo */}
-        <Link href="/" className="shrink-0">
-          <Logo scale={0.8} />
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden flex-1 items-center justify-center gap-5 xl:flex xl:gap-7">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-[11px] font-bold tracking-[0.2em] transition-all hover:text-accent ${
-                pathname === link.href ? 'text-accent' : 'text-white/70'
+              className={`whitespace-nowrap text-[10px] font-black tracking-[0.22em] transition-all hover:text-accent xl:text-[11px] xl:tracking-[0.24em] ${
+                pathname === '/' && link.href === '/#home'
+                  ? 'text-accent'
+                  : 'text-muted-foreground'
               }`}
             >
               {link.label}
@@ -60,51 +77,63 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Action Button */}
-        <div className="hidden lg:flex items-center">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex">
+          <ThemeToggle className="border-border/70 bg-card/70 text-muted-foreground shadow-none backdrop-blur-md hover:bg-card hover:text-primary" />
           <Link
-            href="https://wa.me/5541999999999"
+            href="/login"
+            className="whitespace-nowrap rounded-lg border border-border/70 bg-card/70 px-4 py-2.5 text-[9px] font-black tracking-[0.16em] text-primary transition-all hover:border-accent/40 hover:text-accent"
+          >
+            ÁREA DO CANDIDATO
+          </Link>
+          <Link
+            href={DWSOLUTIONS_WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 border border-accent/40 text-accent text-[10px] font-black tracking-widest px-6 py-2.5 rounded-lg hover:bg-accent hover:text-black transition-all group"
+            className="group flex items-center gap-2 whitespace-nowrap rounded-lg border border-accent/40 px-4 py-2.5 text-[9px] font-black tracking-[0.18em] text-accent transition-all hover:bg-accent hover:text-black"
           >
-            <MessageCircle className="w-4 h-4" />
+            <WhatsAppIcon className="h-4 w-4 shrink-0" />
             FALE CONOSCO
           </Link>
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden p-2 text-white hover:text-accent transition-colors"
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-3 xl:hidden">
+          <ThemeToggle className="border-border/70 bg-card/70 text-muted-foreground shadow-none backdrop-blur-md hover:bg-card hover:text-primary" />
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 text-primary transition-colors hover:text-accent"
+            aria-label="Abrir menu"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-[#0c0c0c] border-t border-white/10 animate-in slide-in-from-top-4 duration-300">
-          <div className="container mx-auto px-6 py-8 flex flex-col gap-6">
+        <div className="animate-in slide-in-from-top-4 border-t border-border/70 bg-background duration-300 xl:hidden">
+          <div className="container mx-auto flex flex-col gap-6 px-6 py-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-bold tracking-widest transition-colors ${
-                  pathname === link.href ? 'text-accent' : 'text-white/70'
-                }`}
+                className="text-sm font-black tracking-[0.18em] text-muted-foreground transition-colors hover:text-accent"
               >
                 {link.label}
               </Link>
             ))}
             <Link
-              href="https://wa.me/5541999999999"
+              href="/login"
+              className="flex items-center justify-center rounded-xl border border-border/70 bg-card/70 py-4 text-xs font-black tracking-[0.18em] text-primary transition-all hover:border-accent/40 hover:text-accent"
+            >
+              ÁREA DO CANDIDATO
+            </Link>
+            <Link
+              href={DWSOLUTIONS_WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 border border-accent text-accent font-black text-xs py-4 rounded-xl"
+              className="flex items-center justify-center gap-2 rounded-xl border border-accent py-4 text-xs font-black tracking-[0.18em] text-accent"
             >
-              <MessageCircle className="w-4 h-4" /> FALE CONOSCO
+              <WhatsAppIcon className="h-4 w-4 shrink-0" />
+              FALE CONOSCO
             </Link>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
-import crypto from 'crypto'
+
+export const runtime = 'edge'
 
 const allowedEvents = new Set([
   'pagina_visualizada',
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
     }
 
     const ip = req.headers.get('x-forwarded-for') || 'unknown'
-    const ipHash = crypto.createHash('sha256').update(ip).digest('hex')
+    const ipHash = await sha256Hex(ip)
 
     const supabase = await createClient()
     const { error } = await supabase
@@ -30,4 +31,11 @@ export async function POST(req: Request) {
     console.error('Error tracking event:', error)
     return NextResponse.json({ error: 'Internal Error' }, { status: 500 })
   }
+}
+
+async function sha256Hex(value: string) {
+  const bytes = new TextEncoder().encode(value)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', bytes)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('')
 }

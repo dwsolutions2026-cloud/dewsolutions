@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient, isSupabaseConfigured } from '@/utils/supabase/server'
 import { notFound } from 'next/navigation'
 import { 
   MapPin, Briefcase, Building2, Calendar, 
@@ -9,11 +9,21 @@ import { BotaoCandidatar } from '@/components/vagas/BotaoCandidatar'
 
 import { Metadata } from 'next'
 
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+
 interface Props {
   params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (!isSupabaseConfigured()) {
+    return {
+      title: 'Vagas | DW Solutions',
+      description: 'Configure o Supabase no ambiente local para visualizar os detalhes da vaga.',
+    }
+  }
+
   const { slug } = await params
   const supabase = await createClient()
   
@@ -32,6 +42,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function VagaDetalhesPage({ params }: Props) {
+  if (!isSupabaseConfigured()) {
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-6 sm:pt-36 sm:pb-10 animate-in fade-in duration-700">
+        <div className="p-10 sm:p-16 bg-card rounded-xl sm:rounded-2xl text-center border border-border">
+          <p className="text-muted-foreground font-bold text-sm sm:text-base">
+            Configure o Supabase no ambiente local para visualizar os detalhes da vaga.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   const { slug } = await params
   const supabase = await createClient()
 
@@ -64,7 +86,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-6 sm:pt-36 sm:pb-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
       {/* Header / Nav */}
       <div className="flex items-center justify-between">
         <Link 

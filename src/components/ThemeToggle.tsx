@@ -1,10 +1,14 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import { Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useTheme } from '@/components/ThemeProvider'
 
-export function ThemeToggle() {
+type ThemeToggleProps = {
+  className?: string
+}
+
+export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
@@ -17,7 +21,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-      className="p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-primary transition-all border border-border/50 shadow-sm"
+      className={`p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-primary transition-all border border-border/50 shadow-sm ${className}`}
       aria-label="Alternar tema"
     >
       {resolvedTheme === 'dark' ? (

@@ -1,35 +1,44 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useTheme } from '@/components/ThemeProvider'
 
 interface LogoProps {
   className?: string
-  scale?: number
+  width?: number
+  height?: number
+  variant?: 'white' | 'black' | 'auto'
 }
 
-export function Logo({ className = "", scale = 1 }: LogoProps) {
+export function Logo({
+  className = '',
+  width = 160,
+  height = 50,
+  variant = 'auto',
+}: LogoProps) {
   const [mounted, setMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  if (!mounted) return <div className={`opacity-0 ${className}`} />
+  if (!mounted) {
+    return <div className={`opacity-0 ${className}`} style={{ width, height }} />
+  }
+
+  const logoVariant = variant === 'auto' ? (resolvedTheme === 'dark' ? 'white' : 'black') : variant
 
   return (
-    <div className={`flex flex-col items-center justify-center leading-none select-none ${className}`} style={{ transform: `scale(${scale})` }}>
-      <div className="flex items-center gap-1">
-        <span className="text-3xl font-black tracking-tighter text-white font-serif">D</span>
-        <span className="text-3xl font-serif gold-text-gradient">&</span>
-        <span className="text-3xl font-black tracking-tighter text-white font-serif">W</span>
-      </div>
-      <div className="flex items-center gap-1.5 w-full mt-0.5">
-        <div className="h-px flex-1 bg-accent/40" />
-        <span className="text-[9px] font-black tracking-[0.3em] text-accent uppercase font-sans">
-          Solutions
-        </span>
-        <div className="h-px flex-1 bg-accent/40" />
-      </div>
+    <div className={`relative flex items-center transition-all ${className}`} style={{ width, height }}>
+      <Image
+        src={logoVariant === 'white' ? '/logo-branco.png' : '/logo-preto.png'}
+        alt="D&W Solutions Logo"
+        fill
+        className="object-contain object-left"
+        priority
+      />
     </div>
   )
 }

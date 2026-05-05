@@ -1,59 +1,79 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: "Montserrat", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
 :root {
-  --background: 0 0% 5%;
-  --foreground: 0 0% 98%;
-  
-  --card: 0 0% 7%;
-  --card-foreground: 0 0% 98%;
-  
-  --popover: 0 0% 5%;
-  --popover-foreground: 0 0% 98%;
-  
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 0 0% 98%;
-  
-  --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 65%;
-  
-  --accent: 40 45% 56%; /* Gold: #c5a059 */
-  --accent-foreground: 0 0% 98%;
-  
+  --background: 40 38% 96%;
+  --foreground: 228 14% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 228 14% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 228 14% 12%;
+  --primary: 228 14% 12%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 40 22% 90%;
+  --secondary-foreground: 228 14% 16%;
+  --muted: 40 22% 92%;
+  --muted-foreground: 228 8% 36%;
+  --accent: 40 45% 56%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-  
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
+  --border: 34 22% 82%;
+  --input: 34 22% 82%;
   --ring: 40 45% 56%;
-  
   --radius: 0.75rem;
 }
 
+.dark {
+  --background: 0 0% 5%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 5%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 65%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+}
+
+html,
 body {
-  background-color: #0c0c0c;
-  color: #f5f5f5;
-  font-family: var(--font-montserrat), sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-montserrat), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-montserrat), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-playfair), serif;
+  font-family: var(--font-montserrat), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 .logo-text {
-  font-family: var(--font-playfair), serif;
+  font-family: var(--font-montserrat), "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   letter-spacing: -0.02em;
 }
 
-/* Glassmorphism utilities */
 .glass {
-  background: rgba(18, 18, 18, 0.7);
+  background: color-mix(in srgb, hsl(var(--card)) 84%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid color-mix(in srgb, hsl(var(--border)) 74%, transparent);
 }
 
 .gold-gradient {
@@ -68,6 +88,36 @@ h1, h2, h3, h4, .font-serif {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+@keyframes whatsapp-pulse {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.34;
+  }
+}
+
+@keyframes whatsapp-ring {
+  0%, 100% {
+    transform: scale(0.94);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.28;
+  }
+}
+
+.animate-whatsapp-pulse {
+  animation: whatsapp-pulse 3.6s ease-in-out infinite;
+}
+
+.animate-whatsapp-ring {
+  animation: whatsapp-ring 3.6s ease-in-out infinite;
 }
 
 @keyframes float {

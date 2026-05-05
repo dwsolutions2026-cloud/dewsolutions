@@ -1,16 +1,41 @@
-import nodemailer from 'nodemailer'
 import { escapeHtml } from '@/lib/security'
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-})
+const FROM =
+  process.env.RESEND_FROM ||
+  process.env.SMTP_FROM ||
+  (process.env.GMAIL_USER ? `D&W Solutions <${process.env.GMAIL_USER}>` : 'D&W Solutions <onboarding@resend.dev>')
 
-const FROM = `D&W Solutions <${process.env.GMAIL_USER}>`
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+async function sendEmail(to: string, subject: string, html: string) {
+  const apiKey = process.env.RESEND_API_KEY
+
+  if (!apiKey) {
+    console.warn('RESEND_API_KEY not configured. Skipping email send.')
+    return { skipped: true }
+  }
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: FROM,
+      to: [to],
+      subject,
+      html,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Resend API error: ${response.status} ${errorText}`)
+  }
+
+  return { success: true }
+}
 
 function baseTemplate(content: string) {
   return `
@@ -39,9 +64,9 @@ function baseTemplate(content: string) {
               <tr>
                 <td style="background:#f9f9f9;padding:24px 40px;text-align:center;border-top:1px solid #eee;">
                   <p style="margin:0;color:#999;font-size:12px;">
-                    © ${new Date().getFullYear()} D&amp;W Solutions
+                    &copy; ${new Date().getFullYear()} D&amp;W Solutions
                   </p>
-                  <p style="margin:6px 0 0;color:#bbb;font-size:11px;">Este e-mail foi enviado automaticamente. Não responda.</p>
+                  <p style="margin:6px 0 0;color:#bbb;font-size:11px;">Este e-mail foi enviado automaticamente. Nao responda.</p>
                 </td>
               </tr>
             </table>
@@ -59,8 +84,8 @@ export async function sendCompanyCredentials(
   temporaryPassword: string
 ) {
   const content = `
-    <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Bem-vindo à D&amp;W Solutions!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeEmpresa)}</strong>! Sua conta de empresa parceira foi criada com sucesso.</p>
+    <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Bem-vindo a D&amp;W Solutions!</h2>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Ola, <strong>${escapeHtml(nomeEmpresa)}</strong>! Sua conta de empresa parceira foi criada com sucesso.</p>
     <p style="margin:0 0 12px;color:#444;font-size:14px;">Utilize as credenciais abaixo para acessar o portal e publicar suas vagas:</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:1px solid #e8e0d0;border-radius:8px;margin:0 0 28px;">
       <tr>
@@ -70,7 +95,7 @@ export async function sendCompanyCredentials(
             <strong style="color:#0D0D0D;">${escapeHtml(email)}</strong>
           </p>
           <p style="margin:0;font-size:14px;color:#444;">
-            <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">SENHA PROVISÓRIA</span>
+            <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">SENHA PROVISORIA</span>
             <strong style="color:#0D0D0D;font-size:18px;letter-spacing:2px;">${escapeHtml(temporaryPassword)}</strong>
           </p>
         </td>
@@ -86,17 +111,12 @@ export async function sendCompanyCredentials(
       </tr>
     </table>
     <p style="margin:28px 0 0;color:#999;font-size:12px;text-align:center;">
-      Recomendamos alterar sua senha após o primeiro acesso.
+      Recomendamos alterar sua senha apos o primeiro acesso.
     </p>
   `
 
   try {
-    await transporter.sendMail({
-      from: FROM,
-      to: email,
-      subject: 'Suas credenciais de acesso - D&W Solutions',
-      html: baseTemplate(content),
-    })
+    await sendEmail(email, 'Suas credenciais de acesso - D&W Solutions', baseTemplate(content))
     return { success: true }
   } catch (error) {
     console.error('Erro ao enviar e-mail de credenciais:', error)
@@ -107,19 +127,19 @@ export async function sendCompanyCredentials(
 export async function sendWelcomeEmail(email: string, nome: string) {
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Seu cadastro foi realizado!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nome)}</strong>! Sua conta foi criada com sucesso na plataforma D&amp;W Solutions.</p>
-    <p style="margin:0 0 20px;color:#444;font-size:14px;">Agora você pode:</p>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Ola, <strong>${escapeHtml(nome)}</strong>! Sua conta foi criada com sucesso na plataforma D&amp;W Solutions.</p>
+    <p style="margin:0 0 20px;color:#444;font-size:14px;">Agora voce pode:</p>
     <ul style="margin:0 0 28px;padding:0 0 0 20px;color:#444;font-size:14px;line-height:2;">
-      <li>Explorar as vagas disponíveis</li>
+      <li>Explorar as vagas disponiveis</li>
       <li>Se candidatar com apenas um clique</li>
       <li>Acompanhar suas candidaturas</li>
-      <li>Completar seu currículo online</li>
+      <li>Completar seu curriculo online</li>
     </ul>
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
           <a href="${APP_URL}/vagas" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;">
-            Ver Vagas Disponíveis
+            Ver Vagas Disponiveis
           </a>
         </td>
       </tr>
@@ -127,12 +147,7 @@ export async function sendWelcomeEmail(email: string, nome: string) {
   `
 
   try {
-    await transporter.sendMail({
-      from: FROM,
-      to: email,
-      subject: 'Bem-vindo à D&W Solutions!',
-      html: baseTemplate(content),
-    })
+    await sendEmail(email, 'Bem-vindo a D&W Solutions!', baseTemplate(content))
     return { success: true }
   } catch (error) {
     console.error('Erro ao enviar e-mail de boas-vindas:', error)
@@ -148,7 +163,7 @@ export async function sendCandidaturaConfirmacao(
 ) {
   const content = `
     <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Candidatura enviada com sucesso!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeCandidato)}</strong>! Sua candidatura foi registrada e está em análise.</p>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Ola, <strong>${escapeHtml(nomeCandidato)}</strong>! Sua candidatura foi registrada e esta em analise.</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:1px solid #e8e0d0;border-radius:8px;margin:0 0 28px;">
       <tr>
         <td style="padding:20px 24px;">
@@ -164,7 +179,7 @@ export async function sendCandidaturaConfirmacao(
       </tr>
     </table>
     <p style="margin:0 0 24px;color:#666;font-size:14px;">
-      Nossa equipe irá analisar seu perfil e entraremos em contato caso seu currículo seja selecionado para as próximas etapas.
+      Nossa equipe ira analisar seu perfil e entraremos em contato caso seu curriculo seja selecionado para as proximas etapas.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
@@ -178,12 +193,7 @@ export async function sendCandidaturaConfirmacao(
   `
 
   try {
-    await transporter.sendMail({
-      from: FROM,
-      to: email,
-      subject: `Candidatura registrada: ${escapeHtml(tituloVaga)}`,
-      html: baseTemplate(content),
-    })
+    await sendEmail(email, `Candidatura registrada: ${escapeHtml(tituloVaga)}`, baseTemplate(content))
     return { success: true }
   } catch (error) {
     console.error('Erro ao enviar e-mail de candidatura:', error)
@@ -203,8 +213,8 @@ export async function sendConvocacaoEntrevista(
   const safeObservation = observacao ? escapeHtml(observacao) : ''
 
   const content = `
-    <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Parabéns! Você foi selecionado!</h2>
-    <p style="margin:0 0 24px;color:#666;font-size:15px;">Olá, <strong>${escapeHtml(nomeCandidato)}</strong>! Seu perfil se destacou e você está convocado para uma entrevista.</p>
+    <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Parabens! Voce foi selecionado!</h2>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Ola, <strong>${escapeHtml(nomeCandidato)}</strong>! Seu perfil se destacou e voce esta convocado para uma entrevista.</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f6;border:2px solid #D4AF37;border-radius:8px;margin:0 0 28px;">
       <tr>
         <td style="padding:24px;">
@@ -226,14 +236,14 @@ export async function sendConvocacaoEntrevista(
           </p>
           ${safeObservation ? `
           <p style="margin:16px 0 0;font-size:14px;color:#444;padding-top:16px;border-top:1px solid #e8e0d0;">
-            <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">OBSERVAÇÕES</span>
+            <span style="color:#999;font-size:12px;display:block;margin-bottom:2px;">OBSERVACOES</span>
             ${safeObservation}
           </p>` : ''}
         </td>
       </tr>
     </table>
     <p style="margin:0 0 24px;color:#666;font-size:14px;text-align:center;">
-      Compareça com antecedência e boa sorte!
+      Compareca com antecedencia e boa sorte!
     </p>
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
@@ -247,15 +257,82 @@ export async function sendConvocacaoEntrevista(
   `
 
   try {
-    await transporter.sendMail({
-      from: FROM,
-      to: email,
-      subject: `Convocação para Entrevista: ${escapeHtml(tituloVaga)} - ${escapeHtml(nomeEmpresa)}`,
-      html: baseTemplate(content),
-    })
+    await sendEmail(
+      email,
+      `Convocacao para Entrevista: ${escapeHtml(tituloVaga)} - ${escapeHtml(nomeEmpresa)}`,
+      baseTemplate(content)
+    )
     return { success: true }
   } catch (error) {
-    console.error('Erro ao enviar e-mail de convocação:', error)
+    console.error('Erro ao enviar e-mail de convocacao:', error)
     return { error: String(error) }
   }
+}
+
+export async function sendLeadAutoReplyEmail({
+  email,
+  nomeResponsavel,
+  nomeEmpresa,
+  cargoVaga,
+  prazoTexto,
+  whatsappNumero,
+}: {
+  email: string
+  nomeResponsavel: string
+  nomeEmpresa: string
+  cargoVaga: string
+  prazoTexto: string
+  whatsappNumero: string
+}) {
+  const content = `
+    <p>Ola, <strong>${nomeResponsavel}</strong>!</p>
+    <p>Recebemos o interesse da empresa <strong>${nomeEmpresa}</strong> em anunciar uma oportunidade.</p>
+    <div style="background:#f1f3f5;padding:20px;border-radius:8px;margin:20px 0;">
+      <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#666;">Dados recebidos:</p>
+      <ul style="margin:0;padding-left:20px;font-size:15px;">
+        <li style="margin-bottom:5px;">Empresa: ${nomeEmpresa}</li>
+        <li style="margin-bottom:5px;">Responsavel: ${nomeResponsavel}</li>
+        <li>Vaga: ${cargoVaga}</li>
+      </ul>
+    </div>
+    <p style="font-size:16px;font-weight:bold;">${prazoTexto}</p>
+    <p style="font-size:14px;color:#666;">Qualquer duvida, fale conosco pelo WhatsApp: <a href="https://wa.me/55${whatsappNumero}" style="color:#25d366;text-decoration:none;font-weight:bold;">${whatsappNumero}</a></p>
+    <p style="margin-top:30px;border-top:1px solid #eee;padding-top:20px;font-size:13px;color:#999;">Att,<br>Equipe Plataforma de Vagas</p>
+  `
+
+  return sendEmail(email, 'Recebemos seu contato!', baseTemplate(content))
+}
+
+export async function sendLeadNotificationEmail({
+  adminEmail,
+  nomeEmpresa,
+  nomeResponsavel,
+  telefone,
+  cargoVaga,
+  siteUrl,
+  dataHora,
+}: {
+  adminEmail: string
+  nomeEmpresa: string
+  nomeResponsavel: string
+  telefone: string
+  cargoVaga: string
+  siteUrl: string
+  dataHora: string
+}) {
+  const content = `
+    <div style="font-family:sans-serif;color:#333;max-width:600px;margin:0 auto;">
+      <h3 style="margin:0 0 20px;">Novo lead recebido!</h3>
+      <p style="margin-bottom:5px;"><strong>Empresa:</strong> ${nomeEmpresa}</p>
+      <p style="margin-bottom:5px;"><strong>Responsavel:</strong> ${nomeResponsavel}</p>
+      <p style="margin-bottom:5px;"><strong>WhatsApp:</strong> ${telefone}</p>
+      <p style="margin-bottom:5px;"><strong>Vaga:</strong> ${cargoVaga}</p>
+      <p style="margin-bottom:20px;"><strong>Data:</strong> ${dataHora}</p>
+      <div style="text-align:center;margin-top:30px;">
+        <a href="${siteUrl}/admin/oportunidades" style="background:#000;color:#fff;padding:12px 25px;text-decoration:none;border-radius:5px;font-weight:bold;font-size:14px;">Abrir no Painel</a>
+      </div>
+    </div>
+  `
+
+  return sendEmail(adminEmail, `Novo lead: ${nomeEmpresa} quer anunciar vaga`, baseTemplate(content))
 }

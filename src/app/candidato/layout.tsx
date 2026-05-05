@@ -4,6 +4,9 @@ import { SidebarProvider } from '@/components/layout/SidebarProvider'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+
 export default async function CandidatoLayout({
   children,
 }: {
@@ -20,9 +23,9 @@ export default async function CandidatoLayout({
     <SidebarProvider>
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="flex w-full">
+        <div className="flex w-full pt-28 lg:pt-32">
           <Sidebar />
-          <main className="flex-1 p-6 lg:p-10 overflow-x-hidden min-h-[calc(100vh-64px)]">
+          <main className="flex-1 overflow-x-hidden p-6 lg:p-10 min-h-[calc(100vh-112px)]">
             <div className="w-full h-full">
               {children}
             </div>

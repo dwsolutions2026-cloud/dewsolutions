@@ -3,6 +3,8 @@ import { createClient } from '@/utils/supabase/server'
 import { checkAdmin } from '@/app/actions/admin'
 import { stringify } from 'csv-stringify/sync'
 
+export const runtime = 'edge'
+
 export async function GET(req: Request) {
   try {
     const isAdmin = await checkAdmin()

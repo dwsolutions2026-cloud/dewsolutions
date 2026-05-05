@@ -1,7 +1,10 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient, isSupabaseConfigured } from '@/utils/supabase/server'
 import { Search, MapPin, Briefcase, DollarSign, Filter, Building2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
+
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Vagas de Emprego | DW Solutions',
@@ -14,6 +17,26 @@ export default async function VagasPublicPage({
   searchParams: Promise<{ q?: string; area?: string; cidade?: string }>
 }) {
   const { q, area, cidade } = await searchParams
+  
+  if (!isSupabaseConfigured()) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-6 sm:pt-36 sm:pb-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
+        <div className="space-y-1 sm:space-y-2 text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary tracking-tight">Oportunidades Abertas</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">
+            Explore as vagas selecionadas pela <span className="text-primary font-bold">DW Solutions</span>.
+          </p>
+        </div>
+
+        <div className="p-10 sm:p-16 bg-card rounded-xl sm:rounded-2xl text-center border border-border">
+          <p className="text-muted-foreground font-bold text-sm sm:text-base">
+            Configure o Supabase no ambiente local para carregar as vagas publicadas.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   const supabase = await createClient()
 
   let query = supabase
@@ -41,7 +64,7 @@ export default async function VagasPublicPage({
   const { data: vagas, error } = await query
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-6 sm:pt-36 sm:pb-10 space-y-6 sm:space-y-8 animate-in fade-in duration-700">
       <div className="space-y-1 sm:space-y-2 text-center sm:text-left">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary tracking-tight">Oportunidades Abertas</h1>
         <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">Explore as vagas selecionadas pela <span className="text-primary font-bold">DW Solutions</span>.</p>

@@ -1,3 +1,7 @@
+export const DWSOLUTIONS_WHATSAPP_NUMBER = '41 99701-0813'
+export const DWSOLUTIONS_WHATSAPP_E164 = '55419997010813'
+export const DWSOLUTIONS_WHATSAPP_URL = `https://wa.me/${DWSOLUTIONS_WHATSAPP_E164}`
+
 export function generateWhatsAppLink(numero: string, template: string, data: any) {
   let message = template;
   

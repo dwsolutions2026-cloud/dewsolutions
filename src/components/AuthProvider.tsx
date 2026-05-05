@@ -4,6 +4,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { User } from '@supabase/supabase-js'
 
+const hasSupabaseEnv = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
+
 interface AuthContextType {
   user: User | null
   isLoading: boolean
@@ -17,9 +22,15 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
+    if (!hasSupabaseEnv) {
+      setIsLoading(false)
+      return
+    }
+
+    const supabase = createClient()
+
     // 1. Get initial session
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
@@ -35,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       subscription.unsubscribe()
     }
-  }, [supabase])
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, isLoading }}>

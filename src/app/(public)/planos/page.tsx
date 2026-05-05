@@ -1,6 +1,8 @@
 import { Check, Send, Zap, Crown, Building2 } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { WhatsAppIcon } from '@/components/WhatsAppIcon'
+import { DWSOLUTIONS_WHATSAPP_URL } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
   title: 'Planos e Preços | DW Solutions',
@@ -139,13 +141,14 @@ export default function PlanosPage() {
           </div>
         </div>
           <Link
-            href="https://wa.me/5541999999999"
+            href={DWSOLUTIONS_WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
+            className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
           >
-          Falar com Consultor
-        </Link>
+            <WhatsAppIcon className="h-5 w-5 shrink-0" />
+            Falar com Consultor
+          </Link>
       </div>
     </div>
   )

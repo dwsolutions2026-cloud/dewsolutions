@@ -1,12 +1,26 @@
 'use server'
 
-import { createClient } from '@supabase/supabase-js'
-import { createClient as createServerClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
+import {
+  createClient as createServerClient,
+  isSupabaseConfigured,
+} from '@/utils/supabase/server'
 import { sendWelcomeEmail } from '@/lib/resend'
+import { CandidatoRegistrationSchema } from '@/lib/schemas'
+
+function getSupabaseEnvError(action: 'login' | 'cadastro') {
+  return action === 'login'
+    ? 'Supabase não está configurado no ambiente local. Adicione as variáveis em .env.local para testar o login.'
+    : 'Supabase não está configurado no ambiente local. Adicione as variáveis em .env.local para testar o cadastro.'
+}
 
 export async function signInWithGoogle() {
+  if (!isSupabaseConfigured()) {
+    return redirect('/login?error=supabase_not_configured')
+  }
+
   const supabase = await createServerClient()
   const origin = (await headers()).get('origin')
 
@@ -28,6 +42,10 @@ export async function signInWithGoogle() {
 }
 
 export async function signInWithApple() {
+  if (!isSupabaseConfigured()) {
+    return redirect('/login?error=supabase_not_configured')
+  }
+
   const supabase = await createServerClient()
   const origin = (await headers()).get('origin')
 
@@ -56,6 +74,10 @@ export async function loginAction(formData: FormData) {
     return { error: 'E-mail e senha são obrigatórios' }
   }
 
+  if (!isSupabaseConfigured()) {
+    return { error: getSupabaseEnvError('login') }
+  }
+
   const supabase = await createServerClient()
 
   const { data: authData, error } = await supabase.auth.signInWithPassword({
@@ -68,14 +90,23 @@ export async function loginAction(formData: FormData) {
   }
 
   const user = authData.user
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
   let redirectUrl = '/'
   if (profile) {
     if (profile.role === 'admin') redirectUrl = '/admin/dashboard'
     else if (profile.role === 'empresa') redirectUrl = '/empresa/dashboard'
     else if (profile.role === 'candidato') {
-      const { data: candidato } = await supabase.from('candidatos').select('curriculo_url, curriculo_json').eq('user_id', user.id).single()
+      const { data: candidato } = await supabase
+        .from('candidatos')
+        .select('curriculo_url, curriculo_json')
+        .eq('user_id', user.id)
+        .single()
+
       if (candidato && (candidato.curriculo_url || candidato.curriculo_json)) {
         redirectUrl = '/candidato/minha-area'
       } else {
@@ -87,10 +118,11 @@ export async function loginAction(formData: FormData) {
   redirect(redirectUrl)
 }
 
-import { CandidatoRegistrationSchema } from '@/lib/schemas'
-
 export async function registerCandidateAction(formData: FormData) {
-  // 1. Zod Validation
+  if (!isSupabaseConfigured()) {
+    return { error: getSupabaseEnvError('cadastro') }
+  }
+
   const parsed = CandidatoRegistrationSchema.safeParse({
     nome: formData.get('nome'),
     email: formData.get('email'),
@@ -106,12 +138,10 @@ export async function registerCandidateAction(formData: FormData) {
     return { error: parsed.error.issues[0].message }
   }
 
-  const { email, password, nome, telefone, cidade, estado, lgpd } = parsed.data
+  const { email, password, nome, lgpd } = parsed.data
   const lgpd_aceito = lgpd === 'on'
-
   const curriculo = formData.get('curriculo') as File | null
 
-  // Só valida o tipo e o tamanho se o arquivo for enviado
   if (curriculo && curriculo.size > 0) {
     if (curriculo.type !== 'application/pdf') {
       return { error: 'O currículo deve ser um arquivo PDF' }
@@ -123,7 +153,6 @@ export async function registerCandidateAction(formData: FormData) {
 
   const supabase = await createServerClient()
 
-  // Register the user
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
     password,
@@ -135,15 +164,21 @@ export async function registerCandidateAction(formData: FormData) {
 
   if (authData.user) {
     const userId = authData.user.id
-    let curriculo_url = null
-    
+    let curriculo_url: string | null = null
+
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return {
+        error:
+          'A chave SUPABASE_SERVICE_ROLE_KEY não está configurada no ambiente local.',
+      }
+    }
+
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!,
       { auth: { autoRefreshToken: false, persistSession: false } }
     )
 
-    // Upload CV apenas se o arquivo foi enviado
     if (curriculo && curriculo.size > 0) {
       const filePath = `${userId}.pdf`
       const { error: uploadError } = await supabaseAdmin.storage
@@ -164,33 +199,30 @@ export async function registerCandidateAction(formData: FormData) {
     const cidade = formData.get('cidade') as string
     const estado = formData.get('estado') as string
 
-    // Update 'candidatos' table using Admin client
-    const { error: candidateError } = await supabaseAdmin
-      .from('candidatos')
-      .insert({
-        user_id: userId,
-        nome,
-        email,
-        telefone,
-        cidade,
-        estado,
-        curriculo_url,
-        lgpd_aceito,
-        lgpd_aceito_em: new Date().toISOString(),
-      })
+    const { error: candidateError } = await supabaseAdmin.from('candidatos').insert({
+      user_id: userId,
+      nome,
+      email,
+      telefone,
+      cidade,
+      estado,
+      curriculo_url,
+      lgpd_aceito,
+      lgpd_aceito_em: new Date().toISOString(),
+    })
 
     if (candidateError) {
       console.error('Error creating candidate record:', candidateError)
       return { error: `Erro ao criar perfil de candidato: ${candidateError.message}` }
     }
 
-    // Send welcome email
     await sendWelcomeEmail(email, nome)
   }
 
   const sem_curriculo = formData.get('sem_curriculo') === 'on'
-  const redirectUrl = sem_curriculo ? '/candidato/curriculo/criar' : '/candidato/minha-area'
+  const redirectUrl = sem_curriculo
+    ? '/candidato/curriculo/criar'
+    : '/candidato/minha-area'
 
-  // Redireciona diretamente para a área do candidato após o cadastro
   redirect(redirectUrl)
 }
