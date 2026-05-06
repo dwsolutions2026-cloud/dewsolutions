@@ -5,8 +5,6 @@ import { generateWhatsAppLink } from '@/lib/whatsapp'
 import { escapeHtml } from '@/lib/security'
 import { sendLeadAutoReplyEmail, sendLeadNotificationEmail } from '@/lib/resend'
 
-export const runtime = 'edge'
-
 const rateLimitMap = new Map<string, { count: number; lastTime: number }>()
 
 function getSupabaseAdmin() {

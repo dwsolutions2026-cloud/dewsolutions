@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -8,5 +9,7 @@ const nextConfig: NextConfig = {
     proxyClientMaxBodySize: "50mb",
   },
 };
+
+initOpenNextCloudflareForDev();
 
 export default nextConfig;

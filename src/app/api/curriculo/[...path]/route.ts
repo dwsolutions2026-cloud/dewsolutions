@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createServerClient } from '@/utils/supabase/server'
 import { isUuidPdfPath } from '@/lib/security'
 
-export const runtime = 'edge'
-
 const getAdmin = () =>
   createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

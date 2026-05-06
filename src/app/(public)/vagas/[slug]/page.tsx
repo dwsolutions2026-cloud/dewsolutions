@@ -13,7 +13,6 @@ import Link from 'next/link'
 import { BotaoCandidatar } from '@/components/vagas/BotaoCandidatar'
 import { Metadata } from 'next'
 
-export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 interface Props {

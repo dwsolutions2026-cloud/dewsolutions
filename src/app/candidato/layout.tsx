@@ -4,7 +4,6 @@ import { SidebarProvider } from '@/components/layout/SidebarProvider'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
-export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 export default async function CandidatoLayout({
