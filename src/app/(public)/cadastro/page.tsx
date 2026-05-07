@@ -34,13 +34,13 @@ export default function CadastroPage() {
   )
 
   const inputClass =
-    'w-full rounded-lg border border-black/10 bg-white pl-11 pr-4 py-3 text-sm font-medium text-black placeholder:text-neutral-400 shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
+    'surface-input w-full rounded-lg pl-11 pr-4 py-3 text-sm font-medium shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
 
   if (state.success) {
     return (
       <div className="animate-in fade-in zoom-in flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 duration-500 sm:px-6 sm:pb-10 sm:pt-36">
         <div className="w-full max-w-md space-y-6 text-center sm:space-y-8">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-green-100 text-green-600 shadow-xl shadow-green-200 sm:h-24 sm:w-24 sm:rounded-[2.5rem]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-green-100 text-green-600 shadow-xl shadow-green-200 dark:bg-green-900/25 dark:text-green-300 dark:shadow-green-900/20 sm:h-24 sm:w-24 sm:rounded-[2.5rem]">
             <ShieldCheck className="h-10 w-10 sm:h-12 sm:w-12" />
           </div>
           <div className="space-y-3 sm:space-y-4">
@@ -48,8 +48,8 @@ export default function CadastroPage() {
               Verifique seu e-mail
             </h1>
             <p className="text-xs font-medium leading-relaxed text-muted-foreground sm:text-sm md:text-base">
-              Enviamos um link de confirmação para o seu e-mail. Por favor, valide sua conta para
-              continuar.
+              Enviamos um link de confirmação para o seu e-mail. Por favor,
+              valide sua conta para continuar.
             </p>
           </div>
           <Link
@@ -75,29 +75,29 @@ export default function CadastroPage() {
               Crie sua conta
             </h1>
             <p className="text-xs font-medium text-muted-foreground sm:text-sm">
-              Junte-se à maior rede de talentos e oportunidades.
+              Junte-se à nossa rede de talentos e oportunidades.
             </p>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-black/10 bg-white p-6 text-black shadow-xl shadow-primary/5 sm:rounded-[2.5rem] sm:p-10">
+        <div className="surface-card rounded-2xl p-6 sm:rounded-[2.5rem] sm:p-10">
           <form action={formAction} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
-              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                 Nome Completo
               </label>
               <div className="group relative">
-                <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input name="nome" required className={inputClass} placeholder="Seu nome" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                 E-mail
               </label>
               <div className="group relative">
-                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input
                   name="email"
                   type="email"
@@ -109,11 +109,11 @@ export default function CadastroPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                 Sua Senha
               </label>
               <div className="group relative">
-                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input
                   name="password"
                   type="password"
@@ -125,11 +125,11 @@ export default function CadastroPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                 Confirmar Senha
               </label>
               <div className="group relative">
-                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input
                   name="passwordConfirm"
                   type="password"
@@ -140,7 +140,7 @@ export default function CadastroPage() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-black/10 bg-neutral-50 p-4">
+            <div className="surface-muted flex items-start gap-3 rounded-xl p-4">
               <input
                 id="lgpd"
                 name="lgpd"
@@ -148,7 +148,7 @@ export default function CadastroPage() {
                 required
                 className="mt-1 h-4 w-4 rounded border-border text-accent focus:ring-accent"
               />
-              <label htmlFor="lgpd" className="text-xs font-medium leading-relaxed text-neutral-700">
+              <label htmlFor="lgpd" className="text-xs font-medium leading-relaxed text-foreground/85">
                 Estou de acordo com a{' '}
                 <Link href="/privacidade" className="text-accent underline">
                   Política de Privacidade
@@ -158,7 +158,7 @@ export default function CadastroPage() {
             </div>
 
             {state.error && (
-              <div className="animate-in shake flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 duration-500 sm:rounded-xl sm:p-4">
+              <div className="animate-in shake flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 duration-500 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-300 sm:rounded-xl sm:p-4">
                 <AlertCircle className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
                 <p className="text-xs font-bold sm:text-sm">{state.error}</p>
               </div>
@@ -167,7 +167,7 @@ export default function CadastroPage() {
             <button
               type="submit"
               disabled={pending}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent py-3 text-base font-black text-accent-foreground shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 sm:gap-3 sm:rounded-2xl sm:py-5 sm:text-lg"
+              className="gold-gradient flex w-full items-center justify-center gap-2 rounded-lg py-3 text-base font-black text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 sm:gap-3 sm:rounded-2xl sm:py-5 sm:text-lg"
             >
               {pending ? (
                 <Loader2 className="h-5 w-5 animate-spin sm:h-6 sm:w-6" />
@@ -178,11 +178,13 @@ export default function CadastroPage() {
             </button>
           </form>
 
-          <div className="mt-8 space-y-4 border-t border-black/10 pt-6 text-center sm:mt-10 sm:pt-8">
-            <p className="text-xs font-medium text-neutral-600 sm:text-sm">Já possui uma conta?</p>
+          <div className="mt-8 space-y-4 border-t border-border/70 pt-6 text-center sm:mt-10 sm:pt-8">
+            <p className="text-xs font-medium text-muted-foreground sm:text-sm">
+              Já possui uma conta?
+            </p>
             <Link
               href="/login"
-              className="block text-[9px] font-black uppercase tracking-widest text-primary hover:underline sm:text-xs"
+              className="block text-[9px] font-black uppercase tracking-widest text-primary hover:underline sm:text-xs dark:text-accent"
             >
               Fazer login agora
             </Link>

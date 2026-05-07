@@ -26,10 +26,10 @@ export default function LoginPage() {
   )
 
   const inputClass =
-    'w-full rounded-lg border border-black/10 bg-white pl-11 pr-4 py-3 text-sm font-medium text-black placeholder:text-neutral-400 shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
+    'surface-input w-full rounded-lg pl-11 pr-4 py-3 text-sm font-medium shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
 
   return (
-    <div className="animate-in fade-in duration-700 flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 sm:px-6 sm:pb-10 sm:pt-36">
+    <div className="animate-in fade-in flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 duration-700 sm:px-6 sm:pb-10 sm:pt-36">
       <div className="w-full max-w-md space-y-6 sm:space-y-8">
         <div className="space-y-4 text-center sm:space-y-6">
           <div className="flex justify-center">
@@ -45,14 +45,14 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-black/10 bg-white p-6 text-black shadow-xl shadow-primary/5 sm:rounded-[2.5rem] sm:p-10">
+        <div className="surface-card rounded-2xl p-6 sm:rounded-[2.5rem] sm:p-10">
           <form action={formAction} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
-              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+              <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                 E-mail
               </label>
               <div className="group relative">
-                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input
                   name="email"
                   type="email"
@@ -65,7 +65,7 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between px-2">
-                <label className="text-[9px] font-black uppercase tracking-widest text-neutral-600 sm:text-xs">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
                   Senha
                 </label>
                 <Link
@@ -77,7 +77,7 @@ export default function LoginPage() {
                 </Link>
               </div>
               <div className="group relative">
-                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-accent sm:left-4" />
+                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-4" />
                 <input
                   name="password"
                   type="password"
@@ -89,7 +89,7 @@ export default function LoginPage() {
             </div>
 
             {state.error && (
-              <div className="animate-in shake flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 duration-500 sm:rounded-xl sm:p-4">
+              <div className="animate-in shake flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 duration-500 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-300 sm:rounded-xl sm:p-4">
                 <AlertCircle className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
                 <p className="text-xs font-bold sm:text-sm">{state.error}</p>
               </div>
@@ -109,8 +109,8 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 space-y-4 border-t border-black/10 pt-6 text-center sm:mt-10 sm:pt-8">
-            <p className="text-xs font-medium text-neutral-600 sm:text-sm">
+          <div className="mt-8 space-y-4 border-t border-border/70 pt-6 text-center sm:mt-10 sm:pt-8">
+            <p className="text-xs font-medium text-muted-foreground sm:text-sm">
               Ainda não tem uma conta?
             </p>
             <Link

@@ -4,7 +4,9 @@ import Link from 'next/link'
 
 export default async function EmpresaDashboard() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (!user) return null
 
@@ -14,11 +16,14 @@ export default async function EmpresaDashboard() {
     .eq('user_id', user.id)
     .single()
 
-  if (!empresa) return (
-    <div className="p-8 bg-card border border-border rounded-2xl text-center font-bold text-sm text-muted-foreground">
-      Empresa não encontrada. Entre em contato com o administrador.
-    </div>
-  )
+  if (!empresa) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm font-bold text-muted-foreground">
+        Empresa não encontrada. Entre em contato com o administrador para
+        concluir a configuração do seu acesso.
+      </div>
+    )
+  }
 
   const { count: totalVagas } = await supabase
     .from('vagas')
@@ -33,53 +38,65 @@ export default async function EmpresaDashboard() {
   const { count: totalCandidaturas } = await supabase
     .from('candidaturas')
     .select('*', { count: 'exact', head: true })
-    .in('vaga_id', vagasIds?.map(v => v.id) || [])
+    .in('vaga_id', vagasIds?.map((vaga) => vaga.id) || [])
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div>
-        <h1 className="text-2xl font-black text-primary tracking-tight mb-1">
+    <div className="animate-in space-y-8 fade-in duration-700">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-black tracking-tight text-primary">
           Olá, {empresa.nome}
         </h1>
-        <p className="text-muted-foreground text-sm font-medium opacity-70">Gerencie suas oportunidades e acompanhe os candidatos.</p>
+        <p className="text-sm font-medium text-muted-foreground opacity-80">
+          Gerencie suas oportunidades e acompanhe os candidatos recebidos pela
+          plataforma.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="bg-card p-6 rounded-4xl border border-border shadow-sm flex items-center gap-5 group hover:border-accent/30 transition-all">
-          <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center text-accent group-hover:scale-110 transition-transform shrink-0">
-            <Briefcase className="w-7 h-7" />
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="group flex items-center gap-5 rounded-4xl border border-border bg-card p-6 shadow-sm transition-all hover:border-accent/30">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent transition-transform group-hover:scale-110">
+            <Briefcase className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Vagas Publicadas</p>
-            <p className="text-3xl font-black text-primary leading-none">{totalVagas || 0}</p>
+            <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
+              Vagas Publicadas
+            </p>
+            <p className="text-3xl font-black leading-none text-primary">
+              {totalVagas || 0}
+            </p>
           </div>
         </div>
 
-        <div className="bg-card p-6 rounded-4xl border border-border shadow-sm flex items-center gap-5 group hover:border-accent/30 transition-all">
-          <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/20 rounded-2xl flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform shrink-0">
-            <Users className="w-7 h-7" />
+        <div className="group flex items-center gap-5 rounded-4xl border border-border bg-card p-6 shadow-sm transition-all hover:border-accent/30">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-purple-100 text-purple-600 transition-transform group-hover:scale-110 dark:bg-purple-900/20">
+            <Users className="h-7 w-7" />
           </div>
           <div>
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1 opacity-60">Total de Candidatos</p>
-            <p className="text-3xl font-black text-primary leading-none">{totalCandidaturas || 0}</p>
+            <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">
+              Total de Candidaturas
+            </p>
+            <p className="text-3xl font-black leading-none text-primary">
+              {totalCandidaturas || 0}
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-primary rounded-4xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl shadow-primary/20">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-accent opacity-20 blur-3xl -mr-24 -mt-24" />
-        <div className="max-w-xl relative">
-          <h2 className="text-2xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
-            <TrendingUp className="w-6 h-6 text-accent" /> Expanda seu Time
+      <div className="relative overflow-hidden rounded-4xl bg-primary p-8 text-white shadow-xl shadow-primary/20 md:p-12">
+        <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-20 blur-3xl" />
+        <div className="relative max-w-xl">
+          <h2 className="mb-3 flex items-center gap-2.5 text-2xl font-black tracking-tight">
+            <TrendingUp className="h-6 w-6 text-accent" /> Expanda seu time
           </h2>
-          <p className="text-white/70 text-sm mb-8 leading-relaxed">
-            Precisa de novos talentos? Publique uma nova vaga e comece a receber candidaturas qualificadas agora mesmo.
+          <p className="mb-8 text-sm leading-relaxed text-white/75">
+            Precisa contratar? Publique uma nova vaga e comece a receber
+            candidaturas qualificadas pelo painel da empresa.
           </p>
-          <Link 
+          <Link
             href="/empresa/vagas/nova"
-            className="inline-flex items-center gap-2.5 bg-accent text-accent-foreground px-8 py-3 rounded-xl font-black text-sm hover:scale-105 transition-all shadow-lg shadow-accent/20"
+            className="inline-flex items-center gap-2.5 rounded-xl bg-accent px-8 py-3 text-sm font-black text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:scale-105"
           >
-            <PlusCircle className="w-4 h-4" /> Publicar Oportunidade
+            <PlusCircle className="h-4 w-4" /> Publicar vaga
           </Link>
         </div>
       </div>

@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   ArrowRight,
-  Building2,
-  CheckCircle2,
+  BrainCircuit,
+  BriefcaseBusiness,
   Search,
   ShieldCheck,
   Target,
@@ -21,23 +21,22 @@ export const metadata: Metadata = {
     'Soluções inteligentes em recrutamento e seleção para empresas que precisam contratar com precisão.',
 }
 
+const shellPadding = 'px-5 sm:px-8 lg:px-10 xl:px-12'
+
 const differentiators = [
   {
     title: 'Precisão',
-    description:
-      'Processos seletivos mais assertivos, rápidos e alinhados com a cultura da empresa.',
+    description: 'Processos assertivos e eficientes.',
     icon: Target,
   },
   {
     title: 'Conexão',
-    description:
-      'Aproximamos talentos qualificados de oportunidades com real potencial de crescimento.',
+    description: 'Conectamos pessoas a propósito.',
     icon: Users,
   },
   {
     title: 'Resultados',
-    description:
-      'Atuação orientada por performance, experiência do candidato e impacto no negócio.',
+    description: 'Foco em resultados que geram impacto.',
     icon: TrendingUp,
   },
 ]
@@ -53,25 +52,24 @@ const services = [
     title: 'Headhunting',
     description:
       'Busca especializada de executivos e profissionais de alta performance no mercado.',
-    icon: Target,
+    icon: BriefcaseBusiness,
   },
   {
     title: 'Avaliação Psicológica',
     description:
       'Análise profunda de competências e perfis comportamentais para garantir o fit cultural.',
-    icon: CheckCircle2,
+    icon: ShieldCheck,
   },
   {
     title: 'Consultoria de RH',
     description:
       'Estruturação de processos internos, cargos e salários para otimizar sua gestão de pessoas.',
-    icon: Building2,
+    icon: BrainCircuit,
   },
   {
     title: 'Suporte Especializado',
-    description:
-      'Atendimento dedicado para garantir agilidade em todas as etapas do processo seletivo.',
-    icon: ShieldCheck,
+    description: 'Atendimento dedicado para garantir agilidade em todas as etapas do processo seletivo.',
+    icon: Users,
   },
   {
     title: 'Treinamento e Desenvolvimento',
@@ -80,166 +78,146 @@ const services = [
   },
 ]
 
-const faqItems = [
-  {
-    question: 'Para quais tipos de vaga a D&W atende?',
-    answer:
-      'Atendemos posições operacionais, administrativas, técnicas e estratégicas, sempre adaptando o processo à realidade da empresa.',
-  },
-  {
-    question: 'Em quanto tempo vocês retornam um lead?',
-    answer:
-      'Nosso fluxo comercial foi pensado para responder rapidamente e alinhar o escopo da vaga com objetividade.',
-  },
-  {
-    question: 'A plataforma também serve para candidatos?',
-    answer:
-      'Sim. O candidato pode criar perfil, acompanhar candidaturas e se conectar com vagas compatíveis com seu momento profissional.',
-  },
-]
-
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden bg-background text-foreground transition-colors duration-300">
+    <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       <section
         id="home"
-        className="relative flex min-h-[100svh] items-center pb-14 pt-24 sm:pb-16 sm:pt-28 md:pb-24 lg:pb-28"
+        className="relative isolate min-h-[100svh] overflow-hidden bg-background pt-24 sm:pt-28"
       >
-        <div className="pointer-events-none absolute inset-y-0 -right-[8%] z-0 flex items-end justify-end overflow-hidden md:-right-[10%] lg:-right-[12%]">
+        <div className="absolute inset-y-0 right-0 left-[20%] sm:left-[24%] lg:left-[28%]">
           <Image
             src="/images/hero-team.png?v=2"
             alt="Equipe D&W Solutions"
-            width={4086}
-            height={2491}
+            fill
             priority
-            unoptimized
-            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 82vw, 72vw"
-            className="h-[56vh] w-auto max-w-none object-contain object-right-bottom sm:h-[62vh] md:h-[74vh] lg:h-[96vh]"
+            sizes="80vw"
+            className="translate-y-16 scale-[1.08] object-contain object-right-bottom sm:translate-y-20 sm:scale-[1.1] lg:translate-y-24 lg:scale-[1.12]"
           />
         </div>
 
-        <div className="container relative z-20 mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl space-y-8 sm:space-y-10">
-            <div className="relative h-[52px] w-[172px] sm:h-[64px] sm:w-[210px] md:h-[88px] md:w-[290px]">
-              <Logo width={290} height={88} variant="auto" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.9)_26%,rgba(255,255,255,0.62)_46%,rgba(255,255,255,0.18)_72%,rgba(255,255,255,0.05)_100%)] dark:bg-[linear-gradient(90deg,rgba(0,0,0,0.96)_0%,rgba(0,0,0,0.94)_28%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.22)_70%,rgba(0,0,0,0.08)_100%)]" />
+        <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.015)_36%,rgba(255,255,255,0.05)_100%)] dark:bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.02)_36%,rgba(0,0,0,0.12)_100%)] lg:w-[46%]" />
+
+        <div className="relative z-10 flex min-h-[calc(100svh-112px)] w-full items-center pb-0">
+          <div className="w-full lg:max-w-[46%]">
+            <div className={`${shellPadding} pb-6 pt-4 sm:pt-6`}>
+              <div className="relative mb-7 h-[110px] w-[260px] sm:h-[150px] sm:w-[370px]">
+                <Logo width={370} height={150} variant="auto" />
+              </div>
+
+              <div className="max-w-[44rem] space-y-5">
+                <h1 className="text-[2.7rem] font-semibold leading-[0.98] tracking-[-0.055em] text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem]">
+                  <span className="block whitespace-nowrap">Soluções inteligentes em</span>
+                  <span className="block whitespace-nowrap">
+                    <span className="text-accent italic">recrutamento</span> e{' '}
+                    <span className="text-accent italic">seleção.</span>
+                  </span>
+                </h1>
+
+                <div className="space-y-1.5 text-base leading-relaxed text-muted-foreground dark:text-white/78 sm:text-[1.05rem]">
+                  <p>Conectamos talentos às oportunidades certas.</p>
+                  <p>Inteligência. Estratégia. Resultados.</p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/anunciar-oportunidade"
+                  className="gold-gradient group relative flex min-w-[240px] flex-col items-center justify-center gap-0.5 rounded-sm px-7 py-3 text-center shadow-[0_10px_35px_rgba(197,160,89,0.22)] transition-transform hover:scale-[1.01]"
+                >
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black/60">Para Empresas</span>
+                  <span className="flex items-center gap-2 text-sm font-bold tracking-[0.05em] text-black">
+                    ANUNCIAR VAGA
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+                <Link
+                  href="/vagas"
+                  className="group relative flex min-w-[240px] flex-col items-center justify-center gap-0.5 rounded-sm border border-accent/80 bg-background/35 px-7 py-3 text-center backdrop-blur-[2px] transition-colors hover:bg-accent/10 dark:bg-black/20"
+                >
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent/70">Para Talentos</span>
+                  <span className="flex items-center gap-2 text-sm font-bold tracking-[0.05em] text-accent">
+                    EXPLORAR VAGAS
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </div>
             </div>
 
-            <div className="max-w-[18rem] space-y-4 sm:max-w-[28rem] sm:space-y-5 lg:max-w-3xl">
-              <h1 className="text-[2.2rem] font-extrabold leading-[1.02] tracking-[-0.05em] text-primary sm:text-5xl lg:text-6xl">
-                Soluções inteligentes em
-                <span className="mt-2 block gold-text-gradient">recrutamento e seleção.</span>
-              </h1>
-              <p className="max-w-xs text-sm font-medium leading-relaxed text-muted-foreground sm:max-w-xl sm:text-base md:text-xl">
-                Conectamos talentos às oportunidades certas com estratégia, precisão e visão de
-                longo prazo.
-              </p>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-accent sm:text-xs md:text-sm">
-                Inteligência. Estratégia. Resultados.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <Link
-                href="/anunciar-oportunidade"
-                className="gold-gradient inline-flex w-full items-center justify-center gap-3 rounded-xl px-5 py-3 text-[11px] font-black uppercase tracking-[0.14em] text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] sm:w-auto sm:px-6 sm:text-xs md:px-8 md:py-4"
-              >
-                Solicitar orçamento
-                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-              </Link>
-              <Link
-                href="/vagas"
-                className="inline-flex w-full items-center justify-center gap-3 rounded-xl border-2 border-accent px-5 py-3 text-[11px] font-black uppercase tracking-[0.14em] text-accent transition-all hover:bg-accent/8 sm:w-auto sm:px-6 sm:text-xs md:px-8 md:py-4"
-              >
-                Ver vagas
-                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-              </Link>
-            </div>
-
-            <div className="grid gap-3 pt-2 sm:gap-4 sm:pt-4 md:grid-cols-3">
-              {differentiators.map((item) => {
-                const Icon = item.icon
-                return (
-                  <div
-                    key={item.title}
-                    className="rounded-2xl border border-border/70 bg-card/85 p-4 backdrop-blur-md sm:p-5"
-                  >
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-accent/35 text-accent">
-                      <Icon className="h-5 w-5" />
+            <div className={shellPadding}>
+              <div className="grid sm:grid-cols-3">
+                {differentiators.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <div key={item.title} className="flex gap-4 py-4 sm:pr-6">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/70 text-accent">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <h2 className="text-lg font-semibold text-primary dark:text-white">
+                          {item.title}
+                        </h2>
+                        <p className="text-sm leading-relaxed text-muted-foreground dark:text-white/68">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                    <h2 className="text-lg font-extrabold text-primary sm:text-xl">{item.title}</h2>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="sobre" className="border-t border-border/70 bg-secondary/45 py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+      <section id="sobre" className="border-t border-border/60 bg-background py-16 transition-colors duration-300 sm:py-20">
+        <div className={`grid gap-10 ${shellPadding} lg:grid-cols-[0.9fr_1.1fr]`}>
           <div className="space-y-5">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-accent">Sobre nós</p>
-            <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
-              Recrutamento com método, clareza e leitura de negócio.
+            <p className="text-sm font-bold uppercase tracking-[0.26em] text-accent">Sobre nós</p>
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-primary dark:text-white sm:text-5xl">
+              Recrutamento com leitura de negócio, clareza e método.
             </h2>
           </div>
-          <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
+          <div className="space-y-5 text-base leading-8 text-muted-foreground sm:text-lg dark:text-white/72">
             <p>
               A D&amp;W Solutions atua para tornar a contratação mais segura, humana e eficiente.
               Nosso trabalho une visão consultiva, curadoria de talentos e processos bem definidos.
             </p>
             <p>
-              Em vez de volume sem direção, priorizamos aderência real entre candidato, vaga e
-              cultura organizacional. Isso reduz ruído, acelera decisões e melhora a qualidade das
-              contratações.
+              Priorizamos aderência real entre candidato, vaga e cultura organizacional. Isso reduz
+              ruído, acelera decisões e melhora a qualidade das contratações.
             </p>
-            <div className="grid gap-4 pt-2 sm:grid-cols-2">
-              <div className="rounded-2xl border border-border/70 bg-card p-5">
-                <p className="text-3xl font-extrabold text-accent">+ precisão</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Processos mais alinhados ao perfil e ao momento da empresa.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border/70 bg-card p-5">
-                <p className="text-3xl font-extrabold text-accent">+ agilidade</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  Fluxo objetivo para reduzir tempo de resposta e retrabalho.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      <section id="servicos" className="bg-background py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section id="servicos" className="bg-background py-16 transition-colors duration-300 sm:py-20">
+        <div className={shellPadding}>
           <div className="mb-12 max-w-3xl space-y-4">
-            <p className="text-sm font-black uppercase tracking-[0.24em] text-accent">Serviços</p>
-            <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
-              Soluções completas para fortalecer sua estratégia de pessoas.
+            <p className="text-sm font-bold uppercase tracking-[0.26em] text-accent">Serviços</p>
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-primary dark:text-white sm:text-5xl">
+              Soluções estratégicas para fortalecer sua contratação.
             </h2>
-            <p className="text-lg leading-8 text-muted-foreground">
-              Atuamos da atração ao desenvolvimento de talentos, com processos pensados para dar
-              mais segurança, agilidade e qualidade às contratações.
-            </p>
           </div>
 
-          <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {services.map((service) => {
               const Icon = service.icon
               return (
                 <div
                   key={service.title}
-                  className="rounded-3xl border border-border/70 bg-card p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:p-7"
+                  className="rounded-sm border border-border bg-card p-6 shadow-[0_24px_60px_rgba(0,0,0,0.08)] transition-colors duration-300 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_24px_60px_rgba(0,0,0,0.2)]"
                 >
-                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10 text-accent">
-                    <Icon className="h-6 w-6" />
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-accent/70 text-accent">
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <h3 className="text-xl font-extrabold text-primary sm:text-2xl">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{service.description}</p>
+                  <h3 className="text-2xl font-semibold text-primary dark:text-white">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground dark:text-white/68">
+                    {service.description}
+                  </p>
                 </div>
               )
             })}
@@ -247,128 +225,62 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="vagas" className="border-y border-border/70 bg-secondary/45 py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div className="space-y-5">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">
-              Vagas e empresas
-            </p>
-            <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
-              A mesma plataforma atende quem contrata e quem busca a próxima oportunidade.
+      <section id="vagas" className="border-y border-border/60 bg-background py-16 transition-colors duration-300 sm:py-20 dark:border-white/10">
+        <div className={`flex flex-col items-start justify-between gap-8 ${shellPadding} lg:flex-row`}>
+          <div className="max-w-3xl space-y-4">
+            <p className="text-sm font-bold uppercase tracking-[0.26em] text-accent">Vagas</p>
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-primary dark:text-white sm:text-5xl">
+              Uma mesma plataforma para empresas e talentos.
             </h2>
-            <p className="text-lg leading-8 text-muted-foreground">
-              Empresas podem anunciar oportunidades com rapidez. Candidatos encontram vagas,
-              acompanham candidaturas e mantêm o perfil pronto para novas conexões.
+            <p className="text-lg leading-8 text-muted-foreground dark:text-white/70">
+              Empresas anunciam oportunidades com rapidez. Candidatos acompanham vagas, perfil e
+              candidaturas em um fluxo simples e direto.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-accent/20 bg-card p-6 shadow-[0_24px_80px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.28)] sm:p-8">
-            <div className="space-y-4 text-sm leading-7 text-muted-foreground">
-              <div className="flex gap-3">
-                <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
-                <p>Fluxo comercial mais direto para empresas que precisam abrir vagas com qualidade.</p>
-              </div>
-              <div className="flex gap-3">
-                <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
-                <p>Experiência simples para candidatos se cadastrarem e visualizarem oportunidades.</p>
-              </div>
-              <div className="flex gap-3">
-                <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-accent" />
-                <p>Painel administrativo preparado para acompanhar leads, vagas e perfis.</p>
-              </div>
-            </div>
+          <Link
+            href="/vagas"
+            className="inline-flex items-center gap-3 rounded-sm border border-accent/80 px-7 py-4 text-sm font-bold tracking-[0.08em] text-accent transition-colors hover:bg-accent/10"
+          >
+            EXPLORAR VAGAS
+            <ArrowRight className="h-5 w-5" />
+          </Link>
+        </div>
+      </section>
 
-            <div className="mt-8 flex flex-col gap-4">
-              <Link
-                href="/vagas"
-                className="gold-gradient inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-black transition-transform hover:scale-[1.01]"
-              >
-                Explorar vagas
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+      <section id="contato" className="bg-background py-16 transition-colors duration-300 sm:py-20">
+        <div className={shellPadding}>
+          <div className="max-w-5xl">
+            <p className="text-sm font-bold uppercase tracking-[0.26em] text-accent">Contato</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-primary dark:text-white sm:text-5xl">
+              Vamos conversar sobre a próxima contratação?
+            </h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground dark:text-white/70">
+              Se você quer anunciar uma vaga ou entender melhor como a D&amp;W pode apoiar seu
+              processo seletivo, o próximo passo pode começar agora.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="/anunciar-oportunidade"
-                className="inline-flex items-center justify-center gap-3 rounded-xl border border-accent/50 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-accent hover:bg-accent/8"
+                className="gold-gradient inline-flex items-center justify-center gap-3 rounded-sm px-8 py-4 text-sm font-bold tracking-[0.08em] text-black"
               >
-                Anunciar oportunidade
+                SOLICITAR ATENDIMENTO
                 <ArrowRight className="h-5 w-5" />
+              </Link>
+              <Link
+                href={DWSOLUTIONS_WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 rounded-sm border border-accent/80 px-8 py-4 text-sm font-bold tracking-[0.08em] text-accent"
+              >
+                FALAR NO WHATSAPP
+                <WhatsAppIcon className="h-5 w-5 shrink-0" />
               </Link>
             </div>
           </div>
         </div>
       </section>
-
-      <section id="faq" className="bg-background py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mb-12 max-w-3xl space-y-4">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">FAQ</p>
-            <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
-              Informações rápidas para quem está avaliando a plataforma.
-            </h2>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-3">
-            {faqItems.map((item) => (
-              <div key={item.question} className="rounded-2xl border border-border/70 bg-card p-6">
-                <h3 className="text-lg font-extrabold text-primary">{item.question}</h3>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="contato" className="border-t border-border/70 bg-secondary/45 py-16 sm:py-20">
-        <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
-          <p className="text-sm font-black uppercase tracking-[0.28em] text-accent">Contato</p>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-primary md:text-5xl">
-            Vamos conversar sobre a próxima contratação?
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-            Se você quer anunciar uma vaga ou entender melhor como a D&amp;W pode apoiar seu
-            processo seletivo, o próximo passo pode começar agora.
-          </p>
-
-          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="/anunciar-oportunidade"
-              className="gold-gradient inline-flex items-center justify-center gap-3 rounded-xl px-8 py-4 text-sm font-black uppercase tracking-[0.18em] text-black"
-            >
-              Solicitar atendimento
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              href={DWSOLUTIONS_WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 rounded-xl border border-accent px-8 py-4 text-sm font-black uppercase tracking-[0.18em] text-accent"
-            >
-              Falar no WhatsApp
-              <WhatsAppIcon className="h-5 w-5 shrink-0" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <Link
-        href={DWSOLUTIONS_WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Falar no WhatsApp"
-        className="group fixed bottom-4 right-4 z-50 block h-14 w-14 transition-transform hover:scale-[1.04] active:scale-[0.98] sm:bottom-8 sm:right-8 sm:h-16 sm:w-16"
-      >
-        <span
-          aria-hidden="true"
-          className="animate-whatsapp-pulse absolute inset-0 rounded-full bg-[#25D366] opacity-30 blur-md"
-        />
-        <span
-          aria-hidden="true"
-          className="animate-whatsapp-ring absolute inset-[-6px] rounded-full border border-[#25D366]/35"
-        />
-        <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_28px_rgba(37,211,102,0.35)] sm:h-16 sm:w-16">
-          <WhatsAppIcon variant="mono" className="h-7 w-7 sm:h-8 sm:w-8" />
-        </span>
-      </Link>
     </div>
   )
 }

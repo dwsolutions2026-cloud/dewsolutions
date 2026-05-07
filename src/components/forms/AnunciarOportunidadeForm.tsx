@@ -128,7 +128,7 @@ export function AnunciarOportunidadeForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Empresa*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Empresa*</label>
               <div className="relative group">
                 <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
@@ -141,7 +141,7 @@ export function AnunciarOportunidadeForm() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Responsável*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Responsável*</label>
               <div className="relative group">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
@@ -156,7 +156,7 @@ export function AnunciarOportunidadeForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">WhatsApp*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">WhatsApp*</label>
               <div className="relative group">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
@@ -169,7 +169,7 @@ export function AnunciarOportunidadeForm() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Cargo Desejado*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Cargo Desejado*</label>
               <div className="relative group">
                 <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
@@ -184,7 +184,7 @@ export function AnunciarOportunidadeForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">E-mail (Opcional)</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">E-mail (Opcional)</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
@@ -198,7 +198,7 @@ export function AnunciarOportunidadeForm() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Cidade (Opcional)</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Cidade (Opcional)</label>
               <div className="relative group">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input

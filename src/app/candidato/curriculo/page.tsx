@@ -1,22 +1,24 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { 
-  FileText, 
-  Edit3, 
-  ArrowLeft, 
-  Download, 
-  Globe, 
-  Link as LinkIcon, 
-  GraduationCap, 
+import {
+  FileText,
+  Edit3,
+  ArrowLeft,
+  Download,
+  Globe,
+  Link as LinkIcon,
+  GraduationCap,
   Briefcase,
-  UserCircle2
+  UserCircle2,
 } from 'lucide-react'
 import Link from 'next/link'
 import { getCurriculoDownloadUrl, getSafeHttpUrl } from '@/lib/security'
 
 export default async function CurriculoPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (!user) redirect('/login')
 
@@ -31,113 +33,133 @@ export default async function CurriculoPage() {
   const curriculo = candidato.curriculo_json as any
 
   return (
-    <div className="max-w-5xl space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="max-w-5xl animate-in space-y-6 fade-in duration-700">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
         <div>
-          <Link 
-            href="/candidato/minha-area" 
-            className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-bold text-xs mb-2.5"
+          <Link
+            href="/candidato/minha-area"
+            className="mb-2 flex items-center gap-2 text-xs font-bold text-foreground/70 transition-colors hover:text-accent"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Voltar para Minha Área
+            <ArrowLeft className="h-3.5 w-3.5" /> Voltar para Minha Área
           </Link>
-          <h1 className="text-2xl font-black text-primary tracking-tight">Meu Currículo</h1>
-          <p className="text-muted-foreground text-sm font-medium opacity-70">Visualize e gerencie seu perfil profissional.</p>
+          <h1 className="text-2xl font-black tracking-tight text-foreground">Meu Currículo</h1>
+          <p className="text-sm font-medium text-foreground/70">
+            Visualize e gerencie seu perfil profissional.
+          </p>
         </div>
+
         <div className="flex gap-3">
           {candidato.curriculo_url && (
-            <a 
+            <a
               href={getCurriculoDownloadUrl(candidato.curriculo_url)}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-card border border-border text-primary px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 hover:bg-muted transition-all"
+              className="flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2 text-xs font-black text-foreground transition-all hover:bg-muted"
             >
-              <Download className="w-4 h-4" /> Baixar PDF
+              <Download className="h-4 w-4" /> Baixar PDF
             </a>
           )}
-          <Link 
+          <Link
             href="/candidato/curriculo/editar"
-            className="bg-accent text-accent-foreground px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-accent/20 hover:scale-105 transition-all uppercase tracking-widest"
+            className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2 text-xs font-black uppercase tracking-widest text-accent-foreground transition-all hover:scale-105"
           >
-            <Edit3 className="w-4 h-4" /> Editar Currículo
+            <Edit3 className="h-4 w-4" /> Editar Currículo
           </Link>
         </div>
       </div>
 
-      <div className="bg-card rounded-[2rem] border border-border shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-[2rem] border border-[#d9d1c7] bg-white shadow-none">
         {curriculo ? (
-          <div className="divide-y divide-border/50">
-            {/* Seção Resumo */}
-            <div className="p-8 space-y-6">
+          <div className="divide-y divide-[#d9d1c7]">
+            <div className="space-y-4 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                  <UserCircle2 className="w-5 h-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <UserCircle2 className="h-5 w-5" />
                 </div>
-                <h2 className="text-lg font-black text-primary">Resumo Profissional</h2>
+                <h2 className="text-lg font-black text-black">Resumo Profissional</h2>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed font-medium">
+
+              <p className="text-sm font-medium leading-relaxed text-black/78">
                 {curriculo.objetivo || 'Nenhum objetivo profissional cadastrado.'}
               </p>
-              
+
               <div className="flex gap-4">
                 {getSafeHttpUrl(curriculo.linkedin) && (
-                  <a href={getSafeHttpUrl(curriculo.linkedin)!} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
-                    <Globe className="w-3.5 h-3.5" /> LinkedIn
+                  <a
+                    href={getSafeHttpUrl(curriculo.linkedin)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline"
+                  >
+                    <Globe className="h-3.5 w-3.5" /> LinkedIn
                   </a>
                 )}
                 {getSafeHttpUrl(curriculo.github) && (
-                  <a href={getSafeHttpUrl(curriculo.github)!} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline">
-                    <LinkIcon className="w-3.5 h-3.5" /> GitHub
+                  <a
+                    href={getSafeHttpUrl(curriculo.github)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs font-bold text-accent hover:underline"
+                  >
+                    <LinkIcon className="h-3.5 w-3.5" /> GitHub
                   </a>
                 )}
               </div>
             </div>
 
-            {/* Experiências */}
-            <div className="p-8 space-y-8">
+            <div className="space-y-5 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                  <Briefcase className="w-5 h-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <Briefcase className="h-5 w-5" />
                 </div>
-                <h2 className="text-lg font-black text-primary">Experiência Profissional</h2>
+                <h2 className="text-lg font-black text-black">Experiência Profissional</h2>
               </div>
-              
-              <div className="space-y-10">
+
+              <div className="space-y-6">
                 {curriculo.experiencias?.map((exp: any, i: number) => (
-                  <div key={i} className="relative pl-6 border-l-2 border-muted pb-2 last:pb-0">
-                    <div className="absolute left-[-7px] top-1 w-3 h-3 bg-accent rounded-full border-2 border-card" />
+                  <div
+                    key={i}
+                    className="relative border-l-2 border-black/18 pl-5"
+                  >
+                    <div className="absolute left-[-7px] top-1 h-3 w-3 rounded-full border-2 border-white bg-accent" />
                     <div className="space-y-0.5">
-                      <h3 className="text-base font-bold text-primary">{exp.cargo}</h3>
-                      <p className="text-accent font-black text-[10px] uppercase tracking-widest">{exp.empresa} · {exp.periodo}</p>
+                      <h3 className="text-base font-bold text-black">{exp.cargo}</h3>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-accent">
+                        {exp.empresa} · {exp.periodo}
+                      </p>
                     </div>
-                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                      {exp.descricao}
-                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-black/78">{exp.descricao}</p>
                   </div>
                 ))}
+
                 {(!curriculo.experiencias || curriculo.experiencias.length === 0) && (
-                  <p className="text-sm text-muted-foreground italic opacity-60">Nenhuma experiência cadastrada.</p>
+                  <p className="text-sm italic text-black/60">Nenhuma experiência cadastrada.</p>
                 )}
               </div>
             </div>
 
-            {/* Formação */}
-            <div className="p-8 space-y-8">
+            <div className="space-y-5 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                  <GraduationCap className="w-5 h-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <GraduationCap className="h-5 w-5" />
                 </div>
-                <h2 className="text-lg font-black text-primary">Formação Acadêmica</h2>
+                <h2 className="text-lg font-black text-black">Formação Acadêmica</h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 {curriculo.formacoes?.map((form: any, i: number) => (
-                  <div key={i} className="p-5 rounded-2xl bg-muted/10 border border-border space-y-3">
-                    <h3 className="text-sm font-bold text-primary">{form.curso}</h3>
+                  <div
+                    key={i}
+                    className="space-y-2 rounded-2xl border border-[#d9d1c7] bg-white p-4"
+                  >
+                    <h3 className="text-sm font-bold text-black">{form.curso}</h3>
                     <div>
-                      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">{form.instituicao}</p>
-                      <p className="text-[10px] text-muted-foreground mt-1 opacity-70">{form.periodo}</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-black/72">
+                        {form.instituicao}
+                      </p>
+                      <p className="mt-1 text-[10px] text-black/60">{form.periodo}</p>
                     </div>
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/10 text-accent text-[9px] font-black uppercase tracking-widest border border-accent/10">
+                    <span className="inline-block rounded-full border border-accent/10 bg-accent/10 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-widest text-accent">
                       {form.status}
                     </span>
                   </div>
@@ -146,19 +168,20 @@ export default async function CurriculoPage() {
             </div>
           </div>
         ) : (
-          <div className="p-16 text-center space-y-6">
-            <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mx-auto text-muted-foreground opacity-20">
-              <FileText className="w-8 h-8" />
+          <div className="space-y-5 p-12 text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f0e6d8] text-black/30">
+              <FileText className="h-8 w-8" />
             </div>
             <div className="space-y-1.5">
-              <h2 className="text-xl font-black text-primary">Crie seu currículo digital</h2>
-              <p className="text-sm text-muted-foreground font-medium max-w-sm mx-auto opacity-70">
-                Use nosso construtor inteligente para criar um currículo atraente e aumentar suas chances.
+              <h2 className="text-xl font-black text-black">Crie seu currículo digital</h2>
+              <p className="mx-auto max-w-sm text-sm font-medium text-black/70">
+                Use nosso construtor inteligente para criar um currículo atraente e aumentar
+                suas chances.
               </p>
             </div>
-            <Link 
+            <Link
               href="/candidato/curriculo/editar"
-              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-xl font-black text-sm shadow-lg shadow-accent/20 hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3 text-sm font-black text-accent-foreground transition-all hover:scale-105"
             >
               Começar Agora
             </Link>

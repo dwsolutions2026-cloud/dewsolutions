@@ -71,7 +71,7 @@ export async function loginAction(formData: FormData) {
   const password = formData.get('password') as string
 
   if (!email || !password) {
-    return { error: 'E-mail e senha são obrigatórios' }
+    return { error: 'E-mail e senha são obrigatórios.' }
   }
 
   if (!isSupabaseConfigured()) {
@@ -144,10 +144,10 @@ export async function registerCandidateAction(formData: FormData) {
 
   if (curriculo && curriculo.size > 0) {
     if (curriculo.type !== 'application/pdf') {
-      return { error: 'O currículo deve ser um arquivo PDF' }
+      return { error: 'O currículo deve ser um arquivo PDF.' }
     }
     if (curriculo.size > 5 * 1024 * 1024) {
-      return { error: 'O currículo não pode exceder 5MB' }
+      return { error: 'O currículo não pode exceder 5MB.' }
     }
   }
 

@@ -6,21 +6,26 @@ import { User } from '@supabase/supabase-js'
 
 const hasSupabaseEnv = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
+
+type UserRole = 'admin' | 'empresa' | 'candidato'
 
 interface AuthContextType {
   user: User | null
+  role: UserRole
   isLoading: boolean
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  role: 'candidato',
   isLoading: true,
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [role, setRole] = useState<UserRole>('candidato')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -31,15 +36,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const supabase = createClient()
 
-    // 1. Get initial session
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user)
-      setIsLoading(false)
-    })
+    const loadSession = async () => {
+      const {
+        data: { user: currentUser },
+      } = await supabase.auth.getUser()
 
-    // 2. Listen for changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+      setUser(currentUser)
+
+      if (!currentUser) {
+        setRole('candidato')
+        setIsLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', currentUser.id)
+        .single()
+
+      setRole((profile?.role as UserRole | undefined) || 'candidato')
+      setIsLoading(false)
+    }
+
+    loadSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const currentUser = session?.user ?? null
+      setUser(currentUser)
+
+      if (!currentUser) {
+        setRole('candidato')
+        setIsLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', currentUser.id)
+        .single()
+
+      setRole((profile?.role as UserRole | undefined) || 'candidato')
       setIsLoading(false)
     })
 
@@ -49,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isLoading }}>
+    <AuthContext.Provider value={{ user, role, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
