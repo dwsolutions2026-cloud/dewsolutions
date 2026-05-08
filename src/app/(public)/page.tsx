@@ -83,33 +83,30 @@ export default function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       <section
         id="home"
-        className="relative isolate min-h-svh overflow-hidden bg-background pt-24 sm:pt-28"
+        className="relative isolate min-h-svh overflow-hidden bg-background pt-20 sm:pt-28"
       >
-        <div className="absolute inset-y-0 right-0 left-[20%] sm:left-[24%] lg:left-[28%]">
+        <div className="absolute inset-0 z-0 lg:inset-y-0 lg:left-1/3 lg:right-0">
           <Image
             src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
             fill
             priority
-            sizes="80vw"
-            className="translate-y-16 scale-[1.08] object-contain object-bottom-right sm:translate-y-20 sm:scale-[1.1] lg:translate-y-24 lg:scale-[1.12]"
+            sizes="(max-width: 1024px) 100vw, 70vw"
+            className="object-cover object-center opacity-10 transition-opacity duration-700 lg:object-contain lg:object-bottom-right lg:opacity-100"
           />
         </div>
 
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.9)_26%,rgba(255,255,255,0.62)_46%,rgba(255,255,255,0.18)_72%,rgba(255,255,255,0.05)_100%)] dark:bg-[linear-gradient(90deg,rgba(0,0,0,0.96)_0%,rgba(0,0,0,0.94)_28%,rgba(0,0,0,0.72)_46%,rgba(0,0,0,0.22)_70%,rgba(0,0,0,0.08)_100%)]" />
-        <div className="absolute inset-y-0 left-0 w-full bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.015)_36%,rgba(255,255,255,0.05)_100%)] dark:bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.02)_36%,rgba(0,0,0,0.12)_100%)] lg:w-[46%]" />
-
-        <div className="relative z-10 flex min-h-[calc(100svh-112px)] w-full items-center pb-0">
-          <div className="w-full lg:max-w-[46%]">
-            <div className={`${shellPadding} pb-6 pt-4 sm:pt-6`}>
-              <div className="relative mb-7 h-[110px] w-[260px] sm:h-[150px] sm:w-[370px]">
+        <div className="relative z-10 flex min-h-[calc(100svh-80px)] w-full items-center sm:min-h-[calc(100svh-112px)]">
+          <div className="w-full lg:max-w-[50%]">
+            <div className={`${shellPadding} pb-10 pt-4 sm:pb-6`}>
+              <div className="relative mb-6 h-[80px] w-[200px] sm:mb-7 sm:h-[150px] sm:w-[370px]">
                 <Logo width={370} height={150} variant="auto" />
               </div>
 
               <div className="max-w-176 space-y-5">
-                <h1 className="text-[2.7rem] font-semibold leading-[0.98] tracking-[-0.055em] text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem]">
-                  <span className="block whitespace-nowrap">Soluções inteligentes em</span>
-                  <span className="block whitespace-nowrap">
+                <h1 className="text-[2.2rem] font-semibold leading-[1.1] tracking-tight text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem] lg:leading-[0.98] lg:tracking-[-0.055em]">
+                  <span className="block">Soluções inteligentes em</span>
+                  <span className="block">
                     <span className="text-accent italic">recrutamento</span> e{' '}
                     <span className="text-accent italic">seleção.</span>
                   </span>

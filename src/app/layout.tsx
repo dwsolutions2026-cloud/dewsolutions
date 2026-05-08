@@ -63,7 +63,7 @@ export default function RootLayout({
       lang="pt-BR"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${montserrat.variable} scroll-smooth antialiased dark`}
+      className={`${montserrat.variable} scroll-smooth antialiased`}
     >
       <body className="font-sans antialiased">
         <ThemeProvider>
