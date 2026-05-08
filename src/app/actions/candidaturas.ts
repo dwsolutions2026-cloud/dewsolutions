@@ -99,8 +99,8 @@ export async function convocarEntrevistaAction(formData: FormData) {
     const { candidatura_id, data_entrevista, local_entrevista, observacao } = parsed.data
     const admin = getAdmin()
 
-    // Buscar candidatura + dados completos
-    const { data: candidatura, error: fetchError } = await admin
+    // Buscar candidatura + dados completos usando o cliente do usuário (com RLS)
+    const { data: candidatura, error: fetchError } = await supabase
       .from('candidaturas')
       .select(`
         id,
@@ -183,12 +183,18 @@ export async function atualizarStatusCandidaturaAction(
     
     // Se for empresa, precisa validar a posse da vaga (mesma lógica acima, omitindo por brevidade ou fazer query com RLS normal)
     // Como usamos o admin client, temos que validar.
+    // Se for empresa, precisa validar a posse da vaga usando o cliente do usuário (com RLS)
     if (profile.role === 'empresa') {
-      const { data: candidatura } = await admin.from('candidaturas').select('vaga:vagas(empresa_id)').eq('id', candidaturaId).single()
+      const { data: candidatura } = await supabase
+        .from('candidaturas')
+        .select('vaga:vagas(empresa_id)')
+        .eq('id', candidaturaId)
+        .single()
+        
       const { data: empresa } = await supabase.from('empresas').select('id').eq('user_id', user.id).single()
       const vaga = candidatura?.vaga as any
       if (!empresa || !vaga || vaga.empresa_id !== empresa.id) {
-        return { error: 'Acesso negado' }
+        return { error: 'Acesso negado: você não tem permissão para gerenciar esta candidatura' }
       }
     }
 

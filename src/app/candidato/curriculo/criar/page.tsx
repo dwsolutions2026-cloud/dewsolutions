@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import { CurriculoBuilderClient } from '@/components/vagas/CurriculoBuilderClient'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'

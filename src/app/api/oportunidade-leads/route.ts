@@ -5,8 +5,6 @@ import { generateWhatsAppLink } from '@/lib/whatsapp'
 import { escapeHtml } from '@/lib/security'
 import { sendLeadAutoReplyEmail, sendLeadNotificationEmail } from '@/lib/resend'
 
-const rateLimitMap = new Map<string, { count: number; lastTime: number }>()
-
 function getSupabaseAdmin() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,19 +14,8 @@ function getSupabaseAdmin() {
 }
 
 export async function POST(req: Request) {
-  const ip = req.headers.get('x-forwarded-for') || 'unknown'
   const now = Date.now()
   const limitWindow = 15 * 60 * 1000
-
-  const userLimit = rateLimitMap.get(ip)
-  if (userLimit && now - userLimit.lastTime < limitWindow) {
-    if (userLimit.count >= 3) {
-      return NextResponse.json({ error: 'Muitas tentativas. Aguarde alguns minutos.' }, { status: 429 })
-    }
-    userLimit.count++
-  } else {
-    rateLimitMap.set(ip, { count: 1, lastTime: now })
-  }
 
   try {
     const supabaseAdmin = getSupabaseAdmin()
@@ -46,6 +33,7 @@ export async function POST(req: Request) {
 
     const normalizedPhone = parsed.data.telefone.replace(/\D/g, '')
 
+    // Rate Limit baseado no banco de dados (Telefone) - Funciona em Workers
     const { count: recentAttempts } = await supabaseAdmin
       .from('oportunidade_leads')
       .select('*', { count: 'exact', head: true })
@@ -53,13 +41,13 @@ export async function POST(req: Request) {
       .gte('criado_em', new Date(now - limitWindow).toISOString())
 
     if ((recentAttempts ?? 0) >= 3) {
-      return NextResponse.json({ error: 'Muitas tentativas recentes para este telefone.' }, { status: 429 })
+      return NextResponse.json({ error: 'Muitas tentativas recentes para este telefone. Aguarde alguns minutos.' }, { status: 429 })
     }
 
     const { error: insertError } = await supabaseAdmin.from('oportunidade_leads').insert({
       nome_empresa: parsed.data.nome_empresa,
       nome_responsavel: parsed.data.nome_responsavel,
-      email: parsed.data.email,
+      email: parsed.data.email || null, // Bug fix: evitar undefined
       telefone: normalizedPhone,
       cargo_vaga: parsed.data.cargo_vaga,
       cidade: parsed.data.cidade,

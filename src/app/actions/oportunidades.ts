@@ -17,6 +17,7 @@ export async function createOportunidadeLeadAction(formData: any) {
       .from('oportunidade_leads')
       .insert({
         ...parsed.data,
+        email: parsed.data.email || null,
         telefone: parsed.data.telefone.replace(/\D/g, '')
       })
 
@@ -35,7 +36,8 @@ export async function updateConfiguracoesAction(data: any) {
     const isAdmin = await checkAdmin()
     if (!isAdmin) return { error: 'Acesso negado' }
 
-    const parsed = ConfigSiteSchema.safeParse(data)
+    // Usamos .partial() para validar apenas os campos enviados (WhatsApp ou Landing Page)
+    const parsed = ConfigSiteSchema.partial().safeParse(data)
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message }
     }
@@ -49,7 +51,7 @@ export async function updateConfiguracoesAction(data: any) {
 
     // Limpar telefone se necessário
     const whatsappIdx = updates.findIndex(u => u.chave === 'whatsapp_numero')
-    if (whatsappIdx !== -1) {
+    if (whatsappIdx !== -1 && updates[whatsappIdx].valor) {
       updates[whatsappIdx].valor = (updates[whatsappIdx].valor as string).replace(/\D/g, '')
     }
 

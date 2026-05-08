@@ -10,13 +10,13 @@ export default async function AdminEmpresaEditarPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
 
-  const { data: empresa, error } = await supabase
-    .from('empresas')
-    .select('*')
-    .or(`slug.eq."${slug}",id.eq."${slug}"`)
-    .single()
+  // Busca segura primeiro por slug, se falhar, busca por ID (UUID)
+  const { data: bySlug } = await supabase.from('empresas').select('*').eq('slug', slug).maybeSingle()
+  const { data: byId } = !bySlug ? await supabase.from('empresas').select('*').eq('id', slug).maybeSingle() : { data: null }
+  
+  const empresa = bySlug ?? byId
 
-  if (error || !empresa) notFound()
+  if (!empresa) notFound()
 
   return <EmpresaEditarClient empresa={empresa} />
 }

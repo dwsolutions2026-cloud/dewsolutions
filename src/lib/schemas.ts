@@ -109,20 +109,22 @@ export const OportunidadeLeadSchema = z.object({
   website: z.string().optional(),
 })
 
-export const ConfigSiteSchema = z.object({
+export const ConfigWhatsAppSchema = z.object({
   whatsapp_numero: z.string().min(10, "Número inválido"),
   whatsapp_mensagem: z.string().min(10, "Mensagem muito curta"),
   prazo_retorno_texto: z.string().min(5, "Texto de prazo muito curto"),
   admin_email_notificacao: z.string().email("E-mail de notificação inválido"),
-  
-  // Novos campos de contato
+})
+
+export const ConfigLandingSchema = z.object({
   contato_email: z.string().email("E-mail de contato inválido"),
   contato_telefone: z.string().min(10, "Telefone de contato inválido"),
   contato_endereco: z.string().min(10, "Endereço incompleto"),
-  contato_maps_iframe: z.string().optional(),
-  
-  // Campos de conteúdo (JSON Strings)
-  landing_logos: z.string().optional(),
-  landing_depoimentos: z.string().optional(),
-  landing_stats: z.string().optional(),
+  contato_maps_iframe: z.string().optional().or(z.literal('')),
+  landing_logos: z.string().optional().or(z.literal('')),
+  landing_depoimentos: z.string().optional().or(z.literal('')),
+  landing_stats: z.string().optional().or(z.literal('')),
 })
+
+// Mantém por compatibilidade se algum lugar ainda usar, mas prefira os específicos
+export const ConfigSiteSchema = ConfigWhatsAppSchema.merge(ConfigLandingSchema)

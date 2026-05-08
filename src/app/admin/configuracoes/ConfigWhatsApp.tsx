@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ConfigSiteSchema } from '@/lib/schemas'
+import { ConfigWhatsAppSchema } from '@/lib/schemas'
 import { updateConfiguracoesAction } from '@/app/actions/oportunidades'
 import { toast } from 'react-hot-toast'
 import { Phone, MessageSquare, Save, Loader2, Info, Eye, Mail, Clock } from 'lucide-react'
@@ -18,7 +18,7 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(ConfigSiteSchema),
+    resolver: zodResolver(ConfigWhatsAppSchema),
     defaultValues: {
       whatsapp_numero: initialConfigs.whatsapp_numero || '4197010813',
       whatsapp_mensagem: initialConfigs.whatsapp_mensagem || '',

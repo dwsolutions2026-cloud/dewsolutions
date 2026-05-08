@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ConfigSiteSchema } from '@/lib/schemas'
+import { ConfigLandingSchema } from '@/lib/schemas'
 import { updateConfiguracoesAction } from '@/app/actions/oportunidades'
 import { toast } from 'react-hot-toast'
 import { 
@@ -26,12 +26,8 @@ export function ConfigLandingPage({ initialConfigs }: { initialConfigs: any }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(ConfigSiteSchema),
+    resolver: zodResolver(ConfigLandingSchema),
     defaultValues: {
-      whatsapp_numero: initialConfigs.whatsapp_numero || '',
-      whatsapp_mensagem: initialConfigs.whatsapp_mensagem || '',
-      prazo_retorno_texto: initialConfigs.prazo_retorno_texto || '',
-      admin_email_notificacao: initialConfigs.admin_email_notificacao || '',
       contato_email: initialConfigs.contato_email || '',
       contato_telefone: initialConfigs.contato_telefone || '',
       contato_endereco: initialConfigs.contato_endereco || '',
