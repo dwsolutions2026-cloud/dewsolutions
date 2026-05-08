@@ -79,7 +79,7 @@ export function CandidatosClient({ empresas, error }: Props) {
 
       <div className="space-y-8">
         {error ? (
-          <div className="bg-card p-10 rounded-[2rem] border border-red-200 text-red-500 text-center font-bold shadow-sm text-sm">
+          <div className="bg-card p-10 rounded-4xl border border-red-200 text-red-500 text-center font-bold shadow-sm text-sm">
             Erro ao carregar candidaturas: {error}
           </div>
         ) : empresas.length > 0 ? (
@@ -88,7 +88,7 @@ export function CandidatosClient({ empresas, error }: Props) {
             if (vagasComCandidatos.length === 0) return null
 
             return (
-              <div key={empresa.id} className="bg-card rounded-[2rem] border border-border shadow-sm overflow-hidden hover:shadow-md transition-all">
+              <div key={empresa.id} className="bg-card rounded-4xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-all">
                 {/* Cabeçalho da Empresa */}
                 <div className="bg-muted/30 px-6 py-4 border-b border-border flex items-center gap-3">
                   <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-white">

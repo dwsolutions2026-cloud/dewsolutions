@@ -49,7 +49,7 @@ export function PerfilEditarClient({ initialData }: Props) {
     }
   }
 
-  const inputClass = "w-full pl-12 pr-4 py-4 rounded-[1.5rem] border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-semibold text-primary"
+  const inputClass = "w-full pl-12 pr-4 py-4 rounded-3xl border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-semibold text-primary"
   const labelClass = "text-[10px] font-black text-primary/40 uppercase tracking-[0.2em] px-4 mb-2 flex items-center gap-2"
 
   return (
@@ -126,7 +126,7 @@ export function PerfilEditarClient({ initialData }: Props) {
               <input 
                 {...register('estado')} 
                 maxLength={2} 
-                className="w-full px-4 py-4 rounded-[1.5rem] border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-black text-center uppercase text-primary" 
+                className="w-full px-4 py-4 rounded-3xl border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-black text-center uppercase text-primary" 
                 placeholder="UF" 
               />
             </div>
@@ -140,7 +140,7 @@ export function PerfilEditarClient({ initialData }: Props) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto bg-primary text-white px-12 py-5 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
+            className="w-full sm:w-auto bg-primary text-white px-12 py-5 rounded-4xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
           >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
             {isSubmitting ? 'Salvando...' : 'Confirmar Alterações'}

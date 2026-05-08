@@ -48,7 +48,7 @@ export default async function AdminTalentosPage({
         </Form>
       </div>
 
-      <div className="bg-card rounded-[2rem] border border-border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-4xl border border-border shadow-sm overflow-hidden">
         {error ? (
           <div className="p-10 text-center text-red-500 font-bold text-sm">
             <p>Erro ao carregar banco de talentos:</p>

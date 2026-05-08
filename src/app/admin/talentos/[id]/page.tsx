@@ -50,7 +50,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
       </Link>
 
       {/* Header Perfil */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-card p-6 rounded-[2rem] border border-border shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-card p-6 rounded-4xl border border-border shadow-sm">
         <div className="flex items-center gap-6">
           <div className="w-20 h-20 rounded-2xl overflow-hidden bg-accent/10 border-2 border-accent/20 flex items-center justify-center shadow-lg shadow-accent/5 shrink-0">
             {candidato.avatar_url ? (
@@ -90,7 +90,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
         {/* Coluna Currículo (JSON) */}
         <div className="lg:col-span-2 space-y-8">
           {curriculo ? (
-            <div className="bg-card rounded-[2rem] border border-border overflow-hidden shadow-sm">
+            <div className="bg-card rounded-4xl border border-border overflow-hidden shadow-sm">
               <div className="p-6 bg-muted/30 border-b border-border">
                 <h2 className="text-lg font-black text-primary flex items-center gap-3">
                   <FileText className="w-5 h-5 text-accent" /> Currículo Digital
@@ -149,7 +149,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
 
         {/* Coluna Histórico */}
         <div className="space-y-8">
-          <div className="bg-card rounded-[2rem] border border-border p-6 shadow-sm">
+          <div className="bg-card rounded-4xl border border-border p-6 shadow-sm">
             <h3 className="text-lg font-black text-primary mb-6 flex items-center gap-2.5">
               <History className="w-4.5 h-4.5 text-accent" /> Histórico
             </h3>

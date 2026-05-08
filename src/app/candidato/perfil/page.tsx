@@ -72,7 +72,7 @@ export default async function PerfilCandidatoPage() {
                 </span>
               </div>
               <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
-                <div className="bg-accent h-full w-[100%] rounded-full shadow-[0_0_10px_rgba(var(--accent),0.5)]" />
+                <div className="bg-accent h-full w-full rounded-full shadow-[0_0_10px_rgba(var(--accent),0.5)]" />
               </div>
               <p className="text-[9px] text-center text-muted-foreground italic font-medium">Perfil 100% completo e visível</p>
             </div>
