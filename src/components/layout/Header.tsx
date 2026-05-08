@@ -26,7 +26,6 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { user, role } = useAuth()
-  const supabase = createClient()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 18)
@@ -40,7 +39,8 @@ export function Header() {
   }, [pathname])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    const supabase = createClient()
+    if (supabase) await supabase.auth.signOut()
     router.push('/login')
     router.refresh()
   }
@@ -140,7 +140,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg border border-border bg-card/70 px-4 py-3 text-sm font-bold tracking-[0.1em] text-foreground dark:border-white/10 dark:bg-white/[0.03] dark:text-white/88"
+                className="rounded-lg border border-border bg-card/70 px-4 py-3 text-sm font-bold tracking-widest text-foreground dark:border-white/10 dark:bg-white/3 dark:text-white/88"
               >
                 {link.label}
               </Link>
@@ -150,24 +150,24 @@ export function Header() {
               <div className="grid grid-cols-2 gap-3">
                 <Link
                   href={candidateAreaHref}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-accent/70 bg-background/30 px-4 py-3 text-sm font-bold tracking-[0.1em] text-accent dark:bg-white/[0.03]"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-accent/70 bg-background/30 px-4 py-3 text-sm font-bold tracking-widest text-accent dark:bg-white/3"
                 >
                   <UserCircle2 className="h-5 w-5" />
                   PERFIL
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-4 py-3 text-sm font-bold tracking-[0.1em] text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-4 py-3 text-sm font-bold tracking-widest text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400"
                 >
                   <LogOut className="h-5 w-5" />
                   SAIR
                 </button>
               </div>
             ) : (
-              <Link
-                href="/login"
-                className="rounded-lg border border-accent/70 bg-background/30 px-4 py-3 text-sm font-bold tracking-[0.1em] text-accent dark:bg-white/[0.03]"
-              >
+                <Link
+                  href="/login"
+                  className="rounded-lg border border-accent/70 bg-background/30 px-4 py-3 text-sm font-bold tracking-widest text-accent dark:bg-white/3"
+                >
                 ÁREA DO CANDIDATO
               </Link>
             )}

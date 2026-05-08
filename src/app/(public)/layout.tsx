@@ -27,7 +27,7 @@ export default function PublicLayout({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Fale conosco no WhatsApp"
-        className="fixed bottom-5 right-5 z-[70] rounded-full transition-transform hover:scale-105 sm:bottom-6 sm:right-6"
+        className="fixed bottom-5 right-5 z-70 rounded-full transition-transform hover:scale-105 sm:bottom-6 sm:right-6"
       >
         <span className="absolute inset-0 rounded-full bg-[#25D366]/20 blur-xl animate-whatsapp-pulse" />
         <span className="absolute inset-0 rounded-full border border-[#25D366]/25 animate-whatsapp-ring" />
@@ -102,6 +102,14 @@ export default function PublicLayout({
                   className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
                 >
                   Fale conosco
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/termos"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+                >
+                  Termos de Uso
                 </Link>
               </li>
               <li>

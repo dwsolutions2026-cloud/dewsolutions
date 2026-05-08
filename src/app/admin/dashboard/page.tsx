@@ -119,7 +119,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Últimas candidaturas */}
-        <div className="flex flex-col rounded-[2rem] border border-border bg-card p-6 shadow-sm">
+        <div className="flex flex-col rounded-4xl border border-border bg-card p-6 shadow-sm">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-base font-black text-primary">
               <Clock className="h-4 w-4 text-accent" /> Últimas candidaturas
@@ -166,7 +166,7 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Ações rápidas */}
-        <div className="relative overflow-hidden rounded-[2rem] bg-primary p-8 text-primary-foreground shadow-xl">
+        <div className="relative overflow-hidden rounded-4xl bg-primary p-8 text-primary-foreground shadow-xl">
           <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-20 blur-3xl" />
           <div className="relative space-y-6">
             <div className="space-y-2">

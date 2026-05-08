@@ -83,7 +83,7 @@ export default function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       <section
         id="home"
-        className="relative isolate min-h-[100svh] overflow-hidden bg-background pt-24 sm:pt-28"
+        className="relative isolate min-h-svh overflow-hidden bg-background pt-24 sm:pt-28"
       >
         <div className="absolute inset-y-0 right-0 left-[20%] sm:left-[24%] lg:left-[28%]">
           <Image
@@ -92,7 +92,7 @@ export default function LandingPage() {
             fill
             priority
             sizes="80vw"
-            className="translate-y-16 scale-[1.08] object-contain object-right-bottom sm:translate-y-20 sm:scale-[1.1] lg:translate-y-24 lg:scale-[1.12]"
+            className="translate-y-16 scale-[1.08] object-contain object-bottom-right sm:translate-y-20 sm:scale-[1.1] lg:translate-y-24 lg:scale-[1.12]"
           />
         </div>
 
@@ -106,7 +106,7 @@ export default function LandingPage() {
                 <Logo width={370} height={150} variant="auto" />
               </div>
 
-              <div className="max-w-[44rem] space-y-5">
+              <div className="max-w-176 space-y-5">
                 <h1 className="text-[2.7rem] font-semibold leading-[0.98] tracking-[-0.055em] text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem]">
                   <span className="block whitespace-nowrap">Soluções inteligentes em</span>
                   <span className="block whitespace-nowrap">
@@ -127,7 +127,7 @@ export default function LandingPage() {
                   className="gold-gradient group relative flex min-w-[240px] flex-col items-center justify-center gap-0.5 rounded-sm px-7 py-3 text-center shadow-[0_10px_35px_rgba(197,160,89,0.22)] transition-transform hover:scale-[1.01]"
                 >
                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black/60">Para Empresas</span>
-                  <span className="flex items-center gap-2 text-sm font-bold tracking-[0.05em] text-black">
+                  <span className="flex items-center gap-2 text-sm font-bold tracking-wider text-black">
                     ANUNCIAR VAGA
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
@@ -137,7 +137,7 @@ export default function LandingPage() {
                   className="group relative flex min-w-[240px] flex-col items-center justify-center gap-0.5 rounded-sm border border-accent/80 bg-background/35 px-7 py-3 text-center backdrop-blur-[2px] transition-colors hover:bg-accent/10 dark:bg-black/20"
                 >
                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent/70">Para Talentos</span>
-                  <span className="flex items-center gap-2 text-sm font-bold tracking-[0.05em] text-accent">
+                  <span className="flex items-center gap-2 text-sm font-bold tracking-wider text-accent">
                     EXPLORAR VAGAS
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
@@ -207,7 +207,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={service.title}
-                  className="rounded-sm border border-border bg-card p-6 shadow-[0_24px_60px_rgba(0,0,0,0.08)] transition-colors duration-300 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_24px_60px_rgba(0,0,0,0.2)]"
+                  className="rounded-sm border border-border bg-card p-6 shadow-[0_24px_60px_rgba(0,0,0,0.08)] transition-colors duration-300 dark:border-white/10 dark:bg-white/3 dark:shadow-[0_24px_60px_rgba(0,0,0,0.2)]"
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-accent/70 text-accent">
                     <Icon className="h-5 w-5" />
