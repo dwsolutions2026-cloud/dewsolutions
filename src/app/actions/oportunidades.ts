@@ -42,12 +42,16 @@ export async function updateConfiguracoesAction(data: any) {
 
     const supabase = await createClient()
     
-    const updates = [
-      { chave: 'whatsapp_numero', valor: parsed.data.whatsapp_numero.replace(/\D/g, '') },
-      { chave: 'whatsapp_mensagem', valor: parsed.data.whatsapp_mensagem },
-      { chave: 'prazo_retorno_texto', valor: parsed.data.prazo_retorno_texto },
-      { chave: 'admin_email_notificacao', valor: parsed.data.admin_email_notificacao },
-    ]
+    const updates = Object.entries(parsed.data).map(([chave, valor]) => ({
+      chave,
+      valor: typeof valor === 'string' ? valor : JSON.stringify(valor)
+    }))
+
+    // Limpar telefone se necessário
+    const whatsappIdx = updates.findIndex(u => u.chave === 'whatsapp_numero')
+    if (whatsappIdx !== -1) {
+      updates[whatsappIdx].valor = (updates[whatsappIdx].valor as string).replace(/\D/g, '')
+    }
 
     for (const update of updates) {
       const { error } = await supabase
@@ -58,6 +62,7 @@ export async function updateConfiguracoesAction(data: any) {
     }
 
     revalidatePath('/admin/configuracoes')
+    revalidatePath('/') // Revalidar a home também
     return { success: true }
   } catch (error: any) {
     console.error('Error updating configurations:', error)

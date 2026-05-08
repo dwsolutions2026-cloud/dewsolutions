@@ -31,7 +31,7 @@ export function Logo({
   const logoVariant = variant === 'auto' ? (resolvedTheme === 'dark' ? 'white' : 'black') : variant
 
   return (
-    <div className={`relative flex items-center transition-all ${className}`} style={{ width: '100%', maxWidth: width, height: '100%', maxHeight: height }}>
+    <div className={`relative flex items-center transition-all ${className}`} style={{ width, height, maxWidth: '100%', maxHeight: '100%' }}>
       <Image
         src={logoVariant === 'white' ? '/logo-branco.png' : '/logo-preto.png'}
         alt="D&W Solutions Logo"

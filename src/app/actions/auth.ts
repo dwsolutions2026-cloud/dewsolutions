@@ -12,8 +12,8 @@ import { CandidatoRegistrationSchema } from '@/lib/schemas'
 
 function getSupabaseEnvError(action: 'login' | 'cadastro') {
   return action === 'login'
-    ? 'Supabase não está configurado no ambiente local. Adicione as variáveis em .env.local para testar o login.'
-    : 'Supabase não está configurado no ambiente local. Adicione as variáveis em .env.local para testar o cadastro.'
+    ? 'Configuração do Supabase ausente. Verifique as variáveis de ambiente (URL/Key).'
+    : 'Configuração do Supabase ausente. Verifique as variáveis de ambiente (URL/Key).'
 }
 
 export async function signInWithGoogle() {

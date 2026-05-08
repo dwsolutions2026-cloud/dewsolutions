@@ -28,7 +28,7 @@ export function Header() {
   const { user, role } = useAuth()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 18)
+    const handleScroll = () => setScrolled(window.scrollY > 100)
     handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)

@@ -113,4 +113,15 @@ export const ConfigSiteSchema = z.object({
   whatsapp_mensagem: z.string().min(10, "Mensagem muito curta"),
   prazo_retorno_texto: z.string().min(5, "Texto de prazo muito curto"),
   admin_email_notificacao: z.string().email("E-mail de notificação inválido"),
+  
+  // Novos campos de contato
+  contato_email: z.string().email("E-mail de contato inválido"),
+  contato_telefone: z.string().min(10, "Telefone de contato inválido"),
+  contato_endereco: z.string().min(10, "Endereço incompleto"),
+  contato_maps_iframe: z.string().optional(),
+  
+  // Campos de conteúdo (JSON Strings)
+  landing_logos: z.string().optional(),
+  landing_depoimentos: z.string().optional(),
+  landing_stats: z.string().optional(),
 })

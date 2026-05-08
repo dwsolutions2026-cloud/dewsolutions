@@ -78,7 +78,16 @@ const services = [
   },
 ]
 
-export default function LandingPage() {
+import { getConfiguracoes } from '@/app/actions/oportunidades'
+
+export default async function LandingPage() {
+  const configs = await getConfiguracoes()
+  
+  // Parse JSON configs with fallbacks
+  const clientLogos = configs.landing_logos ? JSON.parse(configs.landing_logos) : []
+  const testimonials = configs.landing_depoimentos ? JSON.parse(configs.landing_depoimentos) : []
+  const stats = configs.landing_stats ? JSON.parse(configs.landing_stats) : []
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       <section
@@ -168,6 +177,22 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Seção de Logos Dinâmica */}
+      {clientLogos.length > 0 && (
+        <section className="bg-muted/30 py-10 border-y border-border/50">
+          <div className={shellPadding}>
+            <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground mb-8 opacity-60">Empresas que confiam em nossa curadoria</p>
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+              {clientLogos.map((logo: string, i: number) => (
+                <div key={i} className="relative h-10 w-32">
+                  <Image src={logo} alt={`Cliente ${i+1}`} fill className="object-contain" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section id="sobre" className="border-t border-border/60 bg-background py-16 transition-colors duration-300 sm:py-20">
         <div className={`grid gap-10 ${shellPadding} lg:grid-cols-[0.9fr_1.1fr]`}>
           <div className="space-y-5">
@@ -178,7 +203,7 @@ export default function LandingPage() {
           </div>
           <div className="space-y-5 text-base leading-8 text-muted-foreground sm:text-lg dark:text-white/72">
             <p>
-              A D&amp;W Solutions atua para tornar a contratação mais segura, humana e eficiente.
+              A D&W Solutions atua para tornar a contratação mais segura, humana e eficiente.
               Nosso trabalho une visão consultiva, curadoria de talentos e processos bem definidos.
             </p>
             <p>
@@ -187,6 +212,20 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
+
+        {/* Números Dinâmicos */}
+        {stats.length > 0 && (
+          <div className={`${shellPadding} mt-16`}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {stats.map((stat: any, i: number) => (
+                <div key={i} className="surface-card p-6 rounded-3xl text-center border border-border/50">
+                  <p className="text-3xl sm:text-4xl font-black text-accent mb-1">{stat.valor}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <section id="servicos" className="bg-background py-16 transition-colors duration-300 sm:py-20">
@@ -221,6 +260,30 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Depoimentos Dinâmicos */}
+      {testimonials.length > 0 && (
+        <section className="bg-muted/20 py-20 border-y border-border/40">
+          <div className={shellPadding}>
+            <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+              <p className="text-sm font-bold uppercase tracking-[0.26em] text-accent">Depoimentos</p>
+              <h2 className="text-3xl font-semibold text-primary dark:text-white sm:text-5xl">A palavra de quem confia em nós.</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {testimonials.map((t: any, i: number) => (
+                <div key={i} className="surface-card p-8 rounded-[2.5rem] relative group">
+                  <MessageSquare className="absolute right-8 top-8 h-8 w-8 text-accent/10 group-hover:text-accent/20 transition-colors" />
+                  <p className="text-sm italic leading-relaxed text-muted-foreground mb-6">"{t.texto}"</p>
+                  <div>
+                    <p className="font-black text-primary text-xs uppercase tracking-widest">{t.nome}</p>
+                    <p className="text-[10px] font-medium text-accent uppercase tracking-wider">{t.cargo}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section id="vagas" className="border-y border-border/60 bg-background py-16 transition-colors duration-300 sm:py-20 dark:border-white/10">
         <div className={`flex flex-col items-start justify-between gap-8 ${shellPadding} lg:flex-row`}>
