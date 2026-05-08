@@ -59,6 +59,7 @@ export default async function AdminTalentosPage({
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-muted/30 border-b border-border">
+                  <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground w-16">Foto</th>
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Candidato</th>
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Localização</th>
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Currículo</th>
@@ -69,6 +70,15 @@ export default async function AdminTalentosPage({
               <tbody className="divide-y divide-border">
                 {talentos.map((talento) => (
                   <tr key={talento.id} className="hover:bg-muted/20 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                        {talento.avatar_url ? (
+                          <img src={talento.avatar_url} alt={talento.nome} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-accent font-black text-xs">{talento.nome.charAt(0)}</span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
                         <span className="font-bold text-primary text-sm group-hover:text-accent transition-colors">{talento.nome}</span>

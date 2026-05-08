@@ -79,6 +79,7 @@ export const PerfilSchema = z.object({
   telefone: z.string().min(10, "Telefone inválido").optional().or(z.literal('')),
   cidade: z.string().min(2, "Cidade obrigatória").optional().or(z.literal('')),
   estado: z.string().length(2, "UF deve ter 2 letras").toUpperCase().optional().or(z.literal('')),
+  avatar_url: z.string().optional().nullable(),
 })
 
 export const EmpresaSchema = z.object({

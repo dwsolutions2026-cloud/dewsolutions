@@ -30,6 +30,7 @@ export async function updatePerfilAction(formData: FormData) {
       telefone: formData.get('telefone') || undefined,
       cidade: formData.get('cidade') || undefined,
       estado: formData.get('estado') || undefined,
+      avatar_url: formData.get('avatar_url') || undefined,
     })
 
     if (!parsed.success) {
@@ -44,11 +45,68 @@ export async function updatePerfilAction(formData: FormData) {
 
     if (error) return { error: error.message }
     revalidatePath('/candidato/minha-area')
-    revalidatePath('/candidato/perfil/editar')
+    revalidatePath('/candidato/perfil')
     return { success: true }
   } catch (error: any) {
     console.error('Error in updatePerfilAction:', error)
     return { error: 'Erro interno ao atualizar perfil.' }
+  }
+}
+
+export async function uploadAvatarAction(formData: FormData) {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'Não autenticado' }
+
+    const file = formData.get('avatar') as File
+    if (!file || file.size === 0) return { error: 'Nenhum arquivo enviado' }
+
+    // Validar tipo de arquivo
+    if (!file.type.startsWith('image/')) {
+      return { error: 'O arquivo deve ser uma imagem.' }
+    }
+
+    // Validar tamanho (máximo 2MB para avatars)
+    if (file.size > 2 * 1024 * 1024) {
+      return { error: 'A imagem deve ter no máximo 2MB.' }
+    }
+
+    const admin = getAdminClient()
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${user.id}-${Math.random().toString(36).substring(2)}.${fileExt}`
+    const filePath = `${fileName}`
+
+    const { error: uploadError } = await admin.storage
+      .from('avatars')
+      .upload(filePath, file, {
+        upsert: true,
+        contentType: file.type,
+      })
+
+    if (uploadError) {
+      console.error('Avatar Upload Error:', uploadError)
+      return { error: `Erro ao enviar foto: ${uploadError.message}` }
+    }
+
+    // Obter URL pública
+    const { data: { publicUrl } } = admin.storage
+      .from('avatars')
+      .getPublicUrl(filePath)
+
+    // Atualizar o candidato com a nova URL
+    const { error: updateError } = await admin
+      .from('candidatos')
+      .update({ avatar_url: publicUrl })
+      .eq('user_id', user.id)
+
+    if (updateError) return { error: updateError.message }
+
+    revalidatePath('/candidato/perfil')
+    return { success: true, url: publicUrl }
+  } catch (error: any) {
+    console.error('Error in uploadAvatarAction:', error)
+    return { error: 'Erro interno ao processar upload.' }
   }
 }
 

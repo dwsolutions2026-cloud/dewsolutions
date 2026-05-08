@@ -52,8 +52,14 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
       {/* Header Perfil */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-card p-6 rounded-[2rem] border border-border shadow-sm">
         <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-accent/20 shrink-0">
-            {candidato.nome.charAt(0)}
+          <div className="w-20 h-20 rounded-2xl overflow-hidden bg-accent/10 border-2 border-accent/20 flex items-center justify-center shadow-lg shadow-accent/5 shrink-0">
+            {candidato.avatar_url ? (
+              <img src={candidato.avatar_url} alt={candidato.nome} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-accent text-white text-3xl font-black">
+                {candidato.nome.charAt(0)}
+              </div>
+            )}
           </div>
           <div className="min-w-0 space-y-1">
             <h1 className="text-2xl font-black text-primary tracking-tight truncate">{candidato.nome}</h1>

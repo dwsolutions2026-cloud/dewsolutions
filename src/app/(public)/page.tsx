@@ -10,6 +10,7 @@ import {
   Target,
   TrendingUp,
   Users,
+  MessageSquare,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { WhatsAppIcon } from '@/components/WhatsAppIcon'

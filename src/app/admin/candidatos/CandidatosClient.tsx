@@ -25,6 +25,7 @@ interface Candidatura {
     nome: string
     email: string
     curriculo_url: string | null
+    avatar_url: string | null
     user_id: string
   }
 }
@@ -118,14 +119,25 @@ export function CandidatosClient({ empresas, error }: Props) {
                               className="flex flex-col p-5 rounded-2xl border border-border bg-muted/5 hover:border-accent/20 transition-all group"
                             >
                               <div className="flex justify-between items-start mb-3">
-                                <div className="min-w-0">
-                                  <Link 
-                                    href={`/admin/talentos/${c.candidato.id}`}
-                                    className="text-sm font-bold text-primary hover:text-accent transition-colors block truncate"
-                                  >
-                                    {c.candidato.nome}
-                                  </Link>
-                                  <span className="text-[10px] text-muted-foreground font-medium">{c.candidato.email}</span>
+                                <div className="flex items-center gap-3 min-w-0">
+                                  {/* Avatar do Candidato */}
+                                  <div className="w-10 h-10 rounded-full overflow-hidden bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                                    {c.candidato.avatar_url ? (
+                                      <img src={c.candidato.avatar_url} alt={c.candidato.nome} className="w-full h-full object-cover" />
+                                    ) : (
+                                      <span className="text-accent font-black text-xs">{c.candidato.nome.charAt(0)}</span>
+                                    )}
+                                  </div>
+
+                                  <div className="min-w-0 text-left">
+                                    <Link 
+                                      href={`/admin/talentos/${c.candidato.id}`}
+                                      className="text-sm font-bold text-primary hover:text-accent transition-colors block truncate"
+                                    >
+                                      {c.candidato.nome}
+                                    </Link>
+                                    <span className="text-[10px] text-muted-foreground font-medium block truncate">{c.candidato.email}</span>
+                                  </div>
                                 </div>
                                 <span className={`inline-flex items-center px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-tighter border ${st.color}`}>
                                   {st.label}
@@ -135,7 +147,7 @@ export function CandidatosClient({ empresas, error }: Props) {
                               {c.status === 'entrevista' && c.data_entrevista && (
                                 <div className="mb-3 p-2 bg-purple-50 rounded-lg border border-purple-100 flex items-center gap-2.5">
                                   <CalendarClock className="w-3.5 h-3.5 text-purple-600" />
-                                  <div className="flex flex-col">
+                                  <div className="flex flex-col text-left">
                                     <span className="text-[8px] font-black text-purple-700 uppercase">Agendada</span>
                                     <span className="text-[10px] font-bold text-purple-600">
                                       {new Date(c.data_entrevista).toLocaleString('pt-BR', {

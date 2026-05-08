@@ -35,7 +35,8 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
         id,
         nome,
         email,
-        telefone
+        telefone,
+        avatar_url
       )
     `)
     .eq('vaga_id', id)
@@ -59,9 +60,21 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
           candidaturas.map((c: any) => (
             <div key={c.id} className="bg-card p-8 rounded-[2.5rem] border border-border shadow-sm flex flex-col group hover:border-accent/30 transition-all">
               <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h3 className="text-xl font-bold text-primary group-hover:text-accent transition-colors">{c.candidato.nome}</h3>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mt-1">Inscrito em {new Date(c.created_at).toLocaleDateString('pt-BR')}</p>
+                <div className="flex items-center gap-4">
+                  {/* Avatar do Candidato */}
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                    {c.candidato.avatar_url ? (
+                      <img src={c.candidato.avatar_url} alt={c.candidato.nome} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-accent text-white text-xl font-black">
+                        {c.candidato.nome.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-primary group-hover:text-accent transition-colors">{c.candidato.nome}</h3>
+                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mt-1">Inscrito em {new Date(c.created_at).toLocaleDateString('pt-BR')}</p>
+                  </div>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   c.status === 'aprovado' ? 'bg-green-100 text-green-700' :

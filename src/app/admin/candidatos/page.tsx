@@ -28,6 +28,7 @@ export default async function AdminCandidatosPage() {
             nome,
             email,
             curriculo_url,
+            avatar_url,
             user_id
           )
         )
