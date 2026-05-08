@@ -79,7 +79,7 @@ export function CandidatosClient({ empresas, error }: Props) {
 
       <div className="space-y-8">
         {error ? (
-          <div className="bg-card p-10 rounded-4xl border border-red-200 text-red-500 text-center font-bold shadow-sm text-sm">
+          <div className="bg-secondary p-10 rounded-sm border border-red-200 text-red-500 text-center font-bold shadow-sm text-sm">
             Erro ao carregar candidaturas: {error}
           </div>
         ) : empresas.length > 0 ? (
@@ -88,10 +88,10 @@ export function CandidatosClient({ empresas, error }: Props) {
             if (vagasComCandidatos.length === 0) return null
 
             return (
-              <div key={empresa.id} className="bg-card rounded-4xl border border-border shadow-sm overflow-hidden hover:shadow-md transition-all">
+              <div key={empresa.id} className="bg-secondary rounded-sm border-none shadow-sm overflow-hidden hover:shadow-md transition-all">
                 {/* Cabeçalho da Empresa */}
-                <div className="bg-muted/30 px-6 py-4 border-b border-border flex items-center gap-3">
-                  <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-white">
+                <div className="bg-secondary px-6 py-4 border-b border-border flex items-center gap-3">
+                  <div className="w-8 h-8 bg-accent rounded-sm flex items-center justify-center text-white">
                     <Building2 className="w-4 h-4" />
                   </div>
                   <h2 className="text-lg font-black text-primary tracking-tight">{empresa.nome}</h2>
@@ -116,7 +116,7 @@ export function CandidatosClient({ empresas, error }: Props) {
                           return (
                             <div
                               key={c.id}
-                              className="flex flex-col p-5 rounded-2xl border border-border bg-muted/5 hover:border-accent/20 transition-all group"
+                              className="flex flex-col p-5 rounded-sm border border-border bg-muted/5 hover:border-accent/20 transition-all group"
                             >
                               <div className="flex justify-between items-start mb-3">
                                 <div className="flex items-center gap-3 min-w-0">
@@ -145,7 +145,7 @@ export function CandidatosClient({ empresas, error }: Props) {
                               </div>
 
                               {c.status === 'entrevista' && c.data_entrevista && (
-                                <div className="mb-3 p-2 bg-purple-50 rounded-lg border border-purple-100 flex items-center gap-2.5">
+                                <div className="mb-3 p-2 bg-purple-50 rounded-sm border border-purple-100 flex items-center gap-2.5">
                                   <CalendarClock className="w-3.5 h-3.5 text-purple-600" />
                                   <div className="flex flex-col text-left">
                                     <span className="text-[8px] font-black text-purple-700 uppercase">Agendada</span>
@@ -179,7 +179,7 @@ export function CandidatosClient({ empresas, error }: Props) {
                                 {c.status !== 'aprovado' && c.status !== 'reprovado' && (
                                   <button
                                     onClick={() => handleConvocar(c, vaga.titulo)}
-                                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                                    className={`px-3 py-1.5 rounded-sm text-[9px] font-black uppercase tracking-widest transition-all ${
                                       c.status === 'entrevista'
                                         ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
                                         : 'bg-accent text-accent-foreground shadow-md shadow-accent/10 hover:scale-105'
@@ -200,7 +200,7 @@ export function CandidatosClient({ empresas, error }: Props) {
             )
           })
         ) : (
-          <div className="bg-card p-16 text-center rounded-[2.5rem] border border-border shadow-sm">
+          <div className="bg-secondary p-16 text-center rounded-[2.5rem] border-none shadow-sm">
             <Users className="w-12 h-12 mx-auto mb-4 opacity-20 text-muted-foreground" />
             <p className="text-xl font-bold text-primary">Nenhuma candidatura ainda.</p>
             <p className="text-sm text-muted-foreground font-medium opacity-60">As candidaturas aparecerão aqui conforme os talentos se inscreverem nas vagas.</p>

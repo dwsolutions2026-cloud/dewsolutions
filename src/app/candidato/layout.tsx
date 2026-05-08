@@ -22,9 +22,9 @@ export default async function CandidatoLayout({
     <SidebarProvider>
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="flex w-full">
+        <div className="flex w-full pt-28 lg:pt-32">
           <Sidebar />
-          <main className="min-h-screen flex-1 overflow-x-hidden bg-background p-6 pt-32 text-foreground lg:p-10 lg:pt-36">
+          <main className="min-h-[calc(100vh-112px)] flex-1 overflow-x-hidden p-6 text-foreground lg:p-10">
             <div className="w-full h-full">
               {children}
             </div>

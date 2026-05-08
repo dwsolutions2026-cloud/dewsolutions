@@ -75,7 +75,7 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
               <input
                 {...register('whatsapp_numero')}
                 placeholder="(41) 9 9999-9999"
-                className="surface-input w-full rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+                className="surface-input w-full rounded-sm pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
               />
             </div>
             {errors.whatsapp_numero && (
@@ -94,7 +94,7 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
               <input
                 {...register('admin_email_notificacao')}
                 placeholder="admin@exemplo.com"
-                className="surface-input w-full rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+                className="surface-input w-full rounded-sm pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
               />
             </div>
             {errors.admin_email_notificacao && (
@@ -115,7 +115,7 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
               <input
                 {...register('prazo_retorno_texto')}
                 placeholder="Ex: Retornamos em até 1 dia útil"
-                className="surface-input w-full rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+                className="surface-input w-full rounded-sm pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
               />
             </div>
             {errors.prazo_retorno_texto && (
@@ -135,11 +135,11 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
                 {...register('whatsapp_mensagem')}
                 rows={8}
                 placeholder="Olá! Tenho interesse..."
-                className="surface-input w-full resize-none rounded-xl pl-11 pr-4 py-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+                className="surface-input w-full resize-none rounded-sm pl-11 pr-4 py-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
               />
             </div>
 
-            <div className="surface-muted mt-2 space-y-2 rounded-xl p-3">
+            <div className="surface-muted mt-2 space-y-2 rounded-sm p-3">
               <p className="flex items-center gap-1.5 text-[9px] font-black uppercase text-muted-foreground">
                 <Info className="h-3 w-3" /> Variáveis Disponíveis
               </p>
@@ -175,13 +175,13 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
         <h3 className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-primary opacity-70">
           <Eye className="h-4 w-4" /> Preview em Tempo Real
         </h3>
-        <div className="relative overflow-hidden rounded-4xl border border-green-200 bg-green-50/50 p-6 dark:border-green-800/30 dark:bg-green-900/10">
+        <div className="relative overflow-hidden rounded-sm border border-green-200 bg-green-50/50 p-6 dark:border-green-800/30 dark:bg-green-900/10">
           <div className="absolute right-0 top-0 -mr-16 -mt-16 h-32 w-32 rounded-full bg-green-500/5 blur-3xl" />
           <div className="relative">
             <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-green-600 dark:text-green-400">
               Mensagem no WhatsApp:
             </p>
-            <div className="surface-card rounded-2xl border-green-100 p-5 dark:border-green-800/20">
+            <div className="surface-card rounded-sm border-green-100 p-5 dark:border-green-800/20">
               <p className="whitespace-pre-wrap text-sm font-medium leading-relaxed text-primary">
                 {previewMessage || 'Escreva seu template acima...'}
               </p>
@@ -194,7 +194,7 @@ export function ConfigWhatsApp({ initialConfigs }: { initialConfigs: any }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:scale-100 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-sm bg-primary px-8 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:scale-100 disabled:opacity-50"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />

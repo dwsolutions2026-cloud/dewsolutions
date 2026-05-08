@@ -43,10 +43,10 @@ export default async function MinhasCandidaturasPage() {
       <div className="grid grid-cols-1 gap-4">
         {candidaturas && candidaturas.length > 0 ? (
           candidaturas.map((cand: any) => (
-            <div key={cand.id} className="bg-card p-5 rounded-2xl border border-border hover:border-accent/20 shadow-sm transition-all group">
+            <div key={cand.id} className="bg-secondary p-5 rounded-sm border-none hover:border-accent/20 shadow-sm transition-all group">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-muted rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shadow-inner shrink-0">
+                  <div className="w-12 h-12 bg-muted rounded-sm flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shadow-inner shrink-0">
                     <Briefcase className="w-6 h-6" />
                   </div>
                   <div className="min-w-0">
@@ -84,7 +84,7 @@ export default async function MinhasCandidaturasPage() {
 
                   <Link 
                     href={`/vagas/${cand.vaga_id}`}
-                    className="p-2 bg-muted text-primary hover:bg-primary hover:text-white rounded-lg transition-all ml-auto lg:ml-0"
+                    className="p-2 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm transition-all ml-auto lg:ml-0"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </Link>
@@ -93,7 +93,7 @@ export default async function MinhasCandidaturasPage() {
             </div>
           ))
         ) : (
-          <div className="p-12 bg-card border border-border rounded-[2.5rem] text-center space-y-4 shadow-sm">
+          <div className="p-12 bg-secondary border-none rounded-[2.5rem] text-center space-y-4 shadow-sm">
             <Briefcase className="mx-auto h-12 w-12 opacity-20 text-muted-foreground" />
             <div className="space-y-1">
               <p className="text-xl font-bold text-primary">Nenhuma candidatura ainda</p>
@@ -101,7 +101,7 @@ export default async function MinhasCandidaturasPage() {
             </div>
             <Link 
               href="/vagas"
-              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-2.5 rounded-xl font-black text-xs shadow-lg shadow-accent/20 hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-6 py-2.5 rounded-sm font-black text-xs shadow-lg shadow-accent/20 hover:scale-105 transition-all"
             >
               Ver Vagas Disponíveis
             </Link>

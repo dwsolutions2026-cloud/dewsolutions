@@ -40,7 +40,7 @@ export default function VagaEditarClient({ vaga, empresas }: Props) {
         <p className="text-muted-foreground text-xs font-medium opacity-70">Atualize os detalhes da oportunidade.</p>
       </div>
 
-      <div className="bg-card rounded-[2rem] border border-border p-6 shadow-sm">
+      <div className="bg-secondary rounded-[2rem] border-none p-6 shadow-sm">
         <VagaForm 
           initialData={vaga} 
           empresas={empresas} 

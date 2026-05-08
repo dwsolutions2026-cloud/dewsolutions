@@ -77,7 +77,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
   if (!isSupabaseConfigured()) {
     return (
       <div className="mx-auto max-w-6xl animate-in px-4 pb-6 pt-32 fade-in duration-700 sm:px-6 sm:pb-10 sm:pt-36">
-        <div className="surface-card rounded-xl p-10 text-center shadow-none sm:rounded-2xl sm:p-16">
+        <div className="surface-card rounded-sm p-10 text-center shadow-none sm:rounded-sm sm:p-16">
           <p className="text-sm font-bold text-muted-foreground sm:text-base">
             Os detalhes desta vaga estarão disponíveis assim que o ambiente for configurado.
           </p>
@@ -127,7 +127,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
 
       <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3 lg:gap-10">
         <div className="lg:col-span-2">
-          <div className="surface-warm space-y-8 rounded-2xl p-5 shadow-none sm:space-y-10 sm:rounded-4xl sm:p-8 lg:p-10">
+          <div className="surface-warm space-y-8 rounded-sm p-5 shadow-none sm:space-y-10 sm:rounded-sm sm:p-8 lg:p-10">
             <div className="space-y-4 sm:space-y-5">
               <div className="inline-flex items-center rounded-full border border-accent/10 bg-accent/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-accent sm:px-3 sm:text-[10px]">
                 {vaga.area}
@@ -139,21 +139,21 @@ export default async function VagaDetalhesPage({ params }: Props) {
 
               <div className="flex flex-wrap gap-3 text-[9px] font-bold text-muted-foreground sm:gap-5 sm:text-xs">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-accent sm:h-8 sm:w-8">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-muted text-accent sm:h-8 sm:w-8">
                     <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                   <span className="line-clamp-1">{(vaga.empresa as any)?.nome}</span>
                 </div>
 
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-accent sm:h-8 sm:w-8">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-muted text-accent sm:h-8 sm:w-8">
                     <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                   {vaga.cidade} - {vaga.estado}
                 </div>
 
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-muted text-accent sm:h-8 sm:w-8">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-muted text-accent sm:h-8 sm:w-8">
                     <Briefcase className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                   {vaga.modalidade}
@@ -178,7 +178,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
                   <h2 className="text-lg font-black uppercase tracking-tight text-primary sm:text-xl">
                     Requisitos
                   </h2>
-                  <div className="space-y-2.5 rounded-lg bg-background/30 p-4 sm:rounded-2xl sm:p-6 dark:bg-background/10">
+                  <div className="space-y-2.5 rounded-sm bg-background/30 p-4 sm:rounded-sm sm:p-6 dark:bg-background/10">
                     {vaga.requisitos.split('\n').map((req: string, i: number) => (
                       <div key={i} className="flex items-start gap-2 sm:gap-2.5">
                         <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent sm:h-4 sm:w-4" />
@@ -206,7 +206,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
         </div>
 
         <div className="space-y-4 self-start sm:space-y-6">
-          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:space-y-6 sm:rounded-4xl sm:p-6">
+          <div className="surface-warm space-y-4 rounded-sm p-4 shadow-none sm:space-y-6 sm:rounded-sm sm:p-6">
             {vaga.exibir_salario && vaga.salario_min && (
               <div className="space-y-1">
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground opacity-60 sm:text-[10px]">
@@ -238,12 +238,12 @@ export default async function VagaDetalhesPage({ params }: Props) {
             </p>
           </div>
 
-          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:rounded-4xl sm:p-6">
+          <div className="surface-warm space-y-4 rounded-sm p-4 shadow-none sm:rounded-sm sm:p-6">
             <h3 className="text-xs font-black uppercase tracking-widest text-primary opacity-70 sm:text-sm">
               Empresa
             </h3>
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-background/30 text-accent dark:bg-background/10 sm:h-10 sm:w-10 sm:rounded-xl">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-background/30 text-accent dark:bg-background/10 sm:h-10 sm:w-10 sm:rounded-sm">
                 <Building2 className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
               </div>
               <p className="line-clamp-2 text-xs font-bold text-primary sm:text-sm">

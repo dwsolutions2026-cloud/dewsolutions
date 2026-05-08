@@ -43,12 +43,12 @@ export default async function AdminTalentosPage({
             name="q"
             defaultValue={query}
             placeholder="Buscar por nome, e-mail ou cidade..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-sm font-medium"
+            className="w-full pl-10 pr-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-sm font-medium"
           />
         </Form>
       </div>
 
-      <div className="bg-card rounded-4xl border border-border shadow-sm overflow-hidden">
+      <div className="bg-secondary rounded-sm border-none shadow-sm overflow-hidden">
         {error ? (
           <div className="p-10 text-center text-red-500 font-bold text-sm">
             <p>Erro ao carregar banco de talentos:</p>
@@ -58,7 +58,7 @@ export default async function AdminTalentosPage({
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-muted/30 border-b border-border">
+                <tr className="bg-secondary border-b border-border">
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground w-16">Foto</th>
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Candidato</th>
                   <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground">Localização</th>
@@ -109,7 +109,7 @@ export default async function AdminTalentosPage({
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/talentos/${talento.id}`}
-                          className="p-2 text-muted-foreground hover:text-accent rounded-lg hover:bg-accent/10 transition-all"
+                          className="p-2 text-muted-foreground hover:text-accent rounded-sm hover:bg-accent/10 transition-all"
                           title="Ver Perfil"
                         >
                           <ExternalLink className="w-4 h-4" />

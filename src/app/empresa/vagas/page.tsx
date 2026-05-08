@@ -42,7 +42,7 @@ export default async function EmpresaVagasPage() {
         </div>
         <Link
           href="/empresa/vagas/nova"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-xs font-black uppercase tracking-widest text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95 md:w-auto"
+          className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent px-5 py-2.5 text-xs font-black uppercase tracking-widest text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:scale-105 active:scale-95 md:w-auto"
         >
           <Plus className="h-4 w-4" /> Nova Vaga
         </Link>
@@ -50,18 +50,18 @@ export default async function EmpresaVagasPage() {
 
       <div className="grid grid-cols-1 gap-4">
         {error ? (
-          <div className="rounded-2xl border border-red-100 bg-red-50 p-10 text-center text-sm font-bold text-red-500">
+          <div className="rounded-sm border border-red-100 bg-red-50 p-10 text-center text-sm font-bold text-red-500">
             Erro ao carregar vagas.
           </div>
         ) : vagas && vagas.length > 0 ? (
           vagas.map((vaga) => (
             <div
               key={vaga.id}
-              className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-accent/20"
+              className="group rounded-sm border-none bg-secondary p-5 shadow-sm transition-all hover:border-accent/20"
             >
               <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-muted text-accent shadow-inner transition-all group-hover:bg-accent group-hover:text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-muted text-accent shadow-inner transition-all group-hover:bg-accent group-hover:text-white">
                     <Briefcase className="h-6 w-6" />
                   </div>
                   <div className="min-w-0">
@@ -100,7 +100,7 @@ export default async function EmpresaVagasPage() {
 
                   <Link
                     href={`/empresa/vagas/${vaga.id}/candidatos`}
-                    className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-[10px] font-black uppercase tracking-widest text-accent-foreground shadow-md shadow-accent/10 transition-all hover:scale-105 active:scale-95"
+                    className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-[10px] font-black uppercase tracking-widest text-accent-foreground shadow-md shadow-accent/10 transition-all hover:scale-105 active:scale-95"
                   >
                     <Eye className="h-3.5 w-3.5" /> Ver candidatos
                   </Link>
@@ -109,7 +109,7 @@ export default async function EmpresaVagasPage() {
             </div>
           ))
         ) : (
-          <div className="space-y-4 rounded-[2.5rem] border border-dashed border-border bg-card p-12 text-center opacity-60 shadow-sm">
+          <div className="space-y-4 rounded-[2.5rem] border border-dashed border-none bg-secondary p-12 text-center opacity-60 shadow-sm">
             <Briefcase className="mx-auto h-10 w-10 text-muted-foreground opacity-20" />
             <div className="space-y-1">
               <p className="text-lg font-bold text-primary">Nenhuma vaga publicada</p>
@@ -119,7 +119,7 @@ export default async function EmpresaVagasPage() {
             </div>
             <Link
               href="/empresa/vagas/nova"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-xs font-black text-accent-foreground shadow-md transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-sm bg-accent px-6 py-2.5 text-xs font-black text-accent-foreground shadow-md transition-all hover:scale-105"
             >
               <Plus className="h-3.5 w-3.5" /> Publicar primeira vaga
             </Link>

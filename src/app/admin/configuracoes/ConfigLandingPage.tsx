@@ -52,8 +52,8 @@ export function ConfigLandingPage({ initialConfigs }: { initialConfigs: any }) {
   const labelClass = "mb-1.5 block px-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-70"
   const inputContainerClass = "group relative"
   const iconClass = "absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent"
-  const inputClass = "surface-input w-full rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
-  const textareaClass = "surface-input w-full resize-none rounded-xl pl-11 pr-4 py-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+  const inputClass = "surface-input w-full rounded-sm pl-11 pr-4 py-2.5 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
+  const textareaClass = "surface-input w-full resize-none rounded-sm pl-11 pr-4 py-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent"
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="animate-in space-y-10 fade-in duration-500">
@@ -155,7 +155,7 @@ export function ConfigLandingPage({ initialConfigs }: { initialConfigs: any }) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:scale-100 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-sm bg-primary px-8 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:scale-100 disabled:opacity-50"
         >
           {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Salvar Configurações da Landing Page

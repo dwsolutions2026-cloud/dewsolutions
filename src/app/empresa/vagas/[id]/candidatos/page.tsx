@@ -58,11 +58,11 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {candidaturas && candidaturas.length > 0 ? (
           candidaturas.map((c: any) => (
-            <div key={c.id} className="bg-card p-8 rounded-[2.5rem] border border-border shadow-sm flex flex-col group hover:border-accent/30 transition-all">
+            <div key={c.id} className="bg-secondary p-8 rounded-[2.5rem] border-none shadow-sm flex flex-col group hover:border-accent/30 transition-all">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center gap-4">
                   {/* Avatar do Candidato */}
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
+                  <div className="w-14 h-14 rounded-sm overflow-hidden bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                     {c.candidato.avatar_url ? (
                       <img src={c.candidato.avatar_url} alt={c.candidato.nome} className="w-full h-full object-cover" />
                     ) : (
@@ -104,18 +104,18 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
               <div className="mt-auto flex gap-2">
                 <Link 
                   href={`/admin/talentos/${c.candidato.id}`}
-                  className="flex-1 py-3 bg-muted text-primary hover:bg-primary hover:text-white rounded-xl font-bold text-xs text-center transition-all"
+                  className="flex-1 py-3 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm font-bold text-xs text-center transition-all"
                 >
                   Ver Perfil
                 </Link>
-                <button className="flex-1 py-3 border border-border text-muted-foreground hover:bg-muted rounded-xl font-bold text-xs transition-all">
+                <button className="flex-1 py-3 border border-border text-muted-foreground hover:bg-muted rounded-sm font-bold text-xs transition-all">
                   Gerenciar
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full p-20 bg-card border border-border rounded-[3rem] text-center space-y-4 shadow-sm">
+          <div className="col-span-full p-20 bg-secondary border-none rounded-[3rem] text-center space-y-4 shadow-sm">
             <Users className="mx-auto h-16 w-16 opacity-20 mb-4 text-muted-foreground" />
             <p className="text-2xl font-bold text-primary">Nenhum candidato inscrito ainda</p>
             <p className="text-muted-foreground font-medium">Sua vaga está ativa e aguardando interessados.</p>

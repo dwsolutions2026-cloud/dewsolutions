@@ -116,7 +116,10 @@ export async function deleteLeadAction(id: string) {
 
 export async function getConfiguracoes() {
   const supabase = await createClient()
-  const { data } = await supabase.from('configuracoes_site').select('chave, valor')
+  // Buscamos sem cache para garantir que as alterações no admin apareçam na hora
+  const { data } = await supabase
+    .from('configuracoes_site')
+    .select('chave, valor')
   
   const configs: Record<string, string> = {}
   data?.forEach(c => {

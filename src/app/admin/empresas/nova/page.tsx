@@ -48,7 +48,7 @@ export default function NovaEmpresaPage() {
     }
   }, [state.success, router])
 
-  const inputClass = "w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm font-medium text-sm"
+  const inputClass = "w-full pl-10 pr-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm font-medium text-sm"
   const labelClass = "text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] px-2 mb-1.5 block opacity-70"
 
   return (
@@ -84,7 +84,7 @@ export default function NovaEmpresaPage() {
                     name="email"
                     type="email"
                     required
-                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
+                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-sm outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
                     placeholder="empresa@exemplo.com"
                   />
                 </div>
@@ -98,7 +98,7 @@ export default function NovaEmpresaPage() {
                     name="password"
                     type="password"
                     required
-                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
+                    className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-sm outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium text-sm placeholder:text-white/20"
                     placeholder="••••••••"
                   />
                 </div>
@@ -109,7 +109,7 @@ export default function NovaEmpresaPage() {
 
         {/* Coluna 2 & 3: Dados Cadastrais */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-card rounded-[2.5rem] border border-border p-8 shadow-sm space-y-8">
+          <div className="bg-secondary rounded-[2.5rem] border-none p-8 shadow-sm space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className={labelClass}>Razão Social</label>
@@ -148,12 +148,12 @@ export default function NovaEmpresaPage() {
               </div>
               <div className="space-y-2">
                 <label className={labelClass}>UF</label>
-                <input name="estado" required maxLength={2} className="w-full px-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none font-bold text-center uppercase shadow-sm text-sm" placeholder="UF" />
+                <input name="estado" required maxLength={2} className="w-full px-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent outline-none font-bold text-center uppercase shadow-sm text-sm" placeholder="UF" />
               </div>
             </div>
 
             {state.error && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 text-xs font-bold">
+              <div className="p-4 bg-red-50 border border-red-100 rounded-sm flex items-center gap-3 text-red-600 text-xs font-bold">
                 <AlertCircle className="w-4 h-4" />
                 {state.error}
               </div>
@@ -162,7 +162,7 @@ export default function NovaEmpresaPage() {
             <button
               type="submit"
               disabled={pending}
-              className="w-full py-3.5 bg-accent text-accent-foreground rounded-xl font-black text-sm shadow-lg shadow-accent/20 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+              className="w-full py-3.5 bg-accent text-accent-foreground rounded-sm font-black text-sm shadow-lg shadow-accent/20 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
             >
               {pending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               {pending ? 'Processando...' : 'Cadastrar Empresa'}

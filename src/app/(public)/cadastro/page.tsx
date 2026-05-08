@@ -34,13 +34,13 @@ export default function CadastroPage() {
   )
 
   const inputClass =
-    'surface-input w-full rounded-lg pl-11 pr-4 py-3 text-sm font-medium shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-2xl sm:pl-12 sm:py-4 sm:text-base'
+    'surface-input w-full rounded-sm pl-11 pr-4 py-3 text-sm font-medium shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent sm:rounded-sm sm:pl-12 sm:py-4 sm:text-base'
 
   if (state.success) {
     return (
       <div className="animate-in fade-in zoom-in flex min-h-[calc(100vh-64px)] items-center justify-center bg-background px-4 pb-6 pt-32 duration-500 sm:px-6 sm:pb-10 sm:pt-36">
         <div className="w-full max-w-md space-y-6 text-center sm:space-y-8">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-green-100 text-green-600 shadow-xl shadow-green-200 dark:bg-green-900/25 dark:text-green-300 dark:shadow-green-900/20 sm:h-24 sm:w-24 sm:rounded-[2.5rem]">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-sm bg-green-100 text-green-600 shadow-xl shadow-green-200 dark:bg-green-900/25 dark:text-green-300 dark:shadow-green-900/20 sm:h-24 sm:w-24 sm:rounded-[2.5rem]">
             <ShieldCheck className="h-10 w-10 sm:h-12 sm:w-12" />
           </div>
           <div className="space-y-3 sm:space-y-4">
@@ -54,7 +54,7 @@ export default function CadastroPage() {
           </div>
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-base font-black text-primary-foreground transition-all hover:scale-105 sm:gap-3 sm:rounded-2xl sm:px-10 sm:py-4 sm:text-lg"
+            className="inline-flex items-center gap-2 rounded-sm bg-primary px-8 py-3 text-base font-black text-primary-foreground transition-all hover:scale-105 sm:gap-3 sm:rounded-sm sm:px-10 sm:py-4 sm:text-lg"
           >
             Ir para o Login <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Link>
@@ -80,7 +80,7 @@ export default function CadastroPage() {
           </div>
         </div>
 
-        <div className="surface-card rounded-2xl p-6 sm:rounded-[2.5rem] sm:p-10">
+        <div className="surface-card rounded-sm p-6 sm:rounded-[2.5rem] sm:p-10">
           <form action={formAction} className="space-y-5 sm:space-y-6">
             <div className="space-y-2">
               <label className="px-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground sm:text-xs">
@@ -140,7 +140,7 @@ export default function CadastroPage() {
               </div>
             </div>
 
-            <div className="surface-muted flex items-start gap-3 rounded-xl p-4">
+            <div className="surface-muted flex items-start gap-3 rounded-sm p-4">
               <input
                 id="lgpd"
                 name="lgpd"
@@ -158,7 +158,7 @@ export default function CadastroPage() {
             </div>
 
             {state.error && (
-              <div className="animate-in shake flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 duration-500 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-300 sm:rounded-xl sm:p-4">
+              <div className="animate-in shake flex items-center gap-3 rounded-sm border border-red-200 bg-red-50 p-3 text-red-600 duration-500 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-300 sm:rounded-sm sm:p-4">
                 <AlertCircle className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
                 <p className="text-xs font-bold sm:text-sm">{state.error}</p>
               </div>
@@ -167,7 +167,7 @@ export default function CadastroPage() {
             <button
               type="submit"
               disabled={pending}
-              className="gold-gradient flex w-full items-center justify-center gap-2 rounded-lg py-3 text-base font-black text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 sm:gap-3 sm:rounded-2xl sm:py-5 sm:text-lg"
+              className="gold-gradient flex w-full items-center justify-center gap-2 rounded-sm py-3 text-base font-black text-black shadow-xl shadow-accent/20 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 sm:gap-3 sm:rounded-sm sm:py-5 sm:text-lg"
             >
               {pending ? (
                 <Loader2 className="h-5 w-5 animate-spin sm:h-6 sm:w-6" />

@@ -20,8 +20,8 @@ export default async function AdminLayout({
   return (
     <SidebarProvider>
       <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex w-full pt-28 lg:pt-32">
+        {/* Header removed from Admin */}
+        <div className="flex w-full pt-0">
           <Sidebar />
           <main className="min-h-[calc(100vh-112px)] flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-10">
             <div className="w-full h-full">

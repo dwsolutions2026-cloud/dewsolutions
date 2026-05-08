@@ -10,11 +10,11 @@ export default function TermosPage() {
         </p>
       </div>
 
-      <div className="bg-card rounded-4xl shadow-sm border border-border overflow-hidden">
+      <div className="bg-card rounded-sm shadow-sm border border-border overflow-hidden">
         <div className="bg-primary p-12 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent opacity-20 blur-3xl -mr-32 -mt-32" />
           <div className="flex items-center gap-6 relative">
-            <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20">
+            <div className="w-16 h-16 bg-white/10 rounded-sm flex items-center justify-center border border-white/20">
               <FileText className="w-8 h-8" />
             </div>
             <div>

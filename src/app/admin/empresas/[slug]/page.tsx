@@ -45,7 +45,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
         </div>
         <Link 
           href={`/admin/empresas/${empresa.slug || empresa.id}/editar`}
-          className="bg-accent text-accent-foreground px-5 py-2.5 rounded-xl font-black flex items-center gap-2 shadow-lg shadow-accent/20 hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-widest"
+          className="bg-accent text-accent-foreground px-5 py-2.5 rounded-sm font-black flex items-center gap-2 shadow-lg shadow-accent/20 hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-widest"
         >
           <Edit3 className="w-4 h-4" /> Editar Cadastro
         </Link>
@@ -54,9 +54,9 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Info Card */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-card rounded-4xl border border-border p-6 shadow-sm">
+          <div className="bg-secondary rounded-sm border-none p-6 shadow-sm">
             <div className="flex flex-col items-center text-center mb-6">
-              <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center text-accent mb-4 shadow-inner">
+              <div className="w-16 h-16 bg-muted rounded-sm flex items-center justify-center text-accent mb-4 shadow-inner">
                 <Building2 className="w-8 h-8" />
               </div>
               <h2 className="text-lg font-black text-primary">{empresa.nome}</h2>
@@ -65,7 +65,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
 
             <div className="space-y-4 pt-4 border-t border-border/50">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-sm bg-accent/5 flex items-center justify-center shrink-0">
                   <Mail className="w-3.5 h-3.5 text-accent" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -74,7 +74,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-sm bg-accent/5 flex items-center justify-center shrink-0">
                   <MapPin className="w-3.5 h-3.5 text-accent" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -84,7 +84,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
               </div>
               {getSafeHttpUrl(empresa.site) && (
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent/5 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-sm bg-accent/5 flex items-center justify-center shrink-0">
                     <Globe className="w-3.5 h-3.5 text-accent" />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -96,7 +96,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="bg-primary rounded-4xl p-6 text-white shadow-xl shadow-primary/10 relative overflow-hidden">
+          <div className="bg-primary rounded-sm p-6 text-white shadow-xl shadow-primary/10 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-5 opacity-60">Performance</h3>
             <div className="grid grid-cols-2 gap-4 relative">
@@ -125,9 +125,9 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
           <div className="grid grid-cols-1 gap-3">
             {empresa.vagas && empresa.vagas.length > 0 ? (
               empresa.vagas.map((vaga: any) => (
-                <div key={vaga.id} className="bg-card p-4 rounded-xl border border-border hover:border-accent/20 shadow-sm transition-all group flex items-center justify-between gap-4">
+                <div key={vaga.id} className="bg-secondary p-4 rounded-sm border-none hover:border-accent/20 shadow-sm transition-all group flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-muted rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shrink-0">
+                    <div className="w-10 h-10 bg-muted rounded-sm flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all shrink-0">
                       <Briefcase className="w-5 h-5" />
                     </div>
                     <div>
@@ -146,7 +146,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                     </div>
                     <Link 
                       href={`/admin/vagas/${vaga.slug || vaga.id}/editar`}
-                      className="p-2 bg-muted text-primary hover:bg-primary hover:text-white rounded-lg transition-all"
+                      className="p-2 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm transition-all"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </Link>
@@ -154,7 +154,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                 </div>
               ))
             ) : (
-              <div className="p-12 bg-card border border-border border-dashed rounded-4xl text-center opacity-40">
+              <div className="p-12 bg-secondary border-none border-dashed rounded-sm text-center opacity-40">
                 <Briefcase className="w-10 h-10 mx-auto mb-3 opacity-20" />
                 <p className="font-bold text-xs uppercase tracking-widest">Nenhuma vaga publicada.</p>
               </div>

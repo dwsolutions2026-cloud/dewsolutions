@@ -51,7 +51,7 @@ export default async function VagasPublicPage({
             <span className="font-bold text-primary">D&amp;W Solutions</span>.
           </p>
         </div>
-        <div className="surface-card rounded-2xl p-10 text-center shadow-none sm:p-16">
+        <div className="surface-card rounded-sm p-10 text-center shadow-none sm:p-16">
           <p className="text-sm font-bold text-muted-foreground sm:text-base">
             Nenhuma vaga disponível no momento.
           </p>
@@ -117,7 +117,7 @@ export default async function VagasPublicPage({
       </div>
 
       {/* Formulário de busca */}
-      <form className="surface-muted grid grid-cols-1 gap-2 rounded-2xl p-3 sm:grid-cols-12 sm:gap-3 sm:p-4">
+      <form className="surface-muted grid grid-cols-1 gap-2 rounded-sm p-3 sm:grid-cols-12 sm:gap-3 sm:p-4">
         <div className="group relative sm:col-span-5">
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-accent sm:left-3.5 sm:h-4 sm:w-4" />
           <input
@@ -125,7 +125,7 @@ export default async function VagasPublicPage({
             name="q"
             defaultValue={q}
             placeholder="Cargo ou palavra-chave..."
-            className="surface-input w-full rounded-xl py-2.5 pl-9 pr-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent sm:pl-10 sm:pr-4"
+            className="surface-input w-full rounded-sm py-2.5 pl-9 pr-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent sm:pl-10 sm:pr-4"
           />
         </div>
         <div className="group relative sm:col-span-3">
@@ -135,14 +135,14 @@ export default async function VagasPublicPage({
             name="cidade"
             defaultValue={cidade}
             placeholder="Cidade..."
-            className="surface-input w-full rounded-xl py-2.5 pl-9 pr-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent sm:pl-10 sm:pr-4"
+            className="surface-input w-full rounded-sm py-2.5 pl-9 pr-3 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-accent sm:pl-10 sm:pr-4"
           />
         </div>
         <div className="sm:col-span-2">
           <select
             name="area"
             defaultValue={area ?? ''}
-            className="surface-input w-full cursor-pointer appearance-none rounded-xl px-3 py-2.5 text-sm font-medium text-foreground outline-none transition-all focus:ring-2 focus:ring-accent sm:px-4"
+            className="surface-input w-full cursor-pointer appearance-none rounded-sm px-3 py-2.5 text-sm font-medium text-foreground outline-none transition-all focus:ring-2 focus:ring-accent sm:px-4"
           >
             <option value="">Todas as áreas</option>
             {AREAS_TRABALHO.map((a) => (
@@ -154,7 +154,7 @@ export default async function VagasPublicPage({
         </div>
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-black uppercase tracking-widest text-primary-foreground transition-all hover:opacity-90 sm:col-span-2"
+          className="flex items-center justify-center gap-2 rounded-sm bg-primary px-4 py-2.5 text-xs font-black uppercase tracking-widest text-primary-foreground transition-all hover:opacity-90 sm:col-span-2"
         >
           <Filter className="h-4 w-4" />
           <span>Filtrar</span>
@@ -164,7 +164,7 @@ export default async function VagasPublicPage({
       {/* Lista de vagas */}
       <div className="grid grid-cols-1 gap-3 sm:gap-4">
         {error ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-sm font-bold text-red-700 dark:border-red-900 dark:bg-red-950/20 dark:text-red-300 sm:p-10">
+          <div className="rounded-sm border border-red-200 bg-red-50 p-6 text-center text-sm font-bold text-red-700 dark:border-red-900 dark:bg-red-950/20 dark:text-red-300 sm:p-10">
             Erro ao carregar vagas: {error.message}
           </div>
         ) : vagas && vagas.length > 0 ? (
@@ -172,7 +172,7 @@ export default async function VagasPublicPage({
             <Link
               key={vaga.id}
               href={`/vagas/${vaga.slug || vaga.id}`}
-              className="surface-card group rounded-2xl p-4 shadow-none transition-shadow hover:shadow-md sm:p-6"
+              className="surface-card group rounded-sm p-4 shadow-none transition-shadow hover:shadow-md sm:p-6"
             >
               <div className="flex flex-col justify-between gap-4 sm:gap-6 md:flex-row md:items-center">
                 <div className="flex-1 space-y-2 sm:space-y-3.5">
@@ -187,16 +187,16 @@ export default async function VagasPublicPage({
                   </div>
 
                   <div className="flex flex-wrap gap-2 sm:gap-3">
-                    <span className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background px-2.5 py-1 text-xs font-semibold text-foreground sm:px-3">
+                    <span className="flex items-center gap-1.5 rounded-sm border border-border/60 bg-background px-2.5 py-1 text-xs font-semibold text-foreground sm:px-3">
                       <MapPin className="h-3 w-3 shrink-0 text-accent" />
                       {vaga.cidade} — {vaga.estado}
                     </span>
-                    <span className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background px-2.5 py-1 text-xs font-semibold text-foreground sm:px-3">
+                    <span className="flex items-center gap-1.5 rounded-sm border border-border/60 bg-background px-2.5 py-1 text-xs font-semibold text-foreground sm:px-3">
                       <Briefcase className="h-3 w-3 shrink-0 text-accent" />
                       {vaga.modalidade}
                     </span>
                     {vaga.salario_min && vaga.salario_max && (
-                      <span className="flex items-center gap-1.5 rounded-lg bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent sm:px-3">
+                      <span className="flex items-center gap-1.5 rounded-sm bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent sm:px-3">
                         <DollarSign className="h-3 w-3 shrink-0" />
                         {new Intl.NumberFormat('pt-BR', {
                           style: 'currency',
@@ -221,7 +221,7 @@ export default async function VagasPublicPage({
             </Link>
           ))
         ) : (
-          <div className="surface-card rounded-2xl p-10 text-center shadow-none sm:p-16">
+          <div className="surface-card rounded-sm p-10 text-center shadow-none sm:p-16">
             <p className="text-sm font-bold text-foreground sm:text-base">
               {q || area || cidade
                 ? 'Nenhuma vaga encontrada para os filtros aplicados.'
@@ -248,13 +248,13 @@ export default async function VagasPublicPage({
           {page > 1 ? (
             <Link
               href={buildPageHref(page - 1)}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card font-bold text-foreground transition-colors hover:border-accent hover:text-accent"
+              className="flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-card font-bold text-foreground transition-colors hover:border-accent hover:text-accent"
               aria-label="Página anterior"
             >
               <ChevronLeft className="h-4 w-4" />
             </Link>
           ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/30 bg-card text-muted-foreground opacity-40">
+            <span className="flex h-10 w-10 items-center justify-center rounded-sm border border-border/30 bg-card text-muted-foreground opacity-40">
               <ChevronLeft className="h-4 w-4" />
             </span>
           )}
@@ -266,13 +266,13 @@ export default async function VagasPublicPage({
           {page < totalPages ? (
             <Link
               href={buildPageHref(page + 1)}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card font-bold text-foreground transition-colors hover:border-accent hover:text-accent"
+              className="flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-card font-bold text-foreground transition-colors hover:border-accent hover:text-accent"
               aria-label="Próxima página"
             >
               <ChevronRight className="h-4 w-4" />
             </Link>
           ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/30 bg-card text-muted-foreground opacity-40">
+            <span className="flex h-10 w-10 items-center justify-center rounded-sm border border-border/30 bg-card text-muted-foreground opacity-40">
               <ChevronRight className="h-4 w-4" />
             </span>
           )}

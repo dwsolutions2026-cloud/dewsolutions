@@ -25,7 +25,7 @@ export default function SobrePage() {
         <div className="space-y-8">
           <section className="space-y-4">
             <div className="flex items-center gap-4 text-primary">
-              <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+              <div className="w-12 h-12 bg-accent/10 rounded-sm flex items-center justify-center text-accent">
                 <Target className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-bold">Nossa Missão</h2>
@@ -37,7 +37,7 @@ export default function SobrePage() {
 
           <section className="space-y-4">
             <div className="flex items-center gap-4 text-primary">
-              <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+              <div className="w-12 h-12 bg-accent/10 rounded-sm flex items-center justify-center text-accent">
                 <Rocket className="w-6 h-6" />
               </div>
               <h2 className="text-2xl font-bold">Nossa Visão</h2>
@@ -50,7 +50,7 @@ export default function SobrePage() {
 
         <div className="bg-card rounded-[3rem] border border-border p-10 shadow-2xl shadow-primary/5 space-y-8">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20">
+            <div className="w-16 h-16 bg-primary rounded-sm flex items-center justify-center text-white shadow-xl shadow-primary/20">
               <Award className="w-8 h-8" />
             </div>
             <div>

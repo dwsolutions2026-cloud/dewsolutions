@@ -89,7 +89,7 @@ export default function PlanosPage() {
             )}
 
             <div className="space-y-4">
-              <div className={`w-14 h-14 ${plano.color} rounded-2xl flex items-center justify-center ${plano.accent}`}>
+              <div className={`w-14 h-14 ${plano.color} rounded-sm flex items-center justify-center ${plano.accent}`}>
                 <plano.icon className="w-7 h-7" />
               </div>
               <div>
@@ -118,7 +118,7 @@ export default function PlanosPage() {
 
             <Link 
               href="/anunciar-oportunidade"
-              className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-center transition-all ${
+              className={`w-full py-4 rounded-sm font-black text-xs uppercase tracking-widest text-center transition-all ${
                 plano.popular 
                 ? 'bg-accent text-white shadow-xl shadow-accent/20 hover:opacity-90' 
                 : 'bg-muted text-primary hover:bg-border'
@@ -132,7 +132,7 @@ export default function PlanosPage() {
 
       <div className="bg-card p-10 rounded-[3rem] border border-border flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
         <div className="flex items-center gap-6">
-          <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center text-primary">
+          <div className="w-16 h-16 bg-muted rounded-sm flex items-center justify-center text-primary">
             <Building2 className="w-8 h-8" />
           </div>
           <div>
@@ -144,7 +144,7 @@ export default function PlanosPage() {
             href={DWSOLUTIONS_WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
+            className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-sm font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-primary/10 whitespace-nowrap"
           >
             <WhatsAppIcon className="h-5 w-5 shrink-0" />
             Falar com Consultor

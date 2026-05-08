@@ -94,11 +94,11 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
   return (
     <div className="space-y-6">
       {/* Tabela de Leads */}
-      <div className="bg-card rounded-4xl border border-border overflow-hidden shadow-sm">
+      <div className="bg-secondary rounded-sm border-none overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-muted/30 border-b border-border">
+              <tr className="bg-secondary border-b border-border">
                 <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Data</th>
                 <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Empresa / Resp.</th>
                 <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Telefone</th>
@@ -145,12 +145,12 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                       )}
                       
                       {/* Hover Menu for Quick Status Change */}
-                      <div className="absolute top-full left-0 mt-1 hidden group-hover/status:block z-50 bg-card border border-border rounded-xl shadow-xl p-1 w-40">
+                      <div className="absolute top-full left-0 mt-1 hidden group-hover/status:block z-50 bg-secondary border-none rounded-sm shadow-xl p-1 w-40">
                         {['novo', 'em_contato', 'fechado', 'sem_interesse'].map((s) => (
                           <button
                             key={s}
                             onClick={() => handleStatusChange(lead.id, s)}
-                            className="w-full text-left px-3 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-muted rounded-lg transition-colors"
+                            className="w-full text-left px-3 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-muted rounded-sm transition-colors"
                           >
                             {s.replace('_', ' ')}
                           </button>
@@ -162,7 +162,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                     <div className="flex items-center justify-end gap-2">
                       <button 
                         onClick={() => setSelectedLead(lead)}
-                        className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-lg transition-all"
+                        className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-sm transition-all"
                         title="Ver Detalhes"
                       >
                         <Eye className="w-4 h-4" />
@@ -170,7 +170,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                       <button 
                         onClick={() => handleDelete(lead.id)}
                         disabled={isDeleting === lead.id}
-                        className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-sm transition-all"
                         title="Excluir"
                       >
                         {isDeleting === lead.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
@@ -194,10 +194,10 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
       {/* Modal Detalhes */}
       {selectedLead && (
         <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-card w-full max-w-2xl rounded-[2.5rem] border border-border shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+          <div className="bg-secondary w-full max-w-2xl rounded-[2.5rem] border-none shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-8 border-b border-border flex items-center justify-between bg-muted/20">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+                <div className="w-12 h-12 bg-accent/10 rounded-sm flex items-center justify-center text-accent">
                   <Building2 className="w-6 h-6" />
                 </div>
                 <div>
@@ -263,7 +263,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
 
               <div className="col-span-2 space-y-2">
                 <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest opacity-60">Mensagem / Observações</p>
-                <div className="bg-muted/30 p-4 rounded-2xl border border-border min-h-[100px]">
+                <div className="bg-secondary p-4 rounded-sm border border-border min-h-[100px]">
                   <p className="text-sm font-medium text-primary whitespace-pre-wrap leading-relaxed italic opacity-80">
                     {selectedLead.mensagem || "Nenhuma observação enviada."}
                   </p>
@@ -274,7 +274,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
             <div className="p-8 bg-muted/20 border-t border-border flex justify-end gap-3">
               <button 
                 onClick={() => setSelectedLead(null)}
-                className="px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest text-muted-foreground hover:bg-muted transition-all"
+                className="px-6 py-2.5 rounded-sm font-black text-[10px] uppercase tracking-widest text-muted-foreground hover:bg-muted transition-all"
               >
                 Fechar
               </button>
@@ -282,7 +282,7 @@ export function LeadsAdminClient({ leads }: { leads: Lead[] }) {
                 href={`https://wa.me/55${selectedLead.telefone}`} 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
+                className="flex items-center gap-2 px-6 py-2.5 bg-green-500 text-white rounded-sm font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all shadow-lg shadow-green-500/20"
               >
                 <MessageSquare className="w-4 h-4" /> Atender no WhatsApp
               </a>

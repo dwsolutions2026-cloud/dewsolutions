@@ -16,7 +16,7 @@ export default function ConfirmacaoCadastroPage() {
         </div>
         <Link 
           href="/login" 
-          className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-10 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-all shadow-xl shadow-primary/20"
+          className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-10 py-4 rounded-sm font-black text-lg hover:scale-105 transition-all shadow-xl shadow-primary/20"
         >
           Ir para o Login <ArrowRight className="w-5 h-5" />
         </Link>

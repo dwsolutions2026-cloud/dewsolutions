@@ -1,109 +1,100 @@
-'use client'
-
 import Link from 'next/link'
+import { Mail, Phone, MapPin, Globe, ExternalLink } from 'lucide-react'
 import { Logo } from '@/components/Logo'
-import { Mail, Phone, MapPin } from 'lucide-react'
 
-interface FooterProps {
+interface Props {
   configs: Record<string, string>
 }
 
-const shellPadding = 'px-5 sm:px-8 lg:px-10 xl:px-12'
-
-export function Footer({ configs }: FooterProps) {
-  const contatoEmail = configs.contato_email || 'contato@dwsolutions.com.br'
-  const contatoTelefone = configs.contato_telefone || '(41) 3333-3333'
-  const contatoEndereco = configs.contato_endereco || 'Curitiba - PR'
+export function Footer({ configs }: Props) {
+  const email = configs.contato_email || 'contato@dwsolutions.com.br'
+  const telefone = configs.contato_telefone || '(41) 9701-0813'
+  const endereco = configs.contato_endereco || 'Curitiba, PR'
   const mapsIframe = configs.contato_maps_iframe
 
   return (
-    <footer className="mt-16 border-t border-border/70 bg-card/70 pb-8 pt-14 sm:mt-20 sm:pb-10 sm:pt-20">
-      <div className={`mb-12 grid grid-cols-1 gap-10 md:mb-16 md:grid-cols-4 md:gap-12 ${shellPadding}`}>
-        {/* Coluna 1: Logo e Descrição */}
-        <div className="space-y-6 md:col-span-1">
-          <div className="flex justify-start">
-            <Logo width={180} height={50} variant="auto" />
+    <footer className="bg-[#050505] text-white border-t border-white/5 pt-20 pb-10">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-10 xl:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+          {/* Logo e Sobre */}
+          <div className="lg:col-span-5 space-y-8">
+            <div className="h-12 w-48 relative">
+              <Logo width={192} height={48} variant="white" />
+            </div>
+            <p className="text-white/60 text-sm leading-relaxed max-w-md">
+              A D&W Solutions é uma consultoria especializada em Recrutamento e Seleção de alta performance, 
+              conectando os melhores talentos às empresas que buscam excelência e resultados estratégicos.
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-black transition-all" title="Instagram">
+                <Globe className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent hover:text-black transition-all" title="LinkedIn">
+                <ExternalLink className="w-5 h-5" />
+              </a>
+            </div>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-            A <span className="font-bold text-primary">D&W Solutions</span> conecta talentos
-            de alta performance às melhores empresas do mercado, com processos ágeis e humanizados.
+
+          {/* Links e Contatos */}
+          <div className="lg:col-span-4 grid grid-cols-2 gap-4 sm:gap-8">
+            <div className="space-y-6">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Navegação</h4>
+              <ul className="space-y-4 text-sm font-bold text-white/50">
+                <li><Link href="#home" className="hover:text-accent transition-colors whitespace-nowrap">Início</Link></li>
+                <li><Link href="#sobre" className="hover:text-accent transition-colors whitespace-nowrap">Sobre</Link></li>
+                <li><Link href="#servicos" className="hover:text-accent transition-colors whitespace-nowrap">Serviços</Link></li>
+                <li><Link href="/vagas" className="hover:text-accent transition-colors whitespace-nowrap">Vagas</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-6">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Contato</h4>
+              <ul className="space-y-4">
+                <li className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 text-accent shrink-0" />
+                  <span className="text-sm font-medium text-white/70 whitespace-nowrap">{email}</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Phone className="w-4 h-4 text-accent shrink-0" />
+                  <span className="text-sm font-medium text-white/70 whitespace-nowrap">{telefone}</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                  <span className="text-sm font-medium text-white/70 leading-relaxed">{endereco}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Mapa */}
+          <div className="lg:col-span-3 space-y-6">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Localização</h4>
+            <div className="w-full h-40 rounded-2xl overflow-hidden grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-700 border border-white/10">
+              {mapsIframe ? (
+                <iframe 
+                  src={mapsIframe}
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              ) : (
+                <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                  <MapPin className="w-8 h-8 text-white/20" />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">
+            © {new Date().getFullYear()} D&W Solutions. Todos os direitos reservados.
           </p>
-        </div>
-
-        {/* Coluna 2: Institucional */}
-        <div className="space-y-6">
-          <h4 className="text-xs font-black uppercase tracking-widest text-primary">Institucional</h4>
-          <ul className="space-y-4">
-            {['Sobre nós', 'Nossos serviços', 'Vagas abertas'].map((item) => (
-              <li key={item}>
-                <Link href={`/#${item.toLowerCase().replace(/ /g, '-')}`} className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
-                  {item}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Coluna 3: Contatos */}
-        <div className="space-y-6">
-          <h4 className="text-xs font-black uppercase tracking-widest text-primary">Contatos</h4>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <Mail className="w-4 h-4 text-accent mt-0.5" />
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">E-mail</p>
-                <a href={`mailto:${contatoEmail}`} className="text-sm font-medium text-primary hover:text-accent transition-colors">{contatoEmail}</a>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <Phone className="w-4 h-4 text-accent mt-0.5" />
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Telefone</p>
-                <a href={`tel:${contatoTelefone.replace(/\D/g, '')}`} className="text-sm font-medium text-primary hover:text-accent transition-colors">{contatoTelefone}</a>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-accent mt-0.5" />
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Endereço</p>
-                <p className="text-sm font-medium text-primary leading-tight">{contatoEndereco}</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        {/* Coluna 4: Mapa */}
-        <div className="space-y-6">
-          <h4 className="text-xs font-black uppercase tracking-widest text-primary">Onde Estamos</h4>
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted/30">
-            {mapsIframe ? (
-              <iframe 
-                src={mapsIframe} 
-                className="h-full w-full grayscale contrast-[1.1]" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center p-6 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground opacity-40">
-                  Mapa será configurado em breve via painel admin
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className={`flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-center md:flex-row md:text-left ${shellPadding}`}>
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          &copy; {new Date().getFullYear()} D&W Solutions. Todos os direitos reservados.
-        </p>
-        <div className="flex items-center gap-6">
-          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground opacity-40">
-            Inteligência em Recrutamento
-          </span>
+          <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest flex items-center gap-2">
+            Desenvolvido com <span className="text-accent">♥</span> para alta performance
+          </p>
         </div>
       </div>
     </footer>

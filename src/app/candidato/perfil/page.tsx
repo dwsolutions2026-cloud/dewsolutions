@@ -47,7 +47,7 @@ export default async function PerfilCandidatoPage() {
 
         <Link 
           href="/candidato/perfil/editar"
-          className="bg-primary text-white px-8 py-4 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-[10px] uppercase tracking-[0.2em]"
+          className="bg-primary text-white px-8 py-4 rounded-sm font-black flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-[10px] uppercase tracking-[0.2em]"
         >
           <Edit3 className="w-4 h-4" /> Atualizar Dados
         </Link>
@@ -56,7 +56,7 @@ export default async function PerfilCandidatoPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Card Lateral: Foto e Status */}
         <div className="lg:col-span-1 space-y-8">
-          <div className="bg-card rounded-[3rem] border border-border p-10 shadow-sm relative overflow-hidden">
+          <div className="bg-secondary rounded-[3rem] border-none p-10 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl" />
             
             <AvatarUpload 
@@ -90,7 +90,7 @@ export default async function PerfilCandidatoPage() {
 
         {/* Informações Principais */}
         <div className="lg:col-span-2">
-          <div className="bg-card rounded-[3rem] border border-border p-10 shadow-sm h-full">
+          <div className="bg-secondary rounded-[3rem] border-none p-10 shadow-sm h-full">
             <div className="mb-10 flex items-center gap-3">
               <UserIcon className="w-5 h-5 text-accent" />
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-primary/80">Dados Pessoais</h3>
@@ -143,7 +143,7 @@ export default async function PerfilCandidatoPage() {
 function InfoItem({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
   return (
     <div className="flex items-start gap-4 group">
-      <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-white transition-all duration-300">
+      <div className="w-12 h-12 rounded-sm bg-muted flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-white transition-all duration-300">
         <Icon className="w-5 h-5" />
       </div>
       <div>

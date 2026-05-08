@@ -18,7 +18,7 @@ export default async function EmpresaDashboard() {
 
   if (!empresa) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm font-bold text-muted-foreground">
+      <div className="rounded-sm border-none bg-secondary p-8 text-center text-sm font-bold text-muted-foreground">
         Empresa não encontrada. Entre em contato com o administrador para
         concluir a configuração do seu acesso.
       </div>
@@ -53,8 +53,8 @@ export default async function EmpresaDashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <div className="group flex items-center gap-5 rounded-4xl border border-border bg-card p-6 shadow-sm transition-all hover:border-accent/30">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/10 text-accent transition-transform group-hover:scale-110">
+        <div className="group flex items-center gap-5 rounded-sm border-none bg-secondary p-6 shadow-sm transition-all hover:border-accent/30">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-sm bg-accent/10 text-accent transition-transform group-hover:scale-110">
             <Briefcase className="h-7 w-7" />
           </div>
           <div>
@@ -67,8 +67,8 @@ export default async function EmpresaDashboard() {
           </div>
         </div>
 
-        <div className="group flex items-center gap-5 rounded-4xl border border-border bg-card p-6 shadow-sm transition-all hover:border-accent/30">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-purple-100 text-purple-600 transition-transform group-hover:scale-110 dark:bg-purple-900/20">
+        <div className="group flex items-center gap-5 rounded-sm border-none bg-secondary p-6 shadow-sm transition-all hover:border-accent/30">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-sm bg-purple-100 text-purple-600 transition-transform group-hover:scale-110 dark:bg-purple-900/20">
             <Users className="h-7 w-7" />
           </div>
           <div>
@@ -82,7 +82,7 @@ export default async function EmpresaDashboard() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-4xl bg-primary p-8 text-white shadow-xl shadow-primary/20 md:p-12">
+      <div className="relative overflow-hidden rounded-sm bg-primary p-8 text-white shadow-xl shadow-primary/20 md:p-12">
         <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-20 blur-3xl" />
         <div className="relative max-w-xl">
           <h2 className="mb-3 flex items-center gap-2.5 text-2xl font-black tracking-tight">
@@ -94,7 +94,7 @@ export default async function EmpresaDashboard() {
           </p>
           <Link
             href="/empresa/vagas/nova"
-            className="inline-flex items-center gap-2.5 rounded-xl bg-accent px-8 py-3 text-sm font-black text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:scale-105"
+            className="inline-flex items-center gap-2.5 rounded-sm bg-accent px-8 py-3 text-sm font-black text-accent-foreground shadow-lg shadow-accent/20 transition-all hover:scale-105"
           >
             <PlusCircle className="h-4 w-4" /> Publicar vaga
           </Link>

@@ -54,14 +54,14 @@ export default async function CurriculoPage() {
               href={getCurriculoDownloadUrl(candidato.curriculo_url)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2 text-xs font-black text-foreground transition-all hover:bg-muted"
+              className="flex items-center gap-2 rounded-sm border border-border bg-background px-4 py-2 text-xs font-black text-foreground transition-all hover:bg-muted"
             >
               <Download className="h-4 w-4" /> Baixar PDF
             </a>
           )}
           <Link
             href="/candidato/curriculo/editar"
-            className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2 text-xs font-black uppercase tracking-widest text-accent-foreground transition-all hover:scale-105"
+            className="flex items-center gap-2 rounded-sm bg-accent px-4 py-2 text-xs font-black uppercase tracking-widest text-accent-foreground transition-all hover:scale-105"
           >
             <Edit3 className="h-4 w-4" /> Editar Currículo
           </Link>
@@ -73,7 +73,7 @@ export default async function CurriculoPage() {
           <div className="divide-y divide-[#d9d1c7]">
             <div className="space-y-4 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
                   <UserCircle2 className="h-5 w-5" />
                 </div>
                 <h2 className="text-lg font-black text-black">Resumo Profissional</h2>
@@ -109,7 +109,7 @@ export default async function CurriculoPage() {
 
             <div className="space-y-5 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
                   <Briefcase className="h-5 w-5" />
                 </div>
                 <h2 className="text-lg font-black text-black">Experiência Profissional</h2>
@@ -140,7 +140,7 @@ export default async function CurriculoPage() {
 
             <div className="space-y-5 p-6 sm:p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-accent/10 text-accent">
                   <GraduationCap className="h-5 w-5" />
                 </div>
                 <h2 className="text-lg font-black text-black">Formação Acadêmica</h2>
@@ -150,7 +150,7 @@ export default async function CurriculoPage() {
                 {curriculo.formacoes?.map((form: any, i: number) => (
                   <div
                     key={i}
-                    className="space-y-2 rounded-2xl border border-[#d9d1c7] bg-white p-4"
+                    className="space-y-2 rounded-sm border border-[#d9d1c7] bg-white p-4"
                   >
                     <h3 className="text-sm font-bold text-black">{form.curso}</h3>
                     <div>
@@ -169,7 +169,7 @@ export default async function CurriculoPage() {
           </div>
         ) : (
           <div className="space-y-5 p-12 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f0e6d8] text-black/30">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-sm bg-[#f0e6d8] text-black/30">
               <FileText className="h-8 w-8" />
             </div>
             <div className="space-y-1.5">
@@ -181,7 +181,7 @@ export default async function CurriculoPage() {
             </div>
             <Link
               href="/candidato/curriculo/editar"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3 text-sm font-black text-accent-foreground transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-sm bg-accent px-8 py-3 text-sm font-black text-accent-foreground transition-all hover:scale-105"
             >
               Começar Agora
             </Link>

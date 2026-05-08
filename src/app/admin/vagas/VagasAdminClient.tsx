@@ -68,10 +68,10 @@ export function VagasAdminClient({ vagas }: Props) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {vagas.map((vaga) => (
-        <div key={vaga.id} className="bg-card p-5 rounded-[2rem] border border-border hover:border-accent/30 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
+        <div key={vaga.id} className="bg-secondary p-5 rounded-[2rem] border-none hover:border-accent/30 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-inner shrink-0 ${
+              <div className={`w-12 h-12 rounded-sm flex items-center justify-center transition-all shadow-inner shrink-0 ${
                 vaga.status === 'ativa' 
                   ? 'bg-muted text-accent group-hover:bg-accent group-hover:text-white' 
                   : 'bg-red-50 text-red-400'
@@ -108,7 +108,7 @@ export function VagasAdminClient({ vagas }: Props) {
               <div className="flex items-center gap-2">
                 <Link 
                   href={`/admin/vagas/${vaga.slug || vaga.id}/editar`}
-                  className="p-2.5 bg-muted text-primary hover:bg-primary hover:text-white rounded-lg transition-all"
+                  className="p-2.5 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm transition-all"
                   title="Editar Vaga"
                 >
                   <Edit3 className="w-4 h-4" />
@@ -117,7 +117,7 @@ export function VagasAdminClient({ vagas }: Props) {
                 <button
                   onClick={() => handleToggleStatus(vaga.id, vaga.status)}
                   disabled={loadingId === vaga.id}
-                  className={`p-2.5 rounded-lg transition-all ${
+                  className={`p-2.5 rounded-sm transition-all ${
                     vaga.status === 'ativa' 
                       ? 'bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white' 
                       : 'bg-green-50 text-green-600 hover:bg-green-500 hover:text-white'
@@ -132,7 +132,7 @@ export function VagasAdminClient({ vagas }: Props) {
                 <button
                   onClick={() => handleDelete(vaga.id, vaga.titulo)}
                   disabled={loadingId === vaga.id}
-                  className="p-2.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-all"
+                  className="p-2.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-sm transition-all"
                   title="Excluir Permanentemente"
                 >
                   {loadingId === vaga.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
@@ -140,7 +140,7 @@ export function VagasAdminClient({ vagas }: Props) {
 
                 <Link 
                   href={`/admin/candidatos?vaga=${vaga.id}`}
-                  className="ml-1 px-4 py-2 bg-accent text-accent-foreground rounded-lg font-black text-[10px] uppercase tracking-widest transition-all shadow-md shadow-accent/10 hover:scale-105 active:scale-95"
+                  className="ml-1 px-4 py-2 bg-accent text-accent-foreground rounded-sm font-black text-[10px] uppercase tracking-widest transition-all shadow-md shadow-accent/10 hover:scale-105 active:scale-95"
                 >
                   Candidatos
                 </Link>

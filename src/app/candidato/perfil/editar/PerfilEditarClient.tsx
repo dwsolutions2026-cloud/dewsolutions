@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PerfilSchema } from '@/lib/schemas'
@@ -49,7 +51,7 @@ export function PerfilEditarClient({ initialData }: Props) {
     }
   }
 
-  const inputClass = "w-full pl-12 pr-4 py-4 rounded-3xl border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-semibold text-primary"
+  const inputClass = "w-full pl-12 pr-4 py-4 rounded-sm border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-semibold text-primary"
   const labelClass = "text-[10px] font-black text-primary/40 uppercase tracking-[0.2em] px-4 mb-2 flex items-center gap-2"
 
   return (
@@ -76,7 +78,7 @@ export function PerfilEditarClient({ initialData }: Props) {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-card rounded-[3rem] border border-border p-8 md:p-14 shadow-sm space-y-12 relative overflow-hidden">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-secondary rounded-[3rem] border-none p-8 md:p-14 shadow-sm space-y-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
         
         <div className="grid grid-cols-1 md:grid-cols-6 gap-x-8 gap-y-10 relative z-10">
@@ -126,7 +128,7 @@ export function PerfilEditarClient({ initialData }: Props) {
               <input 
                 {...register('estado')} 
                 maxLength={2} 
-                className="w-full px-4 py-4 rounded-3xl border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-black text-center uppercase text-primary" 
+                className="w-full px-4 py-4 rounded-sm border border-border bg-muted/20 focus:bg-card focus:ring-4 focus:ring-accent/10 focus:border-accent outline-none transition-all shadow-sm font-black text-center uppercase text-primary" 
                 placeholder="UF" 
               />
             </div>
@@ -140,7 +142,7 @@ export function PerfilEditarClient({ initialData }: Props) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto bg-primary text-white px-12 py-5 rounded-4xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
+            className="w-full sm:w-auto bg-primary text-white px-12 py-5 rounded-sm font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
           >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
             {isSubmitting ? 'Salvando...' : 'Confirmar Alterações'}

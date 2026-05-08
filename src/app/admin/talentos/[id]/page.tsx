@@ -50,9 +50,9 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
       </Link>
 
       {/* Header Perfil */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-card p-6 rounded-4xl border border-border shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-secondary p-6 rounded-sm border-none shadow-sm">
         <div className="flex items-center gap-6">
-          <div className="w-20 h-20 rounded-2xl overflow-hidden bg-accent/10 border-2 border-accent/20 flex items-center justify-center shadow-lg shadow-accent/5 shrink-0">
+          <div className="w-20 h-20 rounded-sm overflow-hidden bg-accent/10 border-2 border-accent/20 flex items-center justify-center shadow-lg shadow-accent/5 shrink-0">
             {candidato.avatar_url ? (
               <img src={candidato.avatar_url} alt={candidato.nome} className="w-full h-full object-cover" />
             ) : (
@@ -79,7 +79,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
             href={getCurriculoDownloadUrl(candidato.curriculo_url)}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-white px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/10"
+            className="bg-primary text-white px-5 py-2.5 rounded-sm font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/10"
           >
             <FileText className="w-4 h-4" /> PDF Original
           </a>
@@ -90,8 +90,8 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
         {/* Coluna Currículo (JSON) */}
         <div className="lg:col-span-2 space-y-8">
           {curriculo ? (
-            <div className="bg-card rounded-4xl border border-border overflow-hidden shadow-sm">
-              <div className="p-6 bg-muted/30 border-b border-border">
+            <div className="bg-secondary rounded-sm border-none overflow-hidden shadow-sm">
+              <div className="p-6 bg-secondary border-b border-border">
                 <h2 className="text-lg font-black text-primary flex items-center gap-3">
                   <FileText className="w-5 h-5 text-accent" /> Currículo Digital
                 </h2>
@@ -125,7 +125,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
                   <h3 className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">Formação Acadêmica</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {curriculo.formacoes?.map((form: any, i: number) => (
-                      <div key={i} className="p-4 rounded-xl bg-muted/20 border border-border">
+                      <div key={i} className="p-4 rounded-sm bg-muted/20 border border-border">
                         <h4 className="font-bold text-sm text-primary">{form.curso}</h4>
                         <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">{form.instituicao}</p>
                         <div className="mt-3 flex items-center justify-between">
@@ -139,7 +139,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
               </div>
             </div>
           ) : (
-            <div className="bg-card rounded-4xl border border-border p-10 text-center space-y-3 shadow-sm opacity-60">
+            <div className="bg-secondary rounded-sm border-none p-10 text-center space-y-3 shadow-sm opacity-60">
               <FileText className="w-12 h-12 mx-auto opacity-20" />
               <p className="text-lg font-bold text-primary">Sem currículo detalhado.</p>
               <p className="text-sm text-muted-foreground">O candidato ainda não preencheu o formulário de currículo.</p>
@@ -149,13 +149,13 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
 
         {/* Coluna Histórico */}
         <div className="space-y-8">
-          <div className="bg-card rounded-4xl border border-border p-6 shadow-sm">
+          <div className="bg-secondary rounded-sm border-none p-6 shadow-sm">
             <h3 className="text-lg font-black text-primary mb-6 flex items-center gap-2.5">
               <History className="w-4.5 h-4.5 text-accent" /> Histórico
             </h3>
             <div className="space-y-3">
               {candidato.candidaturas?.map((cand: any) => (
-                <div key={cand.id} className="p-4 rounded-xl bg-muted/10 border border-border group hover:border-accent/30 transition-all">
+                <div key={cand.id} className="p-4 rounded-sm bg-muted/10 border border-border group hover:border-accent/30 transition-all">
                   <h4 className="font-bold text-primary text-xs mb-0.5 group-hover:text-accent transition-colors">{cand.vaga?.titulo}</h4>
                   <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest mb-2.5">{(cand.vaga as any)?.empresa?.nome}</p>
                   <div className="flex items-center justify-between">

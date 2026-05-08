@@ -64,7 +64,7 @@ export default async function AdminOportunidadesPage({
         <div className="flex items-center gap-3">
           <a 
             href={`/api/admin/oportunidade-leads/exportar?q=${q || ''}&status=${status || ''}`}
-            className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-primary rounded-xl font-black text-[10px] uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-primary rounded-sm font-black text-[10px] uppercase tracking-widest transition-all"
           >
             📥 Exportar CSV
           </a>
@@ -72,7 +72,7 @@ export default async function AdminOportunidadesPage({
       </div>
 
       {/* Funil de Conversão */}
-      <div className="bg-card p-8 rounded-[2.5rem] border border-border shadow-sm space-y-6">
+      <div className="bg-secondary p-8 rounded-[2.5rem] border-none shadow-sm space-y-6">
         <h3 className="text-sm font-black text-primary uppercase tracking-widest flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-accent" /> Funil de Conversão (Últimos 30 dias)
         </h3>
@@ -83,7 +83,7 @@ export default async function AdminOportunidadesPage({
             { label: 'Abriram WhatsApp', value: funnel.abriram, icon: MessageSquare, color: 'text-green-500', pct: funnel.submeteram ? Math.round((funnel.abriram / funnel.submeteram) * 100) : 0 },
             { label: 'Viraram Leads', value: funnel.leads, icon: CheckCircle2, color: 'text-accent', pct: 100 },
           ].map((item, i) => (
-            <div key={i} className="p-4 rounded-2xl bg-muted/20 border border-border/50 relative overflow-hidden group">
+            <div key={i} className="p-4 rounded-sm bg-card border-none relative overflow-hidden group shadow-sm">
               <div className="relative z-10">
                 <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest mb-1">{item.label}</p>
                 <p className="text-xl font-black text-primary flex items-baseline gap-2">
@@ -100,8 +100,8 @@ export default async function AdminOportunidadesPage({
       {/* Cards de Resumo */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-card p-6 rounded-4xl border border-border shadow-sm flex items-center gap-4">
-            <div className={`w-12 h-12 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center shadow-inner`}>
+          <div key={i} className="bg-secondary p-6 rounded-sm border-none shadow-sm flex items-center gap-4">
+            <div className={`w-12 h-12 ${stat.bg} ${stat.color} rounded-sm flex items-center justify-center shadow-inner`}>
               <stat.icon className="w-6 h-6" />
             </div>
             <div>
@@ -122,7 +122,7 @@ export default async function AdminOportunidadesPage({
               name="q"
               defaultValue={q}
               placeholder="Empresa ou responsável..."
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+              className="w-full pl-11 pr-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
             />
           </div>
         </div>
@@ -134,8 +134,7 @@ export default async function AdminOportunidadesPage({
             <select
               name="status"
               defaultValue={status}
-              onChange={(e) => e.target.form?.requestSubmit()}
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium appearance-none cursor-pointer"
+              className="w-full pl-11 pr-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium appearance-none cursor-pointer"
             >
               <option value="">Todos</option>
               <option value="novo">Novo</option>
@@ -145,12 +144,18 @@ export default async function AdminOportunidadesPage({
             </select>
           </div>
         </div>
+
+        <div className="w-full md:w-auto pt-6 flex shrink-0">
+          <button type="submit" className="w-full bg-accent text-accent-foreground px-5 py-2.5 rounded-sm font-black shadow-lg shadow-accent/20 hover:scale-105 active:scale-95 transition-all text-sm">
+            Filtrar
+          </button>
+        </div>
         
         {/* Manter o estado da busca ao mudar o status e vice-versa é automático com o Form do Next.js se ambos estiverem no mesmo form */}
       </Form>
 
       {error ? (
-        <div className="p-10 bg-red-50 text-red-500 rounded-2xl text-center border border-red-100 font-bold text-sm">
+        <div className="p-10 bg-red-50 text-red-500 rounded-sm text-center border border-red-100 font-bold text-sm">
           Erro ao carregar leads: {error.message}
         </div>
       ) : (

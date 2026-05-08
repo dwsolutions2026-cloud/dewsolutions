@@ -26,7 +26,7 @@ export default async function AdminNovaVagaPage() {
         <p className="text-muted-foreground text-lg font-medium">Publique uma vaga em nome de uma empresa parceira.</p>
       </div>
 
-      <div className="bg-card rounded-[3rem] border border-border p-8 md:p-12 shadow-sm">
+      <div className="bg-secondary rounded-[3rem] border-none p-8 md:p-12 shadow-sm">
         <VagaForm 
           empresas={empresas || []} 
           onSubmit={createVagaAdminAction} 

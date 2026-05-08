@@ -1,14 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { Users, Briefcase, Building2, TrendingUp, Clock, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
-
-interface CandidaturaRecente {
-  id: string
-  created_at: string
-  status: string
-  candidato: { nome: string }[] | null
-  vaga: { titulo: string }[] | null
-}
+import { UltimasCandidaturasClient } from './UltimasCandidaturasClient'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
@@ -32,7 +25,10 @@ export default async function AdminDashboard() {
         created_at,
         status,
         candidato:candidatos(nome),
-        vaga:vagas(titulo)
+        vaga:vagas(
+          titulo,
+          empresa:empresas(nome)
+        )
       `
       )
       .order('created_at', { ascending: false })
@@ -99,13 +95,13 @@ export default async function AdminDashboard() {
           <Link
             key={stat.label}
             href={stat.href}
-            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:shadow-md"
+            className="group relative overflow-hidden rounded-sm border-none bg-secondary p-5 shadow-sm transition-all hover:shadow-md"
           >
             <div
               className={`absolute right-0 top-0 -mr-10 -mt-10 h-20 w-20 rounded-full ${stat.bg} opacity-30 transition-transform group-hover:scale-110`}
             />
             <div
-              className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${stat.bg} ${stat.color}`}
+              className={`mb-3 flex h-10 w-10 items-center justify-center rounded-sm ${stat.bg} ${stat.color}`}
             >
               <stat.icon className="h-5 w-5" />
             </div>
@@ -119,7 +115,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Últimas candidaturas */}
-        <div className="flex flex-col rounded-4xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex flex-col rounded-sm border-none bg-secondary p-6 shadow-sm">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-base font-black text-primary">
               <Clock className="h-4 w-4 text-accent" /> Últimas candidaturas
@@ -127,51 +123,16 @@ export default async function AdminDashboard() {
             <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
           </div>
 
-          <div className="flex-1 space-y-2.5">
-            {(ultimasCandidaturas as CandidaturaRecente[] | null)?.length ? (
-              (ultimasCandidaturas as CandidaturaRecente[]).map((cand) => {
-                const st = STATUS_LABELS[cand.status] ?? STATUS_LABELS['inscrito']
-                return (
-                  <div
-                    key={cand.id}
-                    className="flex items-center justify-between rounded-xl border border-border/50 bg-muted/10 p-3.5 transition-all hover:border-accent/30"
-                  >
-                    <div className="min-w-0 space-y-0.5">
-                      <p className="truncate text-xs font-bold text-primary">
-                        {Array.isArray(cand.candidato) ? cand.candidato[0]?.nome : '—'}
-                      </p>
-                      <p className="truncate text-[10px] font-semibold text-muted-foreground">
-                        {Array.isArray(cand.vaga) ? cand.vaga[0]?.titulo : '—'}
-                      </p>
-                    </div>
-                    <div className="ml-3 shrink-0 text-right">
-                      <p className="text-[10px] font-bold text-muted-foreground">
-                        {new Date(cand.created_at).toLocaleDateString('pt-BR')}
-                      </p>
-                      <span
-                        className={`mt-0.5 inline-block rounded px-1.5 py-0.5 text-[8px] font-black uppercase tracking-tight ${st.color}`}
-                      >
-                        {st.label}
-                      </span>
-                    </div>
-                  </div>
-                )
-              })
-            ) : (
-              <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm font-medium text-muted-foreground">
-                Nenhuma candidatura recente encontrada.
-              </div>
-            )}
-          </div>
+          <UltimasCandidaturasClient initialData={ultimasCandidaturas as any} />
         </div>
 
         {/* Ações rápidas */}
-        <div className="relative overflow-hidden rounded-4xl bg-primary p-8 text-primary-foreground shadow-xl">
-          <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-20 blur-3xl" />
+        <div className="relative overflow-hidden rounded-sm bg-secondary p-8 text-primary shadow-sm border-none">
+          <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-5 blur-3xl" />
           <div className="relative space-y-6">
             <div className="space-y-2">
               <h2 className="text-xl font-black">Ações rápidas</h2>
-              <p className="max-w-md text-sm text-primary-foreground/75">
+              <p className="max-w-md text-sm text-muted-foreground font-medium">
                 Acesse os fluxos principais para manter a operação de vagas e empresas organizada.
               </p>
             </div>
@@ -179,27 +140,27 @@ export default async function AdminDashboard() {
             <div className="grid grid-cols-1 gap-3">
               <Link
                 href="/admin/vagas"
-                className="flex items-center justify-between rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold transition-all hover:bg-white/20"
+                className="flex items-center justify-between rounded-sm bg-background/50 px-5 py-3 text-sm font-bold transition-all hover:bg-background/80 hover:text-accent border-none"
               >
                 Gerenciar vagas <ChevronRight className="h-3.5 w-3.5" />
               </Link>
               <Link
                 href="/admin/empresas/nova"
-                className="flex items-center justify-between rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold transition-all hover:bg-white/20"
+                className="flex items-center justify-between rounded-sm bg-background/50 px-5 py-3 text-sm font-bold transition-all hover:bg-background/80 hover:text-accent border-none"
               >
                 Cadastrar empresa <ChevronRight className="h-3.5 w-3.5" />
               </Link>
               <Link
                 href="/admin/talentos"
-                className="flex items-center justify-between rounded-xl bg-accent px-5 py-3 text-sm font-black text-black transition-all hover:opacity-90"
+                className="flex items-center justify-between rounded-sm bg-accent px-5 py-3 text-sm font-black text-white transition-all hover:opacity-90"
               >
                 Ver banco de talentos <ChevronRight className="h-3.5 w-3.5" />
               </Link>
               <Link
                 href="/admin/oportunidades"
-                className="flex items-center justify-between rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold transition-all hover:bg-white/20"
+                className="flex items-center justify-between rounded-sm bg-background/50 px-5 py-3 text-sm font-bold transition-all hover:bg-background/80 hover:text-accent border-none"
               >
-                Leads de empresas <ChevronRight className="h-3.5 w-3.5" />
+                Leads de Empresas <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
