@@ -85,14 +85,14 @@ export default function LandingPage() {
         id="home"
         className="relative isolate min-h-svh overflow-hidden bg-background pt-20 sm:pt-28"
       >
-        <div className="absolute inset-0 z-0 lg:inset-y-0 lg:left-1/3 lg:right-0">
+        <div className="absolute bottom-0 right-0 z-0 top-20 sm:top-28 lg:left-[15%] lg:translate-x-64">
           <Image
             src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 70vw"
-            className="object-cover object-center opacity-10 transition-opacity duration-700 lg:object-contain lg:object-bottom-right lg:opacity-100"
+            className="object-cover object-center opacity-10 transition-opacity duration-700 lg:object-contain lg:object-right-bottom lg:opacity-100"
           />
         </div>
 

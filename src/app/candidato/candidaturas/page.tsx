@@ -9,20 +9,29 @@ export default async function MinhasCandidaturasPage() {
 
   if (!user) redirect('/login')
 
-  const { data: candidaturas } = await supabase
-    .from('candidaturas')
-    .select(`
-      *,
-      vaga:vagas (
-        id,
-        titulo,
-        cidade,
-        estado,
-        empresa:empresas (nome)
-      )
-    `)
+  // First, get the candidato record linked to the auth user
+  const { data: candidato } = await supabase
+    .from('candidatos')
+    .select('id')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+    .single()
+
+  const { data: candidaturas } = candidato
+    ? await supabase
+        .from('candidaturas')
+        .select(`
+          *,
+          vaga:vagas (
+            id,
+            titulo,
+            cidade,
+            estado,
+            empresa:empresas (nome)
+          )
+        `)
+        .eq('candidato_id', candidato.id)
+        .order('created_at', { ascending: false })
+    : { data: [] }
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">

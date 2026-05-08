@@ -15,7 +15,7 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
-  // Verificar se usuário está autenticado (admin ou empresa)
+  // Verificar se usuário está autenticado
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
@@ -37,18 +37,41 @@ export async function GET(
   const fileUserId = filePath.replace(/\.pdf$/i, '')
   let isAuthorized = role === 'admin'
 
+  // O próprio candidato pode ver seu currículo
   if (!isAuthorized && role === 'candidato') {
     isAuthorized = fileUserId === user.id
   }
 
+  // Uma empresa só pode ver se o candidato aplicou para uma vaga dela
   if (!isAuthorized && role === 'empresa') {
-    const { data: candidato } = await supabase
-      .from('candidatos')
+    // 1. Pegar o ID da empresa vinculada ao usuário logado
+    const { data: empresa } = await supabase
+      .from('empresas')
       .select('id')
-      .eq('user_id', fileUserId)
+      .eq('user_id', user.id)
       .maybeSingle()
 
-    isAuthorized = !!candidato
+    if (empresa) {
+      // 2. Pegar o ID do candidato dono do arquivo
+      const { data: candidato } = await supabase
+        .from('candidatos')
+        .select('id')
+        .eq('user_id', fileUserId)
+        .maybeSingle()
+
+      if (candidato) {
+        // 3. Verificar se existe candidatura para este candidato em alguma vaga desta empresa
+        const { data: hasApplication } = await supabase
+          .from('candidaturas')
+          .select('id, vagas!inner(empresa_id)')
+          .eq('candidato_id', candidato.id)
+          .eq('vagas.empresa_id', empresa.id)
+          .limit(1)
+          .maybeSingle()
+        
+        isAuthorized = !!hasApplication
+      }
+    }
   }
 
   if (!isAuthorized) {

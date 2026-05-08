@@ -10,13 +10,19 @@ export default async function AdminVagaEditarPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
 
-  const { data: vaga, error } = await supabase
+  // Safe: two separate .eq() queries instead of string-interpolated .or()
+  const { data: bySlug } = await supabase
     .from('vagas')
     .select('*')
-    .or(`slug.eq."${slug}",id.eq."${slug}"`)
-    .single()
+    .eq('slug', slug)
+    .maybeSingle()
 
-  if (error || !vaga) notFound()
+  const { data: byId } = !bySlug
+    ? await supabase.from('vagas').select('*').eq('id', slug).maybeSingle()
+    : { data: null }
+
+  const vaga = bySlug ?? byId
+  if (!vaga) notFound()
 
   const { data: empresas } = await supabase
     .from('empresas')

@@ -9,13 +9,19 @@ import { useRouter } from 'next/navigation'
 interface Props {
   vagaId: string
   jaCandidatou: boolean
+  isAutenticado: boolean
 }
 
-export function BotaoCandidatar({ vagaId, jaCandidatou }: Props) {
+export function BotaoCandidatar({ vagaId, jaCandidatou, isAutenticado }: Props) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   async function handleCandidatar() {
+    if (!isAutenticado) {
+      router.push('/cadastro')
+      return
+    }
+
     setLoading(true)
     try {
       const result = await candidatarAction(vagaId)

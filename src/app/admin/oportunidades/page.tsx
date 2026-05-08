@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { LeadsAdminClient } from './LeadsAdminClient'
-import { Briefcase, TrendingUp, Users, CheckCircle2, Clock, Send, Search, Filter, Eye, MessageSquare } from 'lucide-react'
+import { TrendingUp, CheckCircle2, Clock, Send, Search, Filter, Eye, MessageSquare } from 'lucide-react'
 import Form from 'next/form'
 
 export default async function AdminOportunidadesPage({
@@ -112,20 +112,18 @@ export default async function AdminOportunidadesPage({
         ))}
       </div>
 
-      {/* Filtros */}
-      <div className="flex flex-col md:flex-row gap-4 items-end">
+      {/* Filtros Unificados */}
+      <Form action="" className="flex flex-col md:flex-row gap-4 items-end">
         <div className="flex-1 w-full space-y-1.5">
           <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">Busca</label>
           <div className="relative group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
-            <Form action="">
-              <input
-                name="q"
-                defaultValue={q}
-                placeholder="Empresa ou responsável..."
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
-              />
-            </Form>
+            <input
+              name="q"
+              defaultValue={q}
+              placeholder="Empresa ou responsável..."
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+            />
           </div>
         </div>
 
@@ -133,23 +131,23 @@ export default async function AdminOportunidadesPage({
           <label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">Status</label>
           <div className="relative group">
             <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
-            <Form action="">
-              <select
-                name="status"
-                defaultValue={status}
-                onChange={(e) => e.target.form?.requestSubmit()}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium appearance-none cursor-pointer"
-              >
-                <option value="">Todos</option>
-                <option value="novo">Novo</option>
-                <option value="em_contato">Em Contato</option>
-                <option value="fechado">Fechado</option>
-                <option value="sem_interesse">Sem Interesse</option>
-              </select>
-            </Form>
+            <select
+              name="status"
+              defaultValue={status}
+              onChange={(e) => e.target.form?.requestSubmit()}
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-border bg-card focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium appearance-none cursor-pointer"
+            >
+              <option value="">Todos</option>
+              <option value="novo">Novo</option>
+              <option value="em_contato">Em Contato</option>
+              <option value="fechado">Fechado</option>
+              <option value="sem_interesse">Sem Interesse</option>
+            </select>
           </div>
         </div>
-      </div>
+        
+        {/* Manter o estado da busca ao mudar o status e vice-versa é automático com o Form do Next.js se ambos estiverem no mesmo form */}
+      </Form>
 
       {error ? (
         <div className="p-10 bg-red-50 text-red-500 rounded-2xl text-center border border-red-100 font-bold text-sm">
@@ -161,5 +159,3 @@ export default async function AdminOportunidadesPage({
     </div>
   )
 }
-
-

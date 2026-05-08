@@ -70,6 +70,7 @@ export function Sidebar() {
 
   useEffect(() => {
     if (role !== 'admin') return
+    if (!supabase) return
 
     const fetchCount = async () => {
       const { count } = await supabase
@@ -154,7 +155,7 @@ export function Sidebar() {
             )}
 
             {isCollapsed && (
-              <div className="pointer-events-none absolute left-full z-[100] ml-4 whitespace-nowrap rounded bg-black px-2 py-1 text-[9px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="pointer-events-none absolute left-full z-100 ml-4 whitespace-nowrap rounded bg-black px-2 py-1 text-[9px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
                 {item.title}
               </div>
             )}
@@ -194,7 +195,7 @@ export function Sidebar() {
               {!isCollapsed && <span className="text-xs font-bold">Configurações</span>}
 
               {isCollapsed && (
-                <div className="pointer-events-none absolute left-full z-[100] ml-4 whitespace-nowrap rounded bg-black px-2 py-1 text-[9px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="pointer-events-none absolute left-full z-100 ml-4 whitespace-nowrap rounded bg-black px-2 py-1 text-[9px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100">
                   Configurações
                 </div>
               )}
@@ -223,7 +224,7 @@ export function Sidebar() {
 
               {role === 'admin' && (
                 <>
-                  <div className="my-3 h-[1px] bg-black/10" />
+                  <div className="my-3 h-px bg-black/10" />
                   <Link
                     href="/admin/configuracoes"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-black/78 transition-all hover:bg-black/8 hover:text-black"

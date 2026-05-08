@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tailwind v4: use .dark class (set by ThemeProvider) instead of prefers-color-scheme */
+@variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: "Montserrat", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }

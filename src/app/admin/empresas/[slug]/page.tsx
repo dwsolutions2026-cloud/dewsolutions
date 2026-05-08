@@ -12,19 +12,23 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
 
-  const { data: empresa, error } = await supabase
+  // Safe: two separate .eq() queries instead of string-interpolated .or()
+  const { data: bySlug } = await supabase
     .from('empresas')
-    .select(`
-      *,
-      vagas (
-        *,
-        candidaturas (count)
-      )
-    `)
-    .or(`slug.eq."${slug}",id.eq."${slug}"`)
-    .single()
+    .select('*, vagas (*, candidaturas (count))')
+    .eq('slug', slug)
+    .maybeSingle()
 
-  if (error || !empresa) notFound()
+  const { data: byId } = !bySlug
+    ? await supabase
+        .from('empresas')
+        .select('*, vagas (*, candidaturas (count))')
+        .eq('id', slug)
+        .maybeSingle()
+    : { data: null }
+
+  const empresa = bySlug ?? byId
+  if (!empresa) notFound()
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -50,7 +54,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Info Card */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-card rounded-[2rem] border border-border p-6 shadow-sm">
+          <div className="bg-card rounded-4xl border border-border p-6 shadow-sm">
             <div className="flex flex-col items-center text-center mb-6">
               <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center text-accent mb-4 shadow-inner">
                 <Building2 className="w-8 h-8" />
@@ -92,7 +96,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="bg-primary rounded-[2rem] p-6 text-white shadow-xl shadow-primary/10 relative overflow-hidden">
+          <div className="bg-primary rounded-4xl p-6 text-white shadow-xl shadow-primary/10 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-5 opacity-60">Performance</h3>
             <div className="grid grid-cols-2 gap-4 relative">
@@ -150,7 +154,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                 </div>
               ))
             ) : (
-              <div className="p-12 bg-card border border-border border-dashed rounded-[2rem] text-center opacity-40">
+              <div className="p-12 bg-card border border-border border-dashed rounded-4xl text-center opacity-40">
                 <Briefcase className="w-10 h-10 mx-auto mb-3 opacity-20" />
                 <p className="font-bold text-xs uppercase tracking-widest">Nenhuma vaga publicada.</p>
               </div>

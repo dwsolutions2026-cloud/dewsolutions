@@ -206,7 +206,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
         </div>
 
         <div className="space-y-4 self-start sm:space-y-6">
-          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:space-y-6 sm:rounded-[2rem] sm:p-6 lg:sticky lg:top-28">
+          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:space-y-6 sm:rounded-[2rem] sm:p-6">
             {vaga.exibir_salario && vaga.salario_min && (
               <div className="space-y-1">
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground opacity-60 sm:text-[10px]">
@@ -227,7 +227,11 @@ export default async function VagaDetalhesPage({ params }: Props) {
               </div>
             )}
 
-            <BotaoCandidatar vagaId={vaga.id} jaCandidatou={jaCandidatou} />
+            <BotaoCandidatar 
+              vagaId={vaga.id} 
+              jaCandidatou={jaCandidatou} 
+              isAutenticado={!!user} 
+            />
 
             <p className="px-2 text-center text-[8px] font-medium leading-relaxed text-muted-foreground opacity-60 sm:text-[10px]">
               Ao se candidatar, seu currículo será compartilhado com o recrutador.

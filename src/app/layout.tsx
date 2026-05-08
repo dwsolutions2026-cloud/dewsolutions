@@ -65,6 +65,14 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${montserrat.variable} scroll-smooth antialiased`}
     >
+      <head>
+        {/* Inline script to apply theme synchronously before React hydrates — prevents flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=document.documentElement;if(t==='light'){d.classList.remove('dark');d.style.colorScheme='light';}else{d.classList.add('dark');d.style.colorScheme='dark';}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased">
         <ThemeProvider>
           <AuthProvider>
