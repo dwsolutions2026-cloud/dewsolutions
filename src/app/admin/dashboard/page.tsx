@@ -6,8 +6,8 @@ interface CandidaturaRecente {
   id: string
   created_at: string
   status: string
-  candidato: { nome: string } | null
-  vaga: { titulo: string } | null
+  candidato: { nome: string }[] | null
+  vaga: { titulo: string }[] | null
 }
 
 export default async function AdminDashboard() {
@@ -138,10 +138,10 @@ export default async function AdminDashboard() {
                   >
                     <div className="min-w-0 space-y-0.5">
                       <p className="truncate text-xs font-bold text-primary">
-                        {cand.candidato?.nome ?? '—'}
+                        {Array.isArray(cand.candidato) ? cand.candidato[0]?.nome : '—'}
                       </p>
                       <p className="truncate text-[10px] font-semibold text-muted-foreground">
-                        {cand.vaga?.titulo ?? '—'}
+                        {Array.isArray(cand.vaga) ? cand.vaga[0]?.titulo : '—'}
                       </p>
                     </div>
                     <div className="ml-3 shrink-0 text-right">

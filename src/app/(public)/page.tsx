@@ -87,7 +87,7 @@ export default function LandingPage() {
       >
         <div className="absolute inset-y-0 right-0 left-[20%] sm:left-[24%] lg:left-[28%]">
           <Image
-            src="/images/hero-team.png?v=2"
+            src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
             fill
             priority
