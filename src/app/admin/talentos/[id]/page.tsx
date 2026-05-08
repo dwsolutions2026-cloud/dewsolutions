@@ -139,7 +139,7 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
               </div>
             </div>
           ) : (
-            <div className="bg-card rounded-[2rem] border border-border p-10 text-center space-y-3 shadow-sm opacity-60">
+            <div className="bg-card rounded-4xl border border-border p-10 text-center space-y-3 shadow-sm opacity-60">
               <FileText className="w-12 h-12 mx-auto opacity-20" />
               <p className="text-lg font-bold text-primary">Sem currículo detalhado.</p>
               <p className="text-sm text-muted-foreground">O candidato ainda não preencheu o formulário de currículo.</p>
