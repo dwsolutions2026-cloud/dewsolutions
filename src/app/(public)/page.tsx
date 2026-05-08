@@ -85,7 +85,7 @@ export default function LandingPage() {
         id="home"
         className="relative isolate min-h-svh overflow-hidden bg-background pt-20 sm:pt-28"
       >
-        <div className="absolute bottom-0 right-0 z-0 top-20 sm:top-28 lg:left-[15%] lg:translate-x-64">
+        <div className="absolute bottom-0 right-0 z-0 top-20 sm:top-28 lg:left-[15%] lg:translate-x-40">
           <Image
             src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
@@ -99,14 +99,14 @@ export default function LandingPage() {
         <div className="relative z-10 flex min-h-[calc(100svh-80px)] w-full items-center sm:min-h-[calc(100svh-112px)]">
           <div className="w-full lg:max-w-[50%]">
             <div className={`${shellPadding} pb-10 pt-4 sm:pb-6`}>
-              <div className="relative mb-6 h-[80px] w-[200px] sm:mb-7 sm:h-[150px] sm:w-[370px]">
-                <Logo width={370} height={150} variant="auto" />
+              <div className="relative mb-6 h-[60px] w-[140px] sm:mb-7 sm:h-[110px] sm:w-[280px]">
+                <Logo width={280} height={110} variant="auto" />
               </div>
 
               <div className="max-w-176 space-y-5">
-                <h1 className="text-[2.2rem] font-semibold leading-[1.1] tracking-tight text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem] lg:leading-[0.98] lg:tracking-[-0.055em]">
-                  <span className="block">Soluções inteligentes em</span>
-                  <span className="block">
+                <h1 className="text-[1.7rem] font-semibold leading-[1.1] tracking-tight text-primary dark:text-white sm:text-[3.7rem] lg:text-[4.35rem] lg:leading-[0.98] lg:tracking-[-0.055em]">
+                  <span className="block whitespace-nowrap">Soluções inteligentes em</span>
+                  <span className="block whitespace-nowrap">
                     <span className="text-accent italic">recrutamento</span> e{' '}
                     <span className="text-accent italic">seleção.</span>
                   </span>
