@@ -92,7 +92,7 @@ export default function LandingPage() {
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 70vw"
-            className="object-cover object-center opacity-10 transition-opacity duration-700 lg:object-contain lg:object-right-bottom lg:opacity-100"
+            className="object-cover object-center opacity-10 transition-opacity duration-700 lg:object-contain lg:object-bottom-right lg:opacity-100"
           />
         </div>
 

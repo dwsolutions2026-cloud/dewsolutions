@@ -127,7 +127,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
 
       <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3 lg:gap-10">
         <div className="lg:col-span-2">
-          <div className="surface-warm space-y-8 rounded-2xl p-5 shadow-none sm:space-y-10 sm:rounded-[2rem] sm:p-8 lg:p-10">
+          <div className="surface-warm space-y-8 rounded-2xl p-5 shadow-none sm:space-y-10 sm:rounded-4xl sm:p-8 lg:p-10">
             <div className="space-y-4 sm:space-y-5">
               <div className="inline-flex items-center rounded-full border border-accent/10 bg-accent/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-accent sm:px-3 sm:text-[10px]">
                 {vaga.area}
@@ -206,7 +206,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
         </div>
 
         <div className="space-y-4 self-start sm:space-y-6">
-          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:space-y-6 sm:rounded-[2rem] sm:p-6">
+          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:space-y-6 sm:rounded-4xl sm:p-6">
             {vaga.exibir_salario && vaga.salario_min && (
               <div className="space-y-1">
                 <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground opacity-60 sm:text-[10px]">
@@ -238,7 +238,7 @@ export default async function VagaDetalhesPage({ params }: Props) {
             </p>
           </div>
 
-          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:rounded-[2rem] sm:p-6">
+          <div className="surface-warm space-y-4 rounded-xl p-4 shadow-none sm:rounded-4xl sm:p-6">
             <h3 className="text-xs font-black uppercase tracking-widest text-primary opacity-70 sm:text-sm">
               Empresa
             </h3>
