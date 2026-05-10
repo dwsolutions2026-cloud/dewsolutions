@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       .from('oportunidade_leads')
       .select('*', { count: 'exact', head: true })
       .eq('telefone', normalizedPhone)
-      .gte('criado_em', new Date(now - limitWindow).toISOString())
+      .gte('created_at', new Date(now - limitWindow).toISOString())
 
     if ((recentAttempts ?? 0) >= 3) {
       return NextResponse.json({ error: 'Muitas tentativas recentes para este telefone. Aguarde alguns minutos.' }, { status: 429 })
@@ -67,7 +67,13 @@ export async function POST(req: Request) {
     })
 
     const whatsappNumero = configs.whatsapp_numero || '4197010813'
-    const whatsappTemplate = configs.whatsapp_mensagem || ''
+    const whatsappTemplate = configs.whatsapp_mensagem || `Olá! Sou {nome_responsavel} da empresa {nome_empresa}.
+Gostaria de anunciar a vaga de {cargo_vaga}.
+Minha cidade: {cidade}
+Meu e-mail: {email}
+
+Mensagem:
+{mensagem}`
     const prazoTexto = configs.prazo_retorno_texto || 'Retornamos em ate 1 dia util'
     const adminEmail = configs.admin_email_notificacao || ''
 

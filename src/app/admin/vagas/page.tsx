@@ -91,7 +91,7 @@ export default async function AdminVagasPage({
       ) : vagas && vagas.length > 0 ? (
         <VagasAdminClient vagas={vagas} />
       ) : (
-        <div className="p-16 bg-secondary border-none rounded-[2rem] text-center space-y-4 shadow-sm">
+        <div className="p-16 bg-secondary border-none rounded-4xl text-center space-y-4 shadow-sm">
           <Briefcase className="mx-auto h-12 w-12 opacity-20 mb-2 text-muted-foreground" />
           <p className="text-xl font-bold text-primary">Nenhuma vaga encontrada</p>
           <p className="text-muted-foreground text-sm font-medium">Comece publicando sua primeira oportunidade na plataforma.</p>

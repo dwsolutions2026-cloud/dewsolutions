@@ -167,9 +167,9 @@ export default async function LandingPage() {
 
       {/* PROVA SOCIAL (LOGOS) */}
       {clientLogos.length > 0 && (
-        <section className="bg-[#050505] py-10 border-b border-white/5 relative z-20">
+        <section className="bg-secondary/30 dark:bg-[#050505] py-10 border-b border-border/50 dark:border-white/5 relative z-20">
           <div className={shellPadding}>
-            <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground dark:text-white/40 mb-8 opacity-60">Empresas que confiam em nós</p>
+            <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground dark:text-white/40 mb-8 opacity-80 dark:opacity-60">Empresas que confiam em nós</p>
             <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 transition-all duration-500">
               {clientLogos.map((logo: string, i: number) => (
                 <div key={i} className="relative h-10 w-32">

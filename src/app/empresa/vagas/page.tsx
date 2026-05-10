@@ -109,7 +109,7 @@ export default async function EmpresaVagasPage() {
             </div>
           ))
         ) : (
-          <div className="space-y-4 rounded-[2.5rem] border border-dashed border-none bg-secondary p-12 text-center opacity-60 shadow-sm">
+          <div className="space-y-4 rounded-[2.5rem] border border-dashed border-border bg-secondary p-12 text-center opacity-60 shadow-sm">
             <Briefcase className="mx-auto h-10 w-10 text-muted-foreground opacity-20" />
             <div className="space-y-1">
               <p className="text-lg font-bold text-primary">Nenhuma vaga publicada</p>
