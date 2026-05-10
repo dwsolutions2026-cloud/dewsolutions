@@ -76,6 +76,10 @@ body {
   transition: background-color 200ms ease, color 200ms ease;
 }
 
+p {
+  text-align: justify;
+}
+
 button,
 input,
 textarea,
