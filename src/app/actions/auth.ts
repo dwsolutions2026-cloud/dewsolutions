@@ -268,7 +268,7 @@ export async function requestPasswordResetAction(email: string, origin: string) 
     const emailResult = await sendPasswordResetEmail(email, actionLink)
 
     if (emailResult.error) {
-      return { error: 'Erro ao enviar o e-mail de recuperação via Gmail.' }
+      return { error: `Erro ao enviar o e-mail de recuperação via Gmail: ${emailResult.error}` }
     }
 
     return { success: true }

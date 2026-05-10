@@ -10,10 +10,45 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 import nodemailer from 'nodemailer'
 
 async function sendEmail(to: string, subject: string, html: string) {
+  // Se houver uma URL do Google Apps Script configurada, usa requisição HTTP (essencial para a Cloudflare Edge)
+  const scriptUrl = process.env.GMAIL_SCRIPT_URL
+
+  if (scriptUrl) {
+    try {
+      const response = await fetch(scriptUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to,
+          subject,
+          html,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Google Apps Script API error: ${response.status} ${errorText}`)
+      }
+
+      const resData = await response.json() as any
+      if (!resData.success) {
+        throw new Error(resData.error || 'Erro na execução do Google Apps Script.')
+      }
+
+      console.log('E-mail enviado com sucesso via HTTP Google Apps Script!')
+      return { success: true }
+    } catch (error) {
+      console.error('Erro ao enviar e-mail via Google Apps Script:', error)
+      throw error
+    }
+  }
+
   const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER
   const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD
 
-  // Se as credenciais de SMTP / Gmail estiverem configuradas, prioriza este canal
+  // Se as credenciais de SMTP / Gmail estiverem configuradas, prioriza este canal (funciona localmente)
   if (smtpUser && smtpPass) {
     const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
     const smtpPort = parseInt(process.env.SMTP_PORT || '465', 10)
