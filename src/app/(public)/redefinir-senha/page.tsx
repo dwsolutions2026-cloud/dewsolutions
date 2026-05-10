@@ -4,18 +4,32 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Lock, Loader2, ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
-import { createClient } from '@/utils/supabase/client'
+import { resetPasswordWithTokenAction } from '@/app/actions/auth'
 import { toast } from 'react-hot-toast'
 
 export default function RedefinirSenhaPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [token, setToken] = useState('')
   const router = useRouter()
-  const supabase = createClient()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      setEmail(params.get('email') || '')
+      setToken(params.get('token') || '')
+    }
+  }, [])
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault()
+    
+    if (!email || !token) {
+      toast.error('Link de redefinição inválido ou incompleto. Por favor, solicite um novo link.')
+      return
+    }
     
     if (password !== confirmPassword) {
       toast.error('As senhas não coincidem.')
@@ -29,15 +43,12 @@ export default function RedefinirSenhaPage() {
 
     setLoading(true)
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: password
-      })
-      if (error) {
-        if (error.message.toLowerCase().includes('session') || error.message.toLowerCase().includes('unauthorized')) {
-          throw new Error('Sessão expirada ou link inválido. Por favor, solicite um novo link de redefinição.')
-        }
-        throw error
+      const result = await resetPasswordWithTokenAction(email, token, password)
+      
+      if (result.error) {
+        throw new Error(result.error)
       }
+
       toast.success('Senha atualizada com sucesso!')
       router.push('/login')
     } catch (err: any) {

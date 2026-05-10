@@ -251,20 +251,35 @@ export async function requestPasswordResetAction(email: string, origin: string) 
   )
 
   try {
-    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
-      type: 'recovery',
-      email: email,
-      options: {
-        redirectTo: `${origin}/auth/callback?next=/redefinir-senha`
+    // 1. Busca todos os usuários cadastrados para achar o usuário correspondente
+    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
+    if (listError) throw listError
+
+    const user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+    if (!user) {
+      // Retorna sucesso para evitar enumeração de e-mails, mas avisa amigavelmente
+      return { success: true, message: 'Se o e-mail estiver cadastrado, você receberá o link em breve.' }
+    }
+
+    // 2. Cria um token seguro único e data de expiração de 1 hora
+    const resetToken = crypto.randomUUID()
+    const resetTokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString()
+
+    // 3. Salva esses dados nos metadados do próprio usuário de forma 100% segura
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
+      user_metadata: {
+        ...user.user_metadata,
+        reset_token: resetToken,
+        reset_token_expires_at: resetTokenExpiresAt,
       }
     })
 
-    if (error || !data?.properties?.action_link) {
-      console.error('Erro ao gerar link de redefinição no Supabase:', error)
-      return { error: error?.message || 'Erro ao gerar o link de redefinição.' }
-    }
+    if (updateError) throw updateError
 
-    const actionLink = data.properties.action_link
+    // 4. Cria o link DIRETO para a página de redefinição de senha sem callbacks intermediários
+    const actionLink = `${origin}/redefinir-senha?email=${encodeURIComponent(email)}&token=${resetToken}`
+
+    // 5. Envia o e-mail personalizado com o botão dourado via Gmail
     const emailResult = await sendPasswordResetEmail(email, actionLink)
 
     if (emailResult.error) {
@@ -273,8 +288,64 @@ export async function requestPasswordResetAction(email: string, origin: string) 
 
     return { success: true }
   } catch (error: any) {
-    console.error('Erro geral na redefinição de senha:', error)
-    return { error: error.message || 'Erro inesperado ao solicitar redefinição de senha.' }
+    console.error('Erro geral ao solicitar recuperação de senha:', error)
+    return { error: error.message || 'Erro inesperado ao solicitar redefinição.' }
+  }
+}
+
+export async function resetPasswordWithTokenAction(email: string, token: string, newPassword: string) {
+  if (!email || !token || !newPassword) {
+    return { error: 'Todos os campos são obrigatórios.' }
+  }
+
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { error: 'A chave SUPABASE_SERVICE_ROLE_KEY não está configurada no servidor.' }
+  }
+
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  try {
+    // 1. Busca o usuário pelo e-mail
+    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
+    if (listError) throw listError
+
+    const user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+    if (!user) {
+      return { error: 'Usuário não encontrado.' }
+    }
+
+    // 2. Valida o token e a data de expiração salvos nos metadados
+    const metaToken = user.user_metadata?.reset_token
+    const metaExpires = user.user_metadata?.reset_token_expires_at
+
+    if (!metaToken || metaToken !== token) {
+      return { error: 'O link de recuperação é inválido ou já foi utilizado.' }
+    }
+
+    if (!metaExpires || new Date() > new Date(metaExpires)) {
+      return { error: 'Este link de recuperação expirou. Por favor, solicite um novo.' }
+    }
+
+    // 3. Atualiza a senha do usuário administrativamente e limpa o token de uso único
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
+      password: newPassword,
+      user_metadata: {
+        ...user.user_metadata,
+        reset_token: null,
+        reset_token_expires_at: null,
+      }
+    })
+
+    if (updateError) throw updateError
+
+    return { success: true }
+  } catch (error: any) {
+    console.error('Erro ao redefinir senha com token:', error)
+    return { error: error.message || 'Erro inesperado ao redefinir senha.' }
   }
 }
 
