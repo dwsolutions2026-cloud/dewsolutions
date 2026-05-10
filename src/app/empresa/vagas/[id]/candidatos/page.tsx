@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { notFound, redirect } from 'next/navigation'
 import { ArrowLeft, Users, Mail, Phone, CalendarClock, FileText } from 'lucide-react'
 import Link from 'next/link'
@@ -26,7 +27,13 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
     notFound()
   }
 
-  const { data: candidaturas } = await supabase
+  const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data: candidaturas } = await supabaseAdmin
     .from('candidaturas')
     .select(`
       id,
