@@ -103,8 +103,8 @@ async function sendEmail(to: string, subject: string, html: string) {
     return { success: true }
   }
 
-  console.warn('Nenhum serviço de e-mail (Gmail/SMTP ou Resend) configurado. Pulando envio.')
-  return { skipped: true }
+  console.warn('Nenhum serviço de e-mail (Gmail/SMTP ou Resend) configurado.')
+  throw new Error('Nenhum serviço de e-mail configurado no servidor. Configure GMAIL_SCRIPT_URL.')
 }
 
 function baseTemplate(content: string) {
