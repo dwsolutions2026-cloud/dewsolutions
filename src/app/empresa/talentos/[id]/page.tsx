@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 import { 
   Mail, 
@@ -18,7 +19,35 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
   const { id } = await params
   const supabase = await createClient()
 
-  const { data: candidato, error } = await supabase
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) notFound()
+
+  // Verify that the logged in user is authorized (either company or admin)
+  const { data: empresa } = await supabase
+    .from('empresas')
+    .select('id')
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  const role = profile?.role || user.user_metadata?.role || (empresa ? 'empresa' : 'candidato')
+
+  if (role !== 'empresa' && role !== 'admin') {
+    notFound()
+  }
+
+  const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data: candidato, error } = await supabaseAdmin
     .from('candidatos')
     .select(`
       *,
