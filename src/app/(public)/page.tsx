@@ -99,7 +99,7 @@ export default async function LandingPage() {
             alt="Equipe D&W Solutions"
             fill
             priority
-            className="object-contain object-right opacity-10 transition-opacity duration-700 lg:opacity-100"
+            className="object-contain object-right opacity-30 transition-opacity duration-700 lg:opacity-100"
           />
         </div>
 
@@ -110,10 +110,10 @@ export default async function LandingPage() {
                 <Logo width={240} height={90} variant="auto" />
               </div>
 
-              <div className="max-w-176 space-y-4">
-                <h1 className="text-[1.6rem] font-semibold leading-[1.1] tracking-tight text-primary dark:text-white sm:text-[3.2rem] lg:text-[3.8rem] lg:leading-[0.98] lg:tracking-[-0.055em]">
-                  <span className="block whitespace-nowrap">Soluções inteligentes em</span>
-                  <span className="block whitespace-nowrap">
+              <div className="max-w-[100%] lg:max-w-176 space-y-4">
+                <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight text-primary dark:text-white sm:text-[3.2rem] lg:text-[3.8rem] lg:leading-[0.98] lg:tracking-[-0.055em]">
+                  <span className="block sm:whitespace-nowrap">Soluções inteligentes em</span>
+                  <span className="block sm:whitespace-nowrap">
                     <span className="text-accent italic">recrutamento</span> e{' '}
                     <span className="text-accent italic">seleção.</span>
                   </span>

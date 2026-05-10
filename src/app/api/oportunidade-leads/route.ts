@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       .from('oportunidade_leads')
       .select('*', { count: 'exact', head: true })
       .eq('telefone', normalizedPhone)
-      .gte('created_at', new Date(now - limitWindow).toISOString())
+      .gte('criado_em', new Date(now - limitWindow).toISOString())
 
     if ((recentAttempts ?? 0) >= 3) {
       return NextResponse.json({ error: 'Muitas tentativas recentes para este telefone. Aguarde alguns minutos.' }, { status: 429 })
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const { error: insertError } = await supabaseAdmin.from('oportunidade_leads').insert({
       nome_empresa: parsed.data.nome_empresa,
       nome_responsavel: parsed.data.nome_responsavel,
-      email: parsed.data.email || null, // Bug fix: evitar undefined
+      email: parsed.data.email || 'nao-informado@email.com', // fallback to avoid NOT NULL violation
       telefone: normalizedPhone,
       cargo_vaga: parsed.data.cargo_vaga,
       cidade: parsed.data.cidade,
@@ -88,7 +88,7 @@ Mensagem:
     })
   } catch (error: unknown) {
     console.error('Error in lead submission:', error)
-    return NextResponse.json({ error: 'Erro interno ao processar lead.' }, { status: 500 })
+    return NextResponse.json({ error: 'Erro interno ao processar lead.', details: error instanceof Error ? error.message : String(error) }, { status: 500 })
   }
 }
 
