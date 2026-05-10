@@ -15,13 +15,28 @@ export default function RedefinirSenhaPage() {
   const supabase = createClient()
 
   useEffect(() => {
-    // Verificar se o usuário está logado (o callback do Supabase loga o usuário)
-    supabase.auth.getSession().then(({ data: { session } }: any) => {
-      if (!session) {
-        toast.error('Sessão expirada ou link inválido.')
-        router.push('/login')
+    // Usar onAuthStateChange para capturar o evento de recuperação ou login assim que o SDK inicializar
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
+      if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN' || session) {
+        // Sessão válida identificada
+        return
       }
     })
+
+    // Adiciona uma tolerância de 2 segundos para dar tempo ao SDK de processar o hash da URL / cookies
+    const timeoutId = setTimeout(() => {
+      supabase.auth.getSession().then(({ data: { session } }: any) => {
+        if (!session) {
+          toast.error('Sessão expirada ou link de recuperação inválido.')
+          router.push('/login')
+        }
+      })
+    }, 2000)
+
+    return () => {
+      subscription.unsubscribe()
+      clearTimeout(timeoutId)
+    }
   }, [supabase, router])
 
   async function handleReset(e: React.FormEvent) {

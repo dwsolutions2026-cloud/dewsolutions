@@ -26,7 +26,33 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
     const result = await convocarEntrevistaAction(formData)
 
     if (result.success) {
-      toast.success('Convocação enviada com sucesso!')
+      toast.success('Convocação enviada com sucesso! Abrindo o WhatsApp...')
+      
+      const phone = (result as any).telefone || ''
+      if (phone) {
+        const cleanPhone = phone.replace(/\D/g, '')
+        let formattedPhone = cleanPhone
+        // Se for número brasileiro de 10 ou 11 dígitos sem o DDI 55, adiciona o DDI
+        if (formattedPhone && !formattedPhone.startsWith('55') && (formattedPhone.length === 10 || formattedPhone.length === 11)) {
+          formattedPhone = '55' + formattedPhone
+        }
+
+        const candidateName = (result as any).nomeCandidato || nomeCandidato
+        const jobTitle = (result as any).tituloVaga || tituloVaga
+        const companyName = (result as any).nomeEmpresa || 'D&W Solutions'
+
+        const text = `Olá, ${candidateName}! Tudo bem?
+
+Gostaríamos de informar que você foi selecionado(a) para a etapa de entrevista para a vaga de *${jobTitle}* na empresa *${companyName}* através da plataforma D&W Solutions! 
+
+Gostaríamos de agendar a sua entrevista. Qual seria o seu melhor horário?
+
+Ficamos no aguardo!`
+
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(text)}`
+        window.open(whatsappUrl, '_blank')
+      }
+
       onSuccess()
     } else {
       toast.error(result.error || 'Erro ao enviar convocação')
@@ -37,7 +63,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
   const inputClass = "w-full px-4 py-3 rounded-xl border border-border bg-muted/20 focus:ring-2 focus:ring-accent outline-none transition-all font-medium text-sm"
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Overlay */}
       <div 
         className="absolute inset-0 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-300"
@@ -45,7 +71,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
       />
 
       {/* Modal */}
-      <div className="bg-card w-full max-w-lg rounded-[2rem] border border-border shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-card w-full max-w-lg rounded-4xl border border-border shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="p-8 bg-accent text-accent-foreground">
           <div className="flex justify-between items-start mb-4">
             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -109,7 +135,7 @@ export function ModalConvocacao({ candidaturaId, nomeCandidato, tituloVaga, onCl
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] bg-accent text-accent-foreground px-6 py-4 rounded-2xl font-black shadow-xl shadow-accent/20 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+              className="flex-2 bg-accent text-accent-foreground px-6 py-4 rounded-2xl font-black shadow-xl shadow-accent/20 flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               {loading ? 'Enviando...' : 'Confirmar Convocação'}

@@ -7,34 +7,69 @@ const FROM =
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
+import nodemailer from 'nodemailer'
+
 async function sendEmail(to: string, subject: string, html: string) {
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD
+
+  // Se as credenciais de SMTP / Gmail estiverem configuradas, prioriza este canal
+  if (smtpUser && smtpPass) {
+    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
+    const smtpPort = parseInt(process.env.SMTP_PORT || '465', 10)
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465, // true para SSL na porta 465, false para outras como 587
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    })
+
+    try {
+      await transporter.sendMail({
+        from: FROM,
+        to,
+        subject,
+        html,
+      })
+      return { success: true }
+    } catch (error) {
+      console.error('Erro ao enviar e-mail via SMTP / Gmail:', error)
+      throw error
+    }
+  }
+
+  // Fallback para o Resend caso configurado
   const apiKey = process.env.RESEND_API_KEY
 
-  if (!apiKey) {
-    console.warn('RESEND_API_KEY not configured. Skipping email send.')
-    return { skipped: true }
+  if (apiKey) {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: FROM,
+        to: [to],
+        subject,
+        html,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`Resend API error: ${response.status} ${errorText}`)
+    }
+
+    return { success: true }
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: FROM,
-      to: [to],
-      subject,
-      html,
-    }),
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`Resend API error: ${response.status} ${errorText}`)
-  }
-
-  return { success: true }
+  console.warn('Nenhum serviço de e-mail (Gmail/SMTP ou Resend) configurado. Pulando envio.')
+  return { skipped: true }
 }
 
 function baseTemplate(content: string) {

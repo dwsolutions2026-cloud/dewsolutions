@@ -107,14 +107,14 @@ export async function convocarEntrevistaAction(formData: FormData) {
       .from('candidaturas')
       .select(`
         id,
-        candidato:candidatos (nome, email),
+        candidato:candidatos (nome, email, telefone),
         vaga:vagas (titulo, empresa_id, empresa:empresas (nome))
       `)
       .eq('id', candidatura_id)
       .single()
-
+ 
     if (fetchError || !candidatura) return { error: 'Candidatura não encontrada' }
-
+ 
     // Se for empresa, garantir que a vaga pertence a ela
     if (profile.role === 'empresa') {
       const { data: empresa } = await supabase.from('empresas').select('id').eq('user_id', user.id).single()
@@ -123,7 +123,7 @@ export async function convocarEntrevistaAction(formData: FormData) {
         return { error: 'Acesso negado: esta vaga não pertence à sua empresa' }
       }
     }
-
+ 
     // Atualizar status para entrevista
     const { error: updateError } = await admin
       .from('candidaturas')
@@ -134,20 +134,20 @@ export async function convocarEntrevistaAction(formData: FormData) {
         observacao: observacao || null,
       })
       .eq('id', candidatura_id)
-
+ 
     if (updateError) return { error: updateError.message }
-
+ 
     // Formatar data para o e-mail
     const dataFormatada = new Date(data_entrevista).toLocaleString('pt-BR', {
       dateStyle: 'full',
       timeStyle: 'short',
       timeZone: 'America/Sao_Paulo',
     })
-
+ 
     const cand = candidatura.candidato as any
     const vagaRef = candidatura.vaga as any
     const empresaRef = vagaRef?.empresa as any
-
+ 
     // Enviar e-mail de convocação
     sendConvocacaoEntrevista(
       cand.email,
@@ -158,10 +158,17 @@ export async function convocarEntrevistaAction(formData: FormData) {
       local_entrevista,
       observacao || undefined
     ).catch(console.error)
-
+ 
     revalidatePath('/admin/candidatos')
     revalidatePath('/empresa/candidatos')
-    return { success: true }
+    
+    return { 
+      success: true,
+      telefone: cand.telefone || '',
+      nomeCandidato: cand.nome || '',
+      tituloVaga: vagaRef?.titulo || '',
+      nomeEmpresa: empresaRef?.nome || 'D&W Solutions'
+    }
   } catch (error: any) {
     console.error('Error in convocarEntrevistaAction:', error)
     return { error: 'Erro interno ao convocar para entrevista.' }
