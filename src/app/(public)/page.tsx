@@ -93,13 +93,13 @@ export default async function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       {/* SEÇÃO HOME (RESTORED & ADJUSTED) */}
       <section id="home" className="relative isolate min-h-[95svh] bg-background pt-28 sm:pt-40">
-        <div className="absolute bottom-[-13svh] right-0 z-0 top-0 lg:left-[13%] pointer-events-none [mask-image:linear-gradient(to_right,transparent_30%,black_80%),linear-gradient(to_top,transparent,black_20%)] [mask-composite:intersect]">
+        <div className="absolute bottom-0 right-0 z-0 top-0 w-full lg:w-[60%] pointer-events-none [mask-image:linear-gradient(to_right,transparent_5%,black_70%),linear-gradient(to_top,transparent,black_20%)] [mask-composite:intersect]">
           <Image
             src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
             fill
             priority
-            className="object-contain object-right opacity-10 transition-opacity duration-700 lg:opacity-100 lg:translate-x-[25%]"
+            className="object-contain object-right opacity-10 transition-opacity duration-700 lg:opacity-100"
           />
         </div>
 
