@@ -56,7 +56,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single()
 
       const roleFromMeta = currentUser.user_metadata?.role as UserRole | undefined
-      setRole((profile?.role as UserRole | undefined) || roleFromMeta || 'candidato')
+      let resolved = (profile?.role as UserRole | undefined) || roleFromMeta
+
+      if (!resolved) {
+        const { data: empresa } = await supabase
+          .from('empresas')
+          .select('id')
+          .eq('user_id', currentUser.id)
+          .maybeSingle()
+        if (empresa) {
+          resolved = 'empresa'
+        }
+      }
+
+      setRole(resolved || 'candidato')
       setIsLoading(false)
     }
 
@@ -81,7 +94,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single()
 
       const roleFromMeta = currentUser.user_metadata?.role as UserRole | undefined
-      setRole((profile?.role as UserRole | undefined) || roleFromMeta || 'candidato')
+      let resolved = (profile?.role as UserRole | undefined) || roleFromMeta
+
+      if (!resolved) {
+        const { data: empresa } = await supabase
+          .from('empresas')
+          .select('id')
+          .eq('user_id', currentUser.id)
+          .maybeSingle()
+        if (empresa) {
+          resolved = 'empresa'
+        }
+      }
+
+      setRole(resolved || 'candidato')
       setIsLoading(false)
     })
 

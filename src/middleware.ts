@@ -56,7 +56,20 @@ export async function middleware(request: NextRequest) {
         .eq('id', user.id)
         .single()
 
-      const role = profile?.role || user.user_metadata?.role
+      let role = profile?.role || user.user_metadata?.role
+
+      if (!role) {
+        const { data: empresa } = await supabase
+          .from('empresas')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle()
+        if (empresa) {
+          role = 'empresa'
+        } else {
+          role = 'candidato'
+        }
+      }
 
       if (isAuthRoute) {
         if (role === 'admin') return NextResponse.redirect(new URL('/admin/dashboard', request.url))

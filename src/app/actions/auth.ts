@@ -96,22 +96,38 @@ export async function loginAction(formData: FormData) {
     .eq('id', user.id)
     .single()
 
-  let redirectUrl = '/'
-  if (profile) {
-    if (profile.role === 'admin') redirectUrl = '/admin/dashboard'
-    else if (profile.role === 'empresa') redirectUrl = '/empresa/dashboard'
-    else if (profile.role === 'candidato') {
-      const { data: candidato } = await supabase
-        .from('candidatos')
-        .select('curriculo_url, curriculo_json')
-        .eq('user_id', user.id)
-        .single()
+  let resolvedRole = profile?.role || user.user_metadata?.role
 
-      if (candidato && (candidato.curriculo_url || candidato.curriculo_json)) {
-        redirectUrl = '/candidato/minha-area'
-      } else {
-        redirectUrl = '/candidato/curriculo/criar'
-      }
+  if (!resolvedRole) {
+    const { data: empresa } = await supabase
+      .from('empresas')
+      .select('id')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (empresa) {
+      resolvedRole = 'empresa'
+    } else {
+      resolvedRole = 'candidato'
+    }
+  }
+
+  let redirectUrl = '/'
+  if (resolvedRole === 'admin') {
+    redirectUrl = '/admin/dashboard'
+  } else if (resolvedRole === 'empresa') {
+    redirectUrl = '/empresa/dashboard'
+  } else {
+    const { data: candidato } = await supabase
+      .from('candidatos')
+      .select('curriculo_url, curriculo_json')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (candidato && (candidato.curriculo_url || candidato.curriculo_json)) {
+      redirectUrl = '/candidato/minha-area'
+    } else {
+      redirectUrl = '/candidato/curriculo/criar'
     }
   }
 
