@@ -14,6 +14,14 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
+  // Garantir que as variáveis do servidor estejam configuradas
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return NextResponse.json(
+      { error: 'Configuração do Supabase ausente nas variáveis de ambiente de runtime (no topo do painel da Cloudflare).' },
+      { status: 500 }
+    )
+  }
+
   const { path } = await params;
   // Verificar se usuário está autenticado
   const supabase = await createServerClient()
