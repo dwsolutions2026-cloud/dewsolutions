@@ -4,14 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Mail, ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
-import { createClient } from '@/utils/supabase/client'
 import { toast } from 'react-hot-toast'
+
+import { requestPasswordResetAction } from '@/app/actions/auth'
 
 export default function RecuperarSenhaPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const supabase = createClient()
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault()
@@ -19,10 +19,9 @@ export default function RecuperarSenhaPage() {
 
     setLoading(true)
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/redefinir-senha`,
-      })
-      if (error) throw error
+      const result = await requestPasswordResetAction(email, window.location.origin)
+      if (result.error) throw new Error(result.error)
+      
       setSuccess(true)
       toast.success('E-mail enviado!')
     } catch (err: any) {

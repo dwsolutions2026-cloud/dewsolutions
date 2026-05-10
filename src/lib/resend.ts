@@ -371,3 +371,33 @@ export async function sendLeadNotificationEmail({
 
   return sendEmail(adminEmail, `Novo lead: ${nomeEmpresa} quer anunciar vaga`, baseTemplate(content))
 }
+
+export async function sendPasswordResetEmail(email: string, actionLink: string) {
+  const content = `
+    <h2 style="margin:0 0 8px;color:#0D0D0D;font-size:24px;font-family:Georgia,serif;">Recuperacao de Senha</h2>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Ola!</p>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Recebemos uma solicitacao para redefinir a senha da sua conta na plataforma D&amp;W Solutions.</p>
+    <p style="margin:0 0 24px;color:#666;font-size:15px;">Para criar uma nova senha, clique no botao dourado abaixo:</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+      <tr>
+        <td align="center">
+          <a href="${actionLink}" style="display:inline-block;background:#D4AF37;color:#0D0D0D;text-decoration:none;padding:14px 36px;border-radius:8px;font-weight:bold;font-size:15px;letter-spacing:1px;box-shadow: 0 4px 10px rgba(212,175,55,0.3);">
+            Redefinir Minha Senha
+          </a>
+        </td>
+      </tr>
+    </table>
+    <p style="margin:24px 0 0;color:#999;font-size:12px;text-align:center;">
+      Se voce nao solicitou essa redefinicao, pode ignorar este e-mail com seguranca. Seu link de redefinicao expirara em breve.
+    </p>
+  `
+
+  try {
+    await sendEmail(email, 'Recuperacao de senha - D&W Solutions', baseTemplate(content))
+    return { success: true }
+  } catch (error) {
+    console.error('Erro ao enviar e-mail de recuperacao de senha:', error)
+    return { error: String(error) }
+  }
+}
+

@@ -7,7 +7,7 @@ import {
   createClient as createServerClient,
   isSupabaseConfigured,
 } from '@/utils/supabase/server'
-import { sendWelcomeEmail } from '@/lib/resend'
+import { sendWelcomeEmail, sendPasswordResetEmail } from '@/lib/resend'
 import { CandidatoRegistrationSchema } from '@/lib/schemas'
 
 function getSupabaseEnvError(action: 'login' | 'cadastro') {
@@ -234,3 +234,47 @@ export async function logoutAction() {
   }
   redirect('/login')
 }
+
+export async function requestPasswordResetAction(email: string, origin: string) {
+  if (!email) {
+    return { error: 'E-mail é obrigatório.' }
+  }
+
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { error: 'A chave SUPABASE_SERVICE_ROLE_KEY não está configurada no servidor.' }
+  }
+
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  try {
+    const { data, error } = await supabaseAdmin.auth.admin.generateLink({
+      type: 'recovery',
+      email: email,
+      options: {
+        redirectTo: `${origin}/auth/callback?next=/redefinir-senha`
+      }
+    })
+
+    if (error || !data?.properties?.action_link) {
+      console.error('Erro ao gerar link de redefinição no Supabase:', error)
+      return { error: error?.message || 'Erro ao gerar o link de redefinição.' }
+    }
+
+    const actionLink = data.properties.action_link
+    const emailResult = await sendPasswordResetEmail(email, actionLink)
+
+    if (emailResult.error) {
+      return { error: 'Erro ao enviar o e-mail de recuperação via Gmail.' }
+    }
+
+    return { success: true }
+  } catch (error: any) {
+    console.error('Erro geral na redefinição de senha:', error)
+    return { error: error.message || 'Erro inesperado ao solicitar redefinição de senha.' }
+  }
+}
+
