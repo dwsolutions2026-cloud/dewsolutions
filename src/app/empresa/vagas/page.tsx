@@ -93,7 +93,7 @@ export default async function EmpresaVagasPage() {
                     <div className="flex items-center gap-1.5">
                       <Users className="h-3.5 w-3.5 text-accent" />
                       <span className="text-xl font-black leading-none text-primary">
-                        {vaga.candidaturas[0]?.count || 0}
+                        {vaga.candidaturas?.[0]?.count || 0}
                       </span>
                     </div>
                   </div>

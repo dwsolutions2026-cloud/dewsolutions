@@ -106,7 +106,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
               </div>
               <div className="space-y-0.5">
                 <p className="text-2xl font-black">
-                  {empresa.vagas?.reduce((acc: number, v: any) => acc + (v.candidaturas[0]?.count || 0), 0)}
+                  {empresa.vagas?.reduce((acc: number, v: any) => acc + (v.candidaturas?.[0]?.count || 0), 0)}
                 </p>
                 <p className="text-[8px] font-bold uppercase opacity-50 tracking-widest">Candidatos</p>
               </div>
@@ -142,7 +142,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                   <div className="flex items-center gap-6">
                     <div className="text-right">
                       <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mb-0.5">Inscritos</p>
-                      <p className="text-lg font-black text-primary leading-none">{vaga.candidaturas[0]?.count || 0}</p>
+                      <p className="text-lg font-black text-primary leading-none">{vaga.candidaturas?.[0]?.count || 0}</p>
                     </div>
                     <Link 
                       href={`/admin/vagas/${vaga.slug || vaga.id}/editar`}
@@ -154,7 +154,7 @@ export default async function AdminEmpresaDetalhesPage({ params }: Props) {
                 </div>
               ))
             ) : (
-              <div className="p-12 bg-secondary border-none border-dashed rounded-sm text-center opacity-40">
+              <div className="p-12 bg-secondary border border-dashed rounded-sm text-center opacity-40">
                 <Briefcase className="w-10 h-10 mx-auto mb-3 opacity-20" />
                 <p className="font-bold text-xs uppercase tracking-widest">Nenhuma vaga publicada.</p>
               </div>

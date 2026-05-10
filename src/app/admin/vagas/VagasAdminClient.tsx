@@ -99,7 +99,7 @@ export function VagasAdminClient({ vagas }: Props) {
                 <span className="text-[9px] font-black uppercase text-muted-foreground mb-0.5">Candidatos</span>
                 <div className="flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5 text-accent" />
-                  <span className="text-xl font-black text-primary">{vaga.candidaturas[0]?.count || 0}</span>
+                  <span className="text-xl font-black text-primary">{vaga.candidaturas?.[0]?.count || 0}</span>
                 </div>
               </div>
 

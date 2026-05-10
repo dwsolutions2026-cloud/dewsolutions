@@ -103,7 +103,7 @@ export default async function AdminTalentosPage({
                       )}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="text-base font-black text-primary">{talento.candidaturas[0]?.count || 0}</span>
+                      <span className="text-base font-black text-primary">{talento.candidaturas?.[0]?.count || 0}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
