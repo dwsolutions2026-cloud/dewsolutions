@@ -169,7 +169,7 @@ export async function registerCandidateAction(formData: FormData) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return {
         error:
-          'A chave SUPABASE_SERVICE_ROLE_KEY não está configurada no ambiente local.',
+          'A chave SUPABASE_SERVICE_ROLE_KEY não está configurada no servidor.',
       }
     }
 
