@@ -93,7 +93,7 @@ export default async function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
       {/* SEÇÃO HOME (RESTORED & ADJUSTED) */}
       <section id="home" className="relative isolate min-h-[95svh] bg-background pt-28 sm:pt-40">
-        <div className="absolute bottom-0 right-0 z-10 top-20 w-full lg:w-[50%] pointer-events-none [mask-image:linear-gradient(to_right,transparent_5%,black_70%),linear-gradient(to_top,transparent,black_20%)] [mask-composite:intersect]">
+        <div className="absolute bottom-0 right-0 z-10 top-20 w-full lg:w-[50%] pointer-events-none mask-[linear-gradient(to_right,transparent_5%,black_70%),linear-gradient(to_top,transparent,black_20%)] mask-intersect">
           <Image
             src="/images/hero-team.png"
             alt="Equipe D&W Solutions"
@@ -170,7 +170,7 @@ export default async function LandingPage() {
         <section className="bg-[#050505] py-10 border-b border-white/5 relative z-20">
           <div className={shellPadding}>
             <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground dark:text-white/40 mb-8 opacity-60">Empresas que confiam em nós</p>
-            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 transition-all duration-500">
               {clientLogos.map((logo: string, i: number) => (
                 <div key={i} className="relative h-10 w-32">
                   <Image src={logo} alt="Cliente" fill className="object-contain" />

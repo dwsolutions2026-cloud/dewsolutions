@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { 
-  Briefcase, 
-  MapPin, 
-  Building2, 
-  Users, 
-  Edit3, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
+import {
+  Briefcase,
+  MapPin,
+  Building2,
+  Users,
+  Edit3,
+  Trash2,
+  Eye,
+  EyeOff,
   Loader2,
   ChevronRight
 } from 'lucide-react'
@@ -40,7 +40,7 @@ export function VagasAdminClient({ vagas }: Props) {
     setLoadingId(id)
     const newStatus = currentStatus === 'ativa' ? 'encerrada' : 'ativa'
     const result = await updateVagaStatusAction(id, newStatus)
-    
+
     if (result.success) {
       toast.success(`Vaga ${newStatus === 'ativa' ? 'ativada' : 'encerrada'} com sucesso!`)
       router.refresh()
@@ -52,10 +52,10 @@ export function VagasAdminClient({ vagas }: Props) {
 
   const handleDelete = async (id: string, titulo: string) => {
     if (!confirm(`Tem certeza que deseja excluir permanentemente a vaga: ${titulo}?`)) return
-    
+
     setLoadingId(id)
     const result = await deleteVagaAdminAction(id)
-    
+
     if (result.success) {
       toast.success('Vaga excluída com sucesso!')
       router.refresh()
@@ -68,14 +68,13 @@ export function VagasAdminClient({ vagas }: Props) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {vagas.map((vaga) => (
-        <div key={vaga.id} className="bg-secondary p-5 rounded-[2rem] border-none hover:border-accent/30 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
+        <div key={vaga.id} className="bg-secondary p-5 rounded-sm border-none hover:border-accent/30 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className={`w-12 h-12 rounded-sm flex items-center justify-center transition-all shadow-inner shrink-0 ${
-                vaga.status === 'ativa' 
-                  ? 'bg-muted text-accent group-hover:bg-accent group-hover:text-white' 
-                  : 'bg-red-50 text-red-400'
-              }`}>
+              <div className={`w-12 h-12 rounded-sm flex items-center justify-center transition-all shadow-inner shrink-0 ${vaga.status === 'ativa'
+                ? 'bg-muted text-accent group-hover:bg-accent group-hover:text-white'
+                : 'bg-red-50 text-red-400'
+                }`}>
                 <Briefcase className="w-6 h-6" />
               </div>
               <div className="min-w-0">
@@ -87,9 +86,8 @@ export function VagasAdminClient({ vagas }: Props) {
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3 h-3" /> {vaga.cidade} - {vaga.estado}
                   </span>
-                  <span className={`px-1.5 py-0.5 rounded text-[9px] ${
-                    vaga.status === 'ativa' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                  }`}>
+                  <span className={`px-1.5 py-0.5 rounded text-[9px] ${vaga.status === 'ativa' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    }`}>
                     {vaga.status}
                   </span>
                 </div>
@@ -104,24 +102,23 @@ export function VagasAdminClient({ vagas }: Props) {
                   <span className="text-xl font-black text-primary">{vaga.candidaturas[0]?.count || 0}</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
-                <Link 
+                <Link
                   href={`/admin/vagas/${vaga.slug || vaga.id}/editar`}
                   className="p-2.5 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm transition-all"
                   title="Editar Vaga"
                 >
                   <Edit3 className="w-4 h-4" />
                 </Link>
-                
+
                 <button
                   onClick={() => handleToggleStatus(vaga.id, vaga.status)}
                   disabled={loadingId === vaga.id}
-                  className={`p-2.5 rounded-sm transition-all ${
-                    vaga.status === 'ativa' 
-                      ? 'bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white' 
-                      : 'bg-green-50 text-green-600 hover:bg-green-500 hover:text-white'
-                  }`}
+                  className={`p-2.5 rounded-sm transition-all ${vaga.status === 'ativa'
+                    ? 'bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white'
+                    : 'bg-green-50 text-green-600 hover:bg-green-500 hover:text-white'
+                    }`}
                   title={vaga.status === 'ativa' ? 'Encerrar Vaga' : 'Reativar Vaga'}
                 >
                   {loadingId === vaga.id ? <Loader2 className="w-4 h-4 animate-spin" /> : (
@@ -138,7 +135,7 @@ export function VagasAdminClient({ vagas }: Props) {
                   {loadingId === vaga.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                 </button>
 
-                <Link 
+                <Link
                   href={`/admin/candidatos?vaga=${vaga.id}`}
                   className="ml-1 px-4 py-2 bg-accent text-accent-foreground rounded-sm font-black text-[10px] uppercase tracking-widest transition-all shadow-md shadow-accent/10 hover:scale-105 active:scale-95"
                 >

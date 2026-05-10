@@ -7,11 +7,17 @@ import Form from 'next/form'
 export default async function AdminVagasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: Promise<{ q?: string; empresa?: string }>
 }) {
-  const { q } = await searchParams
+  const { q, empresa } = await searchParams
   const supabase = await createClient()
   const query = q || ''
+
+  // Buscar lista de empresas para o filtro
+  const { data: todasEmpresas } = await supabase
+    .from('empresas')
+    .select('id, nome')
+    .order('nome', { ascending: true })
 
   let dbQuery = supabase
     .from('vagas')
@@ -24,6 +30,10 @@ export default async function AdminVagasPage({
 
   if (query) {
     dbQuery = dbQuery.ilike('titulo', `%${query}%`)
+  }
+
+  if (empresa) {
+    dbQuery = dbQuery.eq('empresa_id', empresa)
   }
 
   const { data: vagas, error } = await dbQuery
@@ -43,10 +53,10 @@ export default async function AdminVagasPage({
         </Link>
       </div>
 
-      {/* Barra de Busca */}
-      <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
-        <Form action="">
+      {/* Barra de Busca e Filtros */}
+      <Form action="" className="flex flex-col sm:flex-row gap-4">
+        <div className="relative group flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
           <input
             type="text"
             name="q"
@@ -54,8 +64,25 @@ export default async function AdminVagasPage({
             placeholder="Buscar por título da vaga..."
             className="w-full pl-10 pr-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-sm font-medium"
           />
-        </Form>
-      </div>
+        </div>
+        <div className="w-full sm:w-64 shrink-0">
+          <select 
+            name="empresa" 
+            defaultValue={empresa || ''}
+            onChange={(e) => {
+              // Quando trocar a opção, forçamos o formulário a enviar via JavaScript (opcional, ou espera apertar Enter na busca)
+              const form = e.target.form;
+              if (form) form.requestSubmit();
+            }}
+            className="w-full px-4 py-2.5 rounded-sm border border-border bg-card focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-sm font-medium text-foreground appearance-none cursor-pointer"
+          >
+            <option value="">Todas as Empresas</option>
+            {todasEmpresas?.map(emp => (
+              <option key={emp.id} value={emp.id}>{emp.nome}</option>
+            ))}
+          </select>
+        </div>
+      </Form>
 
       {error ? (
         <div className="p-10 bg-red-50 text-red-500 rounded-sm text-center border border-red-100 font-bold text-sm">
