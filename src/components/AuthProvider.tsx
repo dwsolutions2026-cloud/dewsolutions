@@ -55,7 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', currentUser.id)
         .single()
 
-      setRole((profile?.role as UserRole | undefined) || 'candidato')
+      const roleFromMeta = currentUser.user_metadata?.role as UserRole | undefined
+      setRole((profile?.role as UserRole | undefined) || roleFromMeta || 'candidato')
       setIsLoading(false)
     }
 
@@ -79,7 +80,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', currentUser.id)
         .single()
 
-      setRole((profile?.role as UserRole | undefined) || 'candidato')
+      const roleFromMeta = currentUser.user_metadata?.role as UserRole | undefined
+      setRole((profile?.role as UserRole | undefined) || roleFromMeta || 'candidato')
       setIsLoading(false)
     })
 

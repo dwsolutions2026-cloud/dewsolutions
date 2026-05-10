@@ -150,13 +150,13 @@ export default async function EmpresaDashboard() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-sm bg-primary p-8 text-white shadow-xl shadow-primary/20 md:p-12">
-        <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-20 blur-3xl" />
+      <div className="relative overflow-hidden rounded-sm bg-secondary border border-border/40 p-8 text-primary shadow-xl md:p-12">
+        <div className="absolute right-0 top-0 -mr-24 -mt-24 h-48 w-48 bg-accent opacity-10 blur-3xl" />
         <div className="relative max-w-xl">
-          <h2 className="mb-3 flex items-center gap-2.5 text-2xl font-black tracking-tight">
+          <h2 className="mb-3 flex items-center gap-2.5 text-2xl font-black tracking-tight text-primary">
             <TrendingUp className="h-6 w-6 text-accent" /> Expanda seu time
           </h2>
-          <p className="mb-8 text-sm leading-relaxed text-white/75">
+          <p className="mb-8 text-sm leading-relaxed text-muted-foreground font-medium">
             Precisa contratar? Publique uma nova vaga e comece a receber
             candidaturas qualificadas pelo painel da empresa.
           </p>

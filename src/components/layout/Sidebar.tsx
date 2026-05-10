@@ -65,7 +65,14 @@ export function Sidebar() {
   const supabase = createClient()
 
   const handleSignOut = async () => {
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+    } catch (e) {
+      console.error('Error in client signOut:', e)
+    }
     await logoutAction()
+    window.location.href = '/login'
   }
 
   const menuItems =

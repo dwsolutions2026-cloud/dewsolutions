@@ -110,11 +110,10 @@ export async function createEmpresaAction(formData: FormData) {
 
     const { error: profileError } = await supabaseAdmin
       .from('profiles')
-      .update({ role: 'empresa' })
-      .eq('id', userId)
+      .upsert({ id: userId, role: 'empresa' })
 
     if (profileError) {
-      console.error('Error updating profile role:', profileError)
+      console.error('Error upserting profile role:', profileError)
     }
 
     const { error: empresaError } = await supabaseAdmin.from('empresas').insert({

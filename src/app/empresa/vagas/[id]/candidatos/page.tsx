@@ -20,7 +20,9 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
     .eq('id', id)
     .single()
 
-  if (!vaga || (vaga.empresa as any).user_id !== user.id) {
+  const empresaData = Array.isArray(vaga?.empresa) ? vaga.empresa[0] : vaga?.empresa
+
+  if (!vaga || !empresaData || (empresaData as any).user_id !== user.id) {
     notFound()
   }
 
@@ -42,6 +44,8 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
     .eq('vaga_id', id)
     .order('created_at', { ascending: false })
 
+  const validCandidaturas = (candidaturas || []).filter((c: any) => c && c.candidato)
+
   return (
     <div className="space-y-12 animate-in fade-in duration-700">
       <div>
@@ -56,8 +60,8 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {candidaturas && candidaturas.length > 0 ? (
-          candidaturas.map((c: any) => (
+        {validCandidaturas && validCandidaturas.length > 0 ? (
+          validCandidaturas.map((c: any) => (
             <div key={c.id} className="bg-secondary p-8 rounded-[2.5rem] border-none shadow-sm flex flex-col group hover:border-accent/30 transition-all">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center gap-4">
@@ -103,7 +107,7 @@ export default async function EmpresaVagaCandidatosPage({ params }: Props) {
 
               <div className="mt-auto flex gap-2">
                 <Link 
-                  href={`/admin/talentos/${c.candidato.id}`}
+                  href={`/empresa/talentos/${c.candidato.id}`}
                   className="flex-1 py-3 bg-muted text-primary hover:bg-primary hover:text-white rounded-sm font-bold text-xs text-center transition-all"
                 >
                   Ver Perfil

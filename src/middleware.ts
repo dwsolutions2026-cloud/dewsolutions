@@ -56,7 +56,7 @@ export async function middleware(request: NextRequest) {
         .eq('id', user.id)
         .single()
 
-      const role = profile?.role
+      const role = profile?.role || user.user_metadata?.role
 
       if (isAuthRoute) {
         if (role === 'admin') return NextResponse.redirect(new URL('/admin/dashboard', request.url))
