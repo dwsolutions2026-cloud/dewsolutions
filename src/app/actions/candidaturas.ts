@@ -40,9 +40,12 @@ export async function candidatarAction(vagaId: string) {
     // Buscar dados da vaga e empresa
     const { data: vaga } = await supabase
       .from('vagas')
-      .select('titulo, empresa:empresas(nome)')
+      .select('titulo, status, empresa:empresas(nome)')
       .eq('id', vagaId)
       .single()
+
+    if (!vaga) return { error: 'Vaga não encontrada' }
+    if (vaga.status !== 'ativa') return { error: 'Esta vaga não está mais aceitando inscrições.' }
 
     const admin = getAdmin()
     const { error } = await admin.from('candidaturas').insert({

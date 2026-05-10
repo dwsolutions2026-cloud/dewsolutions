@@ -11,7 +11,16 @@ export async function saveVagaAction(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Não autorizado' }
 
-  const empresaId = formData.get('empresaId') as string
+  // Fetch empresa securely based on authenticated user instead of trusting client
+  const { data: empresa } = await supabase
+    .from('empresas')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!empresa) return { error: 'Empresa não encontrada para este usuário' }
+  const empresaId = empresa.id
+
   const id = formData.get('id') as string | null
 
   const titulo = formData.get('titulo') as string
