@@ -70,7 +70,6 @@ export default function LoginPage() {
                 </label>
                 <Link
                   href="/recuperar-senha"
-                  title="Em breve"
                   className="text-[8px] font-black uppercase tracking-widest text-accent hover:underline sm:text-[10px]"
                 >
                   Esqueceu?

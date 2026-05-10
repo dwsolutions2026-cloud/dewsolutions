@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   Briefcase,
   Building2,
@@ -17,6 +17,7 @@ import {
   UserSquare2,
   Users,
   X,
+  LogOut,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSidebar } from './SidebarProvider'
@@ -55,11 +56,18 @@ const EMPRESA_MENU: MenuItem[] = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const { isCollapsed, toggleSidebar } = useSidebar()
   const { role } = useAuth()
   const [newLeadsCount, setNewLeadsCount] = useState(0)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const supabase = createClient()
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
 
   const menuItems =
     role === 'admin' ? ADMIN_MENU : role === 'empresa' ? EMPRESA_MENU : CANDIDATO_MENU
@@ -202,6 +210,23 @@ export function Sidebar() {
           <div className={`flex ${isCollapsed ? 'justify-center' : 'px-1'}`}>
             <ThemeToggle className={isCollapsed ? 'w-10 h-10' : 'w-full flex justify-center'} />
           </div>
+
+          <div className={`flex ${isCollapsed ? 'justify-center' : 'px-1'}`}>
+            <button
+              onClick={handleSignOut}
+              title={isCollapsed ? 'Sair da conta' : ''}
+              className={`group relative flex items-center justify-center gap-3 rounded-lg py-2 text-red-500/80 transition-all hover:bg-red-500/10 hover:text-red-500 sm:rounded-xl ${isCollapsed ? 'w-10 h-10 px-0' : 'w-full px-3'}`}
+            >
+              <LogOut className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
+              {!isCollapsed && <span className="text-xs font-bold">Sair da conta</span>}
+
+              {isCollapsed && (
+                <div className="pointer-events-none absolute left-full z-100 ml-4 whitespace-nowrap rounded bg-foreground px-2 py-1 text-[9px] font-bold text-background opacity-0 transition-opacity group-hover:opacity-100">
+                  Sair
+                </div>
+              )}
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -235,6 +260,16 @@ export function Sidebar() {
               )}
               <div className="px-1">
                 <ThemeToggle className="w-full flex justify-center" />
+              </div>
+
+              <div className="px-1 mt-2 border-t border-border pt-2">
+                <button
+                  onClick={handleSignOut}
+                  className="flex w-full items-center justify-center gap-3 rounded-lg py-2 text-red-500/80 transition-all hover:bg-red-500/10 hover:text-red-500"
+                >
+                  <LogOut className="h-4 w-4 shrink-0" />
+                  <span className="text-xs font-bold">Sair da conta</span>
+                </button>
               </div>
             </div>
           </div>

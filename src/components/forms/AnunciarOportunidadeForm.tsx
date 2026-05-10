@@ -121,33 +121,33 @@ export function AnunciarOportunidadeForm() {
       </div>
 
       {/* Form side */}
-      <div className="bg-card rounded-[2.5rem] border border-border p-8 md:p-10 shadow-2xl shadow-primary/5 animate-in slide-in-from-right duration-700">
+      <div className="surface-card rounded-sm p-8 md:p-10 shadow-xl border-none animate-in slide-in-from-right duration-700">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Honeypot */}
           <input type="text" {...register('website')} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Empresa*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Empresa*</label>
               <div className="relative group">
                 <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('nome_empresa')}
                   placeholder="Nome da empresa"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
               {errors.nome_empresa && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.nome_empresa.message as string}</p>}
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Responsável*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Responsável*</label>
               <div className="relative group">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('nome_responsavel')}
                   placeholder="Seu nome"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
               {errors.nome_responsavel && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.nome_responsavel.message as string}</p>}
@@ -156,26 +156,26 @@ export function AnunciarOportunidadeForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">WhatsApp*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">WhatsApp*</label>
               <div className="relative group">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('telefone')}
                   placeholder="(00) 0 0000-0000"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
               {errors.telefone && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.telefone.message as string}</p>}
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Cargo Desejado*</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Cargo Desejado*</label>
               <div className="relative group">
                 <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('cargo_vaga')}
                   placeholder="Vaga pretendida"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
               {errors.cargo_vaga && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.cargo_vaga.message as string}</p>}
@@ -184,40 +184,40 @@ export function AnunciarOportunidadeForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">E-mail (Opcional)</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">E-mail (Opcional)</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('email')}
                   type="email"
                   placeholder="email@empresa.com.br"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
               {errors.email && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.email.message as string}</p>}
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-foreground ml-1">Cidade (Opcional)</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Cidade (Opcional)</label>
               <div className="relative group">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-accent transition-colors" />
                 <input
                   {...register('cidade')}
                   placeholder="Sua cidade"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-accent outline-none transition-all text-sm font-medium"
+                  className="surface-input w-full pl-11 pr-4 py-3.5 rounded-sm border-none shadow-sm outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent text-sm font-medium"
                 />
               </div>
             </div>
           </div>
 
           {/* Checkbox LGPD */}
-          <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-xl border border-border/50">
+          <div className="flex items-start gap-3 p-4 bg-background/50 rounded-sm border-none">
             <input
               type="checkbox"
               id="lgpd"
               checked={aceitouTermos}
               onChange={(e) => setAceitouTermos(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-border text-accent focus:ring-accent cursor-pointer"
+              className="mt-1 w-4 h-4 rounded-sm border-none bg-background text-accent focus:ring-accent cursor-pointer"
             />
             <label htmlFor="lgpd" className="text-[10px] sm:text-xs font-medium text-muted-foreground cursor-pointer leading-relaxed">
               Estou de acordo com a <Link href="/privacidade" className="text-accent underline hover:text-accent/80 transition-colors">Política de Privacidade</Link> e autorizo o contato da DW Solutions via WhatsApp ou e-mail.
@@ -228,7 +228,7 @@ export function AnunciarOportunidadeForm() {
             <button
               type="submit"
               disabled={isSubmitting || !aceitouTermos}
-              className="w-full bg-accent text-accent-foreground py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
+              className="w-full gold-gradient text-black py-4 rounded-sm font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-xl shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:scale-100"
             >
               {isSubmitting ? (
                 <>

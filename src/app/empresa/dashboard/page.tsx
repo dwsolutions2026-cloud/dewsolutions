@@ -30,15 +30,33 @@ export default async function EmpresaDashboard() {
     .select('*', { count: 'exact', head: true })
     .eq('empresa_id', empresa.id)
 
-  const { data: vagasIds } = await supabase
+  const { data: vagasComCandidaturas } = await supabase
     .from('vagas')
-    .select('id')
+    .select(`
+      id,
+      titulo,
+      candidaturas (status)
+    `)
     .eq('empresa_id', empresa.id)
 
-  const { count: totalCandidaturas } = await supabase
-    .from('candidaturas')
-    .select('*', { count: 'exact', head: true })
-    .in('vaga_id', vagasIds?.map((vaga) => vaga.id) || [])
+  const totalCandidaturas = vagasComCandidaturas?.reduce((acc, vaga) => acc + (vaga.candidaturas?.length || 0), 0) || 0
+
+  // Calculate funnel metrics
+  const funil = {
+    inscrito: 0,
+    em_analise: 0,
+    entrevista: 0,
+    aprovado: 0,
+    reprovado: 0
+  }
+
+  vagasComCandidaturas?.forEach(vaga => {
+    vaga.candidaturas?.forEach((cand: any) => {
+      if (cand.status in funil) {
+        funil[cand.status as keyof typeof funil]++
+      }
+    })
+  })
 
   return (
     <div className="animate-in space-y-8 fade-in duration-700">
@@ -76,8 +94,58 @@ export default async function EmpresaDashboard() {
               Total de Candidaturas
             </p>
             <p className="text-3xl font-black leading-none text-primary">
-              {totalCandidaturas || 0}
+              {totalCandidaturas}
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Funil de Candidatos */}
+      <div className="bg-secondary rounded-sm p-8 shadow-sm border-none">
+        <div className="mb-6">
+          <h2 className="text-lg font-black tracking-tight text-primary mb-1">Funil de Candidatos</h2>
+          <p className="text-xs font-medium text-muted-foreground">Acompanhe a taxa de conversão geral das suas vagas ativas e inativas.</p>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-bold">
+              <span className="text-blue-600 dark:text-blue-400">Inscritos</span>
+              <span>{funil.inscrito}</span>
+            </div>
+            <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-blue-500" style={{ width: totalCandidaturas ? `${(funil.inscrito / totalCandidaturas) * 100}%` : '0%' }} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-bold">
+              <span className="text-amber-600 dark:text-amber-400">Em Análise</span>
+              <span>{funil.em_analise}</span>
+            </div>
+            <div className="h-2 w-11/12 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-amber-500" style={{ width: totalCandidaturas ? `${(funil.em_analise / totalCandidaturas) * 100}%` : '0%' }} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-bold">
+              <span className="text-purple-600 dark:text-purple-400">Em Entrevista</span>
+              <span>{funil.entrevista}</span>
+            </div>
+            <div className="h-2 w-4/5 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-purple-500" style={{ width: totalCandidaturas ? `${(funil.entrevista / totalCandidaturas) * 100}%` : '0%' }} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-bold">
+              <span className="text-green-600 dark:text-green-400">Aprovados</span>
+              <span>{funil.aprovado}</span>
+            </div>
+            <div className="h-2 w-2/3 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-green-500" style={{ width: totalCandidaturas ? `${(funil.aprovado / totalCandidaturas) * 100}%` : '0%' }} />
+            </div>
           </div>
         </div>
       </div>

@@ -17,6 +17,7 @@ import { Logo } from '@/components/Logo'
 import { WhatsAppIcon } from '@/components/WhatsAppIcon'
 import { DWSOLUTIONS_WHATSAPP_URL } from '@/lib/whatsapp'
 import { getConfiguracoes } from '@/app/actions/oportunidades'
+import { CountUp } from '@/components/CountUp'
 
 export const metadata: Metadata = {
   title: 'D&W Solutions | Recrutamento e Seleção de Alta Performance',
@@ -66,8 +67,26 @@ export default async function LandingPage() {
     }
   }
 
-  const clientLogos = parseJson(configs.landing_logos, [])
-  const stats = parseJson(configs.landing_stats, [])
+  const fallbackLogos = [
+    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg'
+  ]
+
+  const fallbackStats = [
+    { valor: '+500', label: 'Profissionais Contratados' },
+    { valor: '98%', label: 'Taxa de Retenção' },
+    { valor: '15+', label: 'Anos de Experiência' },
+    { valor: '48h', label: 'Tempo Médio de Shortlist' }
+  ]
+
+  let clientLogos = parseJson(configs.landing_logos, fallbackLogos)
+  if (!clientLogos || clientLogos.length === 0) clientLogos = fallbackLogos
+
+  let stats = parseJson(configs.landing_stats, fallbackStats)
+  if (!stats || stats.length === 0) stats = fallbackStats
+
   const testimonials = parseJson(configs.landing_depoimentos, [])
 
   return (
@@ -148,9 +167,9 @@ export default async function LandingPage() {
 
       {/* PROVA SOCIAL (LOGOS) */}
       {clientLogos.length > 0 && (
-        <section className="bg-muted/30 py-10 border-b border-border/50 relative z-10">
+        <section className="bg-[#050505] py-10 border-b border-white/5 relative z-20">
           <div className={shellPadding}>
-            <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground dark:text-white/40 mb-8 opacity-60">Empresas que confiam em nossa curadoria</p>
+            <p className="text-center text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground dark:text-white/40 mb-8 opacity-60">Empresas que confiam em nós</p>
             <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
               {clientLogos.map((logo: string, i: number) => (
                 <div key={i} className="relative h-10 w-32">
@@ -189,7 +208,9 @@ export default async function LandingPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {stats.map((stat: any, i: number) => (
                 <div key={i} className="surface-card p-6 rounded-sm text-center border border-border/50">
-                  <p className="text-3xl sm:text-4xl font-black text-accent mb-1">{stat.valor}</p>
+                  <p className="text-3xl sm:text-4xl font-black text-accent mb-1">
+                    <CountUp value={stat.valor} />
+                  </p>
                   <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground dark:text-white/60">{stat.label}</p>
                 </div>
               ))}

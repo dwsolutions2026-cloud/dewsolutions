@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function AnunciarOportunidadePage() {
   return (
-    <div className="bg-background">
-      <main className="py-12 px-6">
+    <div className="bg-background min-h-screen">
+      <main className="pt-32 pb-12 px-6">
         <AnunciarOportunidadeForm />
       </main>
     </div>
