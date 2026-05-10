@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { notFound } from 'next/navigation'
 import { 
   Mail, 
@@ -18,7 +19,29 @@ export default async function AdminTalentoPerfilPage({ params }: Props) {
   const { id } = await params
   const supabase = await createClient()
 
-  const { data: candidato, error } = await supabase
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) notFound()
+
+  // Verify that the logged in user is an admin
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  const role = profile?.role || user.user_metadata?.role
+
+  if (role !== 'admin') {
+    notFound()
+  }
+
+  const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data: candidato, error } = await supabaseAdmin
     .from('candidatos')
     .select(`
       *,
