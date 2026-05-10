@@ -226,3 +226,11 @@ export async function registerCandidateAction(formData: FormData) {
 
   redirect(redirectUrl)
 }
+
+export async function logoutAction() {
+  if (isSupabaseConfigured()) {
+    const supabase = await createServerClient()
+    await supabase.auth.signOut()
+  }
+  redirect('/login')
+}

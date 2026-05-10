@@ -24,6 +24,7 @@ import { useSidebar } from './SidebarProvider'
 import { useAuth } from '@/components/AuthProvider'
 import { createClient } from '@/utils/supabase/client'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { logoutAction } from '@/app/actions/auth'
 
 type MenuItem = {
   title: string
@@ -64,9 +65,7 @@ export function Sidebar() {
   const supabase = createClient()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+    await logoutAction()
   }
 
   const menuItems =

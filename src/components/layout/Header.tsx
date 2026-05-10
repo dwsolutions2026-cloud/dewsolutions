@@ -8,6 +8,7 @@ import { Logo } from '@/components/Logo'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useAuth } from '@/components/AuthProvider'
 import { createClient } from '@/utils/supabase/client'
+import { logoutAction } from '@/app/actions/auth'
 
 const navLinks = [
   { href: '/#home', label: 'HOME' },
@@ -39,10 +40,7 @@ export function Header() {
   }, [pathname])
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    if (supabase) await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+    await logoutAction()
   }
 
   const hideHeaderLogo = isHome && !scrolled
