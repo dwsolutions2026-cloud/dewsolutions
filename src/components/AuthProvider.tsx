@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { User } from '@supabase/supabase-js'
+import { usePathname } from 'next/navigation'
 
 const hasSupabaseEnv = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [role, setRole] = useState<UserRole>('candidato')
   const [isLoading, setIsLoading] = useState(true)
+  const pathname = usePathname()
 
   useEffect(() => {
     if (!hasSupabaseEnv) {
@@ -116,8 +118,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // Absolute fallback: Determine active role directly from URL pathname prefix
+  let activeRole = role
+  if (pathname) {
+    if (pathname.startsWith('/admin')) {
+      activeRole = 'admin'
+    } else if (pathname.startsWith('/empresa')) {
+      activeRole = 'empresa'
+    } else if (pathname.startsWith('/candidato')) {
+      activeRole = 'candidato'
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, role, isLoading }}>
+    <AuthContext.Provider value={{ user, role: activeRole, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
