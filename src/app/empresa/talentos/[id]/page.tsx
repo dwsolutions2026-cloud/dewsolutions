@@ -60,6 +60,7 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
         vaga:vagas (
           id,
           titulo,
+          empresa_id,
           empresa:empresas (nome)
         )
       )
@@ -68,6 +69,17 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
     .single()
 
   if (error || !candidato) notFound()
+
+  // IDOR Protection: Ensure company is authorized to view this candidate
+  if (role === 'empresa') {
+    const candidateCandidaturas = (candidato.candidaturas as any) || []
+    const belongsToThisCompany = candidateCandidaturas.some((cand: any) => {
+      return cand.vaga?.empresa_id === empresa?.id
+    })
+    if (!belongsToThisCompany) {
+      notFound()
+    }
+  }
 
   const curriculo = candidato.curriculo_json as any
 

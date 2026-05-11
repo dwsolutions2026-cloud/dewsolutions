@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { checkAdmin } from '@/app/actions/admin'
 import { stringify } from 'csv-stringify/sync'
+import { sanitizePostgrestTextSearch } from '@/lib/security'
 
 export async function GET(req: Request) {
   try {
@@ -22,7 +23,10 @@ export async function GET(req: Request) {
       .order('criado_em', { ascending: false })
 
     if (q) {
-      query = query.or(`nome_empresa.ilike.%${q}%,nome_responsavel.ilike.%${q}%`)
+      const cleanQ = sanitizePostgrestTextSearch(q)
+      if (cleanQ) {
+        query = query.or(`nome_empresa.ilike.%${cleanQ}%,nome_responsavel.ilike.%${cleanQ}%`)
+      }
     }
     if (status) {
       query = query.eq('status', status)

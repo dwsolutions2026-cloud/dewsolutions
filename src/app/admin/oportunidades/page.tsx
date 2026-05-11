@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { LeadsAdminClient } from './LeadsAdminClient'
 import { TrendingUp, CheckCircle2, Clock, Send, Search, Filter, Eye, MessageSquare } from 'lucide-react'
 import Form from 'next/form'
+import { sanitizePostgrestTextSearch } from '@/lib/security'
 
 export default async function AdminOportunidadesPage({
   searchParams
@@ -17,7 +18,10 @@ export default async function AdminOportunidadesPage({
     .order('criado_em', { ascending: false })
 
   if (q) {
-    query = query.or(`nome_empresa.ilike.%${q}%,nome_responsavel.ilike.%${q}%`)
+    const cleanQ = sanitizePostgrestTextSearch(q)
+    if (cleanQ) {
+      query = query.or(`nome_empresa.ilike.%${cleanQ}%,nome_responsavel.ilike.%${cleanQ}%`)
+    }
   }
   if (status) {
     query = query.eq('status', status)

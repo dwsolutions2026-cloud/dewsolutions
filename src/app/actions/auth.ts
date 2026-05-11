@@ -1,5 +1,6 @@
 'use server'
 
+import 'server-only'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createClient } from '@supabase/supabase-js'
@@ -255,6 +256,8 @@ export async function logoutAction() {
   redirect('/login')
 }
 
+import crypto from 'node:crypto'
+
 export async function requestPasswordResetAction(email: string, origin: string) {
   if (!email) {
     return { error: 'E-mail é obrigatório.' }
@@ -271,33 +274,47 @@ export async function requestPasswordResetAction(email: string, origin: string) 
   )
 
   try {
-    // 1. Busca todos os usuários cadastrados para achar o usuário correspondente
-    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
-    if (listError) throw listError
+    let user: any = null
 
-    const user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+    // 1. Tenta buscar o UUID do usuário usando a função RPC segura para escalar com mais de 1000 usuários
+    try {
+      const { data: userId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_search: email })
+      if (userId) {
+        const { data: { user: foundUser } } = await supabaseAdmin.auth.admin.getUserById(userId)
+        user = foundUser
+      }
+    } catch (rpcErr) {
+      console.warn('RPC search fallback used:', rpcErr)
+      // Fallback seguro caso a migration do RPC ainda não tenha sido rodada localmente
+      const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
+      if (!listError) {
+        user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+      }
+    }
+
     if (!user) {
       // Retorna sucesso para evitar enumeração de e-mails, mas avisa amigavelmente
       return { success: true, message: 'Se o e-mail estiver cadastrado, você receberá o link em breve.' }
     }
 
     // 2. Cria um token seguro único e data de expiração de 1 hora
-    const resetToken = crypto.randomUUID()
+    const rawResetToken = crypto.randomUUID()
+    const hashedResetToken = crypto.createHash('sha256').update(rawResetToken).digest('hex')
     const resetTokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString()
 
-    // 3. Salva esses dados nos metadados do próprio usuário de forma 100% segura
+    // 3. Salva a versão HASHED do token nos metadados do próprio usuário de forma 100% segura (Impede vazamento caso o banco vaze)
     const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
       user_metadata: {
         ...user.user_metadata,
-        reset_token: resetToken,
+        reset_token_hashed: hashedResetToken,
         reset_token_expires_at: resetTokenExpiresAt,
       }
     })
 
     if (updateError) throw updateError
 
-    // 4. Cria o link DIRETO para a página de redefinição de senha sem callbacks intermediários
-    const actionLink = `${origin}/redefinir-senha?email=${encodeURIComponent(email)}&token=${resetToken}`
+    // 4. Cria o link DIRETO para a página de redefinição de senha com o raw token
+    const actionLink = `${origin}/redefinir-senha?email=${encodeURIComponent(email)}&token=${rawResetToken}`
 
     // 5. Envia o e-mail personalizado com o botão dourado via Gmail
     const emailResult = await sendPasswordResetEmail(email, actionLink)
@@ -329,20 +346,51 @@ export async function resetPasswordWithTokenAction(email: string, token: string,
   )
 
   try {
-    // 1. Busca o usuário pelo e-mail
-    const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
-    if (listError) throw listError
+    let user: any = null
 
-    const user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+    // 1. Busca o usuário com escalabilidade ilimitada usando RPC seguro
+    try {
+      const { data: userId } = await supabaseAdmin.rpc('get_user_id_by_email', { email_search: email })
+      if (userId) {
+        const { data: { user: foundUser } } = await supabaseAdmin.auth.admin.getUserById(userId)
+        user = foundUser
+      }
+    } catch (rpcErr) {
+      console.warn('RPC search fallback used:', rpcErr)
+      const { data: { users }, error: listError } = await supabaseAdmin.auth.admin.listUsers()
+      if (!listError) {
+        user = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+      }
+    }
+
     if (!user) {
       return { error: 'Usuário não encontrado.' }
     }
 
     // 2. Valida o token e a data de expiração salvos nos metadados
-    const metaToken = user.user_metadata?.reset_token
+    const savedHashedToken = user.user_metadata?.reset_token_hashed || user.user_metadata?.reset_token // Suporte a tokens legados em transição
     const metaExpires = user.user_metadata?.reset_token_expires_at
 
-    if (!metaToken || metaToken !== token) {
+    if (!savedHashedToken) {
+      return { error: 'O link de recuperação é inválido ou já foi utilizado.' }
+    }
+
+    // Calcula o hash do token recebido para bater com o banco
+    const incomingHashedToken = crypto.createHash('sha256').update(token).digest('hex')
+
+    // Timing-Safe Comparison to prevent side-channel attack vectors
+    let isValidToken = false
+    try {
+      isValidToken = crypto.timingSafeEqual(
+        Buffer.from(savedHashedToken),
+        Buffer.from(incomingHashedToken)
+      )
+    } catch {
+      // Fallback para quando o token é legado (não-hasheado) de migração ativa
+      isValidToken = savedHashedToken === token
+    }
+
+    if (!isValidToken) {
       return { error: 'O link de recuperação é inválido ou já foi utilizado.' }
     }
 
@@ -356,6 +404,7 @@ export async function resetPasswordWithTokenAction(email: string, token: string,
       user_metadata: {
         ...user.user_metadata,
         reset_token: null,
+        reset_token_hashed: null,
         reset_token_expires_at: null,
       }
     })

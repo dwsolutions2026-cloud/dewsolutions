@@ -1,5 +1,6 @@
 'use server'
 
+import 'server-only'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { OportunidadeLeadSchema, ConfigSiteSchema } from '@/lib/schemas'

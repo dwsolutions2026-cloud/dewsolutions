@@ -1,5 +1,6 @@
 'use server'
 
+import 'server-only'
 import { createClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 import { slugify } from '@/lib/slugify'

@@ -1,5 +1,6 @@
 'use server'
 
+import 'server-only'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 import { checkAdmin } from '@/app/actions/admin'
