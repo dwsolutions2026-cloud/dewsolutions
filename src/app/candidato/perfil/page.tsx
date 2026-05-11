@@ -47,7 +47,7 @@ export default async function PerfilCandidatoPage() {
 
         <Link 
           href="/candidato/perfil/editar"
-          className="bg-primary text-white px-8 py-4 rounded-sm font-black flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-[10px] uppercase tracking-[0.2em]"
+          className="bg-primary text-primary-foreground px-8 py-4 rounded-sm font-black flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all text-[10px] uppercase tracking-[0.2em]"
         >
           <Edit3 className="w-4 h-4" /> Atualizar Dados
         </Link>
@@ -56,7 +56,7 @@ export default async function PerfilCandidatoPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Card Lateral: Foto e Status */}
         <div className="lg:col-span-1 space-y-8">
-          <div className="bg-secondary rounded-[3rem] border-none p-10 shadow-sm relative overflow-hidden">
+          <div className="bg-secondary rounded-sm border-none p-10 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl" />
             
             <AvatarUpload 
@@ -78,7 +78,7 @@ export default async function PerfilCandidatoPage() {
             </div>
           </div>
 
-          <div className="bg-accent/5 rounded-[2.5rem] border border-accent/10 p-8 space-y-4">
+          <div className="bg-accent/5 rounded-sm border border-accent/10 p-8 space-y-4">
             <h4 className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent">
               <ShieldCheck className="w-4 h-4" /> Privacidade & LGPD
             </h4>
@@ -90,7 +90,7 @@ export default async function PerfilCandidatoPage() {
 
         {/* Informações Principais */}
         <div className="lg:col-span-2">
-          <div className="bg-secondary rounded-[3rem] border-none p-10 shadow-sm h-full">
+          <div className="bg-secondary rounded-sm border-none p-10 shadow-sm h-full">
             <div className="mb-10 flex items-center gap-3">
               <UserIcon className="w-5 h-5 text-accent" />
               <h3 className="text-sm font-black uppercase tracking-[0.2em] text-primary/80">Dados Pessoais</h3>

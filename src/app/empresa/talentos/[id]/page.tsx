@@ -4,12 +4,14 @@ import { notFound } from 'next/navigation'
 import { 
   Mail, 
   MapPin, 
+  Phone,
   FileText, 
   History,
   ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
 import { getCurriculoDownloadUrl } from '@/lib/security'
+import { GoBackButton } from '@/components/GoBackButton'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -71,12 +73,7 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
-      <Link 
-        href="/empresa/dashboard" 
-        className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors font-bold text-xs mb-2"
-      >
-        <ArrowLeft className="w-3 h-3" /> Voltar para o Painel
-      </Link>
+      <GoBackButton fallbackHref="/empresa/dashboard" label="Voltar para o Painel" />
 
       {/* Header Perfil */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-secondary p-6 rounded-sm border-none shadow-sm">
@@ -96,6 +93,11 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
               <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-bold">
                 <Mail className="w-3.5 h-3.5 text-accent" /> {candidato.email}
               </span>
+              {candidato.telefone && (
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-bold">
+                  <Phone className="w-3.5 h-3.5 text-accent" /> {candidato.telefone}
+                </span>
+              )}
               <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-bold">
                 <MapPin className="w-3.5 h-3.5 text-accent" /> {candidato.cidade} - {candidato.estado}
               </span>
@@ -108,7 +110,7 @@ export default async function EmpresaTalentoPerfilPage({ params }: Props) {
             href={getCurriculoDownloadUrl(candidato.curriculo_url)}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-white px-5 py-2.5 rounded-sm font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/10"
+            className="bg-primary text-primary-foreground px-5 py-2.5 rounded-sm font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-primary/10"
           >
             <FileText className="w-4 h-4" /> PDF Original
           </a>

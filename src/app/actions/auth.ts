@@ -244,9 +244,13 @@ export async function registerCandidateAction(formData: FormData) {
 }
 
 export async function logoutAction() {
-  if (isSupabaseConfigured()) {
-    const supabase = await createServerClient()
-    await supabase.auth.signOut()
+  try {
+    if (isSupabaseConfigured()) {
+      const supabase = await createServerClient()
+      await supabase.auth.signOut()
+    }
+  } catch (e) {
+    console.warn('Supabase server signOut warning (safe to ignore):', e)
   }
   redirect('/login')
 }

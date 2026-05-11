@@ -46,7 +46,13 @@ export function Header() {
     } catch (e) {
       console.error('Error in client signOut:', e)
     }
-    await logoutAction()
+    
+    try {
+      await logoutAction()
+    } catch (e) {
+      // Safe to ignore redirects/actions throwing errors
+    }
+    
     window.location.href = '/login'
   }
 
